@@ -5,8 +5,28 @@ require_once('../config/cartconfig.php');
 
 class UserContr
 {
+	public function loginUser($username, $password){
+		if(($user = UserDB::getUserByUsernameAndPassword($username, $password)) !== null)
+		{
+			$_SESSION['userID'] = $user->userID;
+			return array('loginSuccess' => true);
+		}
+
+		return array('loginSuccess' => false);
+	}
+
+	public function logoutUser(){
+		unset($_SESSION['userID']);
+		session_destroy();
+		return array('logoutSuccess' => true);
+	}
+
 	public function getUsers(){
 		return array('users' => UserDB::getUsers());		
+	}
+
+	public function getUser($userID){
+		return array('user' => UserDB::getUser($userID));		
 	}
 
 	public function addUser($fname, $lname, $username, $password){

@@ -3,4 +3,4 @@
 $servername = 'localhost';
 $username = 'root';
 $password = '';
-$dbname = 'rp_carshop';
+$dbname = 'rp_bookshop';

@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 10, 2016 at 01:01 PM
+-- Generation Time: Jun 11, 2016 at 08:30 PM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -17,22 +17,37 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8 */;
 
 --
--- Database: `rp_carshop`
+-- Database: `rp_bookshop`
 --
+CREATE DATABASE IF NOT EXISTS `rp_bookshop` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci;
+USE `rp_bookshop`;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `car`
+-- Table structure for table `book`
 --
 
-CREATE TABLE IF NOT EXISTS `car` (
-  `car_id` int(11) NOT NULL AUTO_INCREMENT,
-  `brand` varchar(100) NOT NULL,
-  `manufacturer` varchar(100) NOT NULL,
+CREATE TABLE IF NOT EXISTS `book` (
+  `book_id` int(11) NOT NULL AUTO_INCREMENT,
+  `title` int(11) NOT NULL,
+  `author` varchar(100) NOT NULL,
   `description` varchar(100) NOT NULL,
+  `cost` int(11) NOT NULL,
+  PRIMARY KEY (`book_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `book_copy`
+--
+
+CREATE TABLE IF NOT EXISTS `book_copy` (
+  `book_copy_id` int(11) NOT NULL AUTO_INCREMENT,
+  `book_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`car_id`)
+  PRIMARY KEY (`book_copy_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
