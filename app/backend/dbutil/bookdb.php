@@ -55,4 +55,42 @@ class BookDB extends BaseDB
 		parent::closeConn();
 		return $stmt->affected_rows === 1;
 	}
+
+	public function getUsers(){
+		parent::startConn();
+		$result = parent::presentRSAsArray((parent::getConn())->query('SELECT user_id, fname, lname, username, password, amount FROM user'));
+		parent::closeConn();
+		return $result;
+	}
+
+	public function addBook($title, $author, $description, $price){
+		parent::addEntity(array(
+			'title' => $title,
+			'author' => $author,
+			'description' => $description,
+			'price' => $price,
+		), 'book', 'sssi');
+	}
+
+	public function editBook($bookID, $title, $author, $description, $price){
+		$updateArr = new Array();
+
+		if($title !== '')
+			$updateArr['title'] = array('value' => $title, 'type' => 's');
+
+		if($author !== '')
+			$updateArr['author'] = array('value' => $author, 'type' => 's');
+
+		if($description !== '')
+			$updateArr['description'] = array('value' => $description, 'type' => 's');
+
+		if($price !== '')
+			$updateArr['price'] = array('value' => $price, 'type' => 'i');
+
+		parent::editEntity($userID, $updateArr, 'book', 'sssi');
+	}
+
+	public function deleteBook($bookID){
+		parent::deleteEntity($bookID);
+	}
 }

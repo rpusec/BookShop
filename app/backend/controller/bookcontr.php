@@ -8,6 +8,18 @@ class BookContr {
 		return array('books' => $books, 'resultCount' => $resultCount);
 	}
 
+	public function addBook($title, $author, $description, $price){
+		return array('bookAdded' => BookDB::addBook($title, $author, $description, $price));
+	}
+
+	public function editBook($bookID, $title, $author, $description, $price){
+		return array('bookEdited' => BookDB::addBook($bookID, $title, $author, $description, $price));
+	}
+
+	public function removeBook($bookID){
+		return array('bookRemoved' => BookDB::removeBook($bookID));
+	}
+
 	public function addBookToCart($bookID){
 		$availableBookCopyID = BookDB::getAnAvailableBookCopy($bookID);
 		$success = BookDB::addBookCopyToCart($availableBookCopyID, $_SESSION['userID']);

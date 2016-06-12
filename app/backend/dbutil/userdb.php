@@ -53,50 +53,37 @@ class UserDB extends BaseDB
 	}
 
 	public function addUser($fname, $lname, $username, $password, $amount){
-		parent::startConn();
-		$stmt = (parent::getConn())->prepare('INSERT INTO user (fname, lname, username, password, amount) VALUES (?, ?, ?, ?, ?)');
-		$stmt->bind_param("ssssi", $fname, $lname, $username, $password, $amount);
-		$stmt->execute();
-		$stmt->close();
-		parent::closeConn();
-		return $stmt->affected_rows === 1;			
+		parent::addEntity(array(
+			'fname' => $fname,
+			'lname' => $lname,
+			'username' => $username,
+			'password' => $password,
+			'amount' => $amount
+		), 'user', 'ssssi');
 	}
 
-	public function editUser($userID, $updateArr){
-		parent::startConn();
+	public function editUser($userID, $fname, $lname, $username, $password, $amount){
+		$updateArr = new Array();
 
-		$sql = 'UPDATE user SET ';
-		$bindStr = "";
-		$values = array();
+		if($fname !== '')
+			$updateArr['fname'] = array('value' => $fname, 'type' => 's');
 
-		foreach($updateArr as $updateKey => $updateInfo)
-		{
-			$sql .= "$updateKey=? ";
-			$bindStr .= $updateInfo['type'];
-			array_push($values, $updateInfo['value']);
-		}
+		if($lname !== '')
+			$updateArr['lname'] = array('value' => $lname, 'type' => 's');
 
-		$sql .= "WHERE user_id=?";
-		$bindStr .= "i";
-		array_push($values, $userID);
-		array_unshift($values, $bindStr);
+		if($username !== '')
+			$updateArr['username'] = array('value' => $username, 'type' => 's');
 
-		$stmt = (parent::getConn())->prepare($sql);
-		call_user_func_array(array($stmt, "bind_param"), $values);
-		$stmt->execute();
-		$stmt->close();
-		parent::closeConn();
+		if($password !== '')
+			$updateArr['password'] = array('value' => $password, 'type' => 'i');
 
-		return $stmt->affected_rows === 1;
+		if($amount !== '')
+			$updateArr['amount'] = array('value' => $amount, 'type' => 'i');
+
+		parent::editEntity($userID, $updateArr, 'user', 'ssssi');
 	}
 
 	public function deleteUser($userID){
-		parent::startConn();
-		$stmt = (parent::getConn())->prepare('DELETE FROM user WHERE user_id=?');
-		$stmt->bind_param("i", $userID);
-		$stmt->execute();
-		$stmt->close();
-		parent::closeConn();
-		return $stmt->affected_rows === 1;
+		parent::deleteEntity($userID);
 	}
 }
