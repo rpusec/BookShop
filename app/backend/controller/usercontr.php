@@ -33,9 +33,9 @@ class UserContr
 		return array('userAdded' => UserDB::addUser($fname, $lname, $username, $password, INITIAL_AMOUNT));
 	}
 
-	public function editUser($userID, $fname, $lname, $username, $password){
+	public function editUser($userID, $fname, $lname, $username, $password, $amount){
 
-		$updateArr = new Array();
+		$updateArr = array();
 
 		if($fname !== '')
 			$updateArr['fname'] = array('value' => $fname, 'type' => 's');
@@ -48,6 +48,9 @@ class UserContr
 
 		if($password !== '')
 			$updateArr['password'] = array('value' => $password, 'type' => 's');
+
+		if($amount !== '')
+			$updateArr['amount'] = array('value' => $amount, 'type' => 'i');
 
 		return array('userEdited' => UserDB::editUser($userID, $updateArr));
 	}

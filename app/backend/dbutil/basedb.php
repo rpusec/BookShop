@@ -4,21 +4,25 @@ require_once("../config/dbconfig.php");
 
 abstract class BaseDB {
 
-	private $conn;
+	private static $conn;
 
-	protected function startConn(){
-		if(isset($this->conn))
-			$this->conn->close();
+	protected static function startConn(){
+		if(isset(self::$conn))
+			self::$conn->close();
 		
-		$this->conn = new mysqli($servername, $username, $password, $dbname);
-		return $this->conn;
+		self::$conn = new mysqli(SERVERNAME, USERNAME, PASSWORD, DBNAME);
+		return self::$conn;
 	}
 
-	protected function closeConn(){
-		return $this->conn->close();
+	protected static function getConn(){
+		return self::$conn;
 	}
 
-	protected function presentRSAsArray($result){
+	protected static function closeConn(){
+		return self::$conn->close();
+	}
+
+	protected static function presentRSAsArray($result){
 		if($result->num_rows > 0)
 		{
 			$arr = array();
@@ -30,18 +34,21 @@ abstract class BaseDB {
 		return null;
 	}
 
-	protected function addEntity($arrEntityInfo, $tablename, $bindStr){
-		parent::startConn();
+	protected static function addEntity($arrEntityInfo, $tablename, $bindStr){
+		self::startConn();
 
 		$sql = "INSERT INTO $tablename (";
 		$values = array();
 
+		end($arrEntityInfo);
+		$lastKey = key($arrEntityInfo);
+
 		foreach($arrEntityInfo as $infoKey => $infoVal)
 		{
 			$sql .= $infoKey;
-			array_push($values, $infoVal);
+			$values[] = &$arrEntityInfo[$infoKey];
 
-			if($infoKey != end($arrEntityInfo))
+			if($infoKey != $lastKey)
 				$sql .= ", ";
 			else
 				$sql .= ") VALUES (";
@@ -51,23 +58,25 @@ abstract class BaseDB {
 		{
 			$sql .= '?';
 
-			if($infoKey != end($arrEntityInfo))
+			if($infoKey != $lastKey)
 				$sql .= ", ";
 			else
 				$sql .= ") ";
 		}
 
-		array_unshift($values, $bindStr);		
-		$stmt = (parent::getConn())->prepare($sql);
+		array_unshift($values, $bindStr);
+
+		$stmt = self::getConn()->prepare($sql);
 		call_user_func_array(array($stmt, "bind_param"), $values);
 		$stmt->execute();
+		$ar = $stmt->affected_rows;
 		$stmt->close();
-		parent::closeConn();
-		return $stmt->affected_rows === 1;			
+		self::closeConn();
+		return $ar === 1;			
 	}
 
-	protected function editEntity($entityID, $updateArr, $tablename, $entityIDName){
-		parent::startConn();
+	protected static function editEntity($entityID, $updateArr, $tablename, $entityIDName){
+		self::startConn();
 
 		$sql = 'UPDATE ' . $tablename . ' SET ';
 		$bindStr = "";
@@ -77,30 +86,32 @@ abstract class BaseDB {
 		{
 			$sql .= "$updateKey=? ";
 			$bindStr .= $updateInfo['type'];
-			array_push($values, $updateInfo['value']);
+			$values[] = &$updateInfo['value'];
 		}
 
 		$sql .= "WHERE $entityIDName=?";
 		$bindStr .= "i";
-		array_push($values, $userID);
+		$values[] = &$entityID;
 		array_unshift($values, $bindStr);
 
-		$stmt = (parent::getConn())->prepare($sql);
+		$stmt = self::getConn()->prepare($sql);
 		call_user_func_array(array($stmt, "bind_param"), $values);
 		$stmt->execute();
+		$ar = $stmt->affected_rows;
 		$stmt->close();
-		parent::closeConn();
+		self::closeConn();
 
-		return $stmt->affected_rows === 1;
+		return $ar === 1;
 	}
 
-	protected function deleteEntity($entityID, $tablename, $entityIDName){
-		parent::startConn();
-		$stmt = (parent::getConn())->prepare("DELETE FROM $tablename WHERE $entityIDName=?");
+	protected static function deleteEntity($entityID, $tablename, $entityIDName){
+		self::startConn();
+		$stmt = self::getConn()->prepare("DELETE FROM $tablename WHERE $entityIDName=?");
 		$stmt->bind_param("i", $entityID);
 		$stmt->execute();
+		$ar = $stmt->affected_rows;
 		$stmt->close();
-		parent::closeConn();
-		return $stmt->affected_rows === 1;
+		self::closeConn();
+		return $ar === 1;
 	}
 }

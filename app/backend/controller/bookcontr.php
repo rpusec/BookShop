@@ -13,7 +13,21 @@ class BookContr {
 	}
 
 	public function editBook($bookID, $title, $author, $description, $price){
-		return array('bookEdited' => BookDB::addBook($bookID, $title, $author, $description, $price));
+		$updateArr = new Array();
+		
+		if($title !== '')
+			$updateArr['title'] = array('value' => $title, 'type' => 's');
+
+		if($author !== '')
+			$updateArr['author'] = array('value' => $author, 'type' => 's');
+
+		if($description !== '')
+			$updateArr['description'] = array('value' => $description, 'type' => 's');
+
+		if($price !== '')
+			$updateArr['price'] = array('value' => $price, 'type' => 'i');
+
+		return array('bookEdited' => BookDB::editBook($bookID, $updateArr));
 	}
 
 	public function removeBook($bookID){

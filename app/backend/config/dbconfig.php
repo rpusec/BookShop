@@ -1,6 +1,6 @@
 <?php
 
-$servername = 'localhost';
-$username = 'root';
-$password = '';
-$dbname = 'rp_bookshop';
+define('SERVERNAME', 'localhost');
+define('USERNAME', 'root');
+define('PASSWORD', '');
+define('DBNAME', 'rp_bookshop');
