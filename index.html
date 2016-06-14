@@ -1,171 +1,56 @@
 <html>
 <head>
-	<title>Test</title>
-	<script type="text/javascript" src="libs/jquery-1.12.4.min.js"></script>
-	<script type="text/javascript">
-
-		$(document).on('ready', function(){
-			displayUsers();
-		});
-
-		function addUser(){
-			$.ajax({
-				async: false,
-				cache: false,
-				processData: false,
-				url: 'app/backend/view/userview.php',
-				method: 'get',
-				data: 'funct=add-user&' + $('#add-user').serialize(),
-				dataType: 'json',
-				success: function(data){
-					displayUsers();
-				},
-				error: function(data){
-					console.log(data);
-				}
-
-			});
-		}
-
-		function editUser(){
-			$.ajax({
-				async: false,
-				cache: false,
-				processData: false,
-				url: 'app/backend/view/userview.php',
-				method: 'get',
-				data: 'funct=edit-user&' + $('#edit-user').serialize(),
-				dataType: 'json',
-				success: function(data){
-					displayUsers();
-				},
-				error: function(data){
-					console.log(data);
-				}
-
-			});
-		}
-
-		function deleteUser(){
-			$.ajax({
-				async: false,
-				cache: false,
-				processData: false,
-				url: 'app/backend/view/userview.php',
-				method: 'get',
-				data: 'funct=delete-user&' + $('#delete-user').serialize(),
-				dataType: 'json',
-				success: function(data){
-					displayUsers();
-				},
-				error: function(data){
-					console.log(data);
-				}
-
-			});
-		}
-
-		function displayUsers(){
-			$.ajax({
-				async: false,
-				cache: false,
-				processData: false,
-				url: 'app/backend/view/userview.php',
-				method: 'get',
-				data: 'funct=get-users',
-				dataType: 'json',
-				success: function(data){
-					
-					if(data.users === null)
-						return;
-
-					var table = '<table>';
-					table += '<tr>';
-					table += '<td>id</td>';
-					table += '<td>fname</td>';
-					table += '<td>lname</td>';
-					table += '<td>username</td>';
-					table += '<td>password</td>';
-					table += '<td>amount</td>';
-					table += '</tr>';
-
-					data.users.forEach(function(user){
-						table += '<tr>';
-						table += '<td>'+user.user_id+'</td>';
-						table += '<td>'+user.fname+'</td>';
-						table += '<td>'+user.lname+'</td>';
-						table += '<td>'+user.username+'</td>';
-						table += '<td>'+user.password+'</td>';
-						table += '<td>'+user.amount+'</td>';
-						table += '</tr>';
-					});
-
-					table += '</table>';
-
-					$('#userlist').html(table);
-
-					var optionList = '<option value="-1">----</option>';
-
-					data.users.forEach(function(user){
-						optionList += '<option value=\'' + user.user_id + '\'>' + user.fname + ' ' + user.lname + '</option>';
-					});
-
-					$('#edit-user').find('select[name=userID]').html(optionList);
-					$('#delete-user').find('select[name=userID]').html(optionList);
-
-				},
-				error: function(data){
-					console.log(data);
-				}
-
-			});
-		}
-
-	</script>
+	<title>BookShop</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/bootstrap-glyphicons.css">
+	<script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+	<script type="text/javascript" src="js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="js/angular.min.js"></script>
+	<script type="text/javascript" src="js/ui-bootstrap-tpls-1.3.3.min.js"></script>
+	<script type="text/javascript" src="js/angular-animate.min.js"></script>
 </head>
-<body>
-	
-	<p>users</p>
+<body ng-app="myApp">
 
-	<div id="userlist">
-		
+<div class="container" ng-controller="usersContr">
+	<script type="text/javascript" src="app/frontend/controller/usersContr.js"></script>
+	<div class="panel panel-default">
+		<div class="panel-body">
+			<h4 ng-hide="users !== null">Please wait while the list of users is being loaded. </h4>
+			<table class="table" ng-hide="users == null">
+				<thead>
+					<tr>
+						<th>First Name</th>
+						<th>Last Name</th>
+						<th>Username</th>
+						<th>Password</th>
+						<th>amount</th>
+						<th>Edit</th>
+						<th>Delete</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="user in users">
+						<td>{{ user.fname }}</td>
+						<td>{{ user.lname }}</td>
+						<td>{{ user.username }}</td>
+						<td>{{ user.password }}</td>
+						<td>{{ user.amount }}</td>
+						<td><a href="#"><span data-toggle="modal" data-target="#editUserModal" class="glyphicon glyphicon-edit"></span></a></td>
+						<td><a href="#" uib-popover-template="popover.deleteUserTemplateUrl" popover-placement="{{popover.deleteUserPlacement}}" popover-trigger="outsideClick"><span class="glyphicon glyphicon-remove-circle"></span></a></td>
+					</tr>
+				</tbody>
+			</table>
+
+			<script type="text/ng-template" id="deleteUserTemplateUrl.html">
+				<button type = "button" class = "btn btn-danger">Delete user?</button>
+			</script>
+
+		</div>
 	</div>
 
-	<p>add user</p>
+	<div data-ng-include src="modals.editUserModal"></div>
 
-	<form id="add-user">
-		fname <input name="fname" type="text" /><br>
-		lname <input name="lname" type="text" /><br>
-		username <input name="username" type="text" /><br>
-		password <input name="password" type="text" /><br>
-		amount <input name="amount" type="text" /><br>
-		<input type="button" onclick="addUser()" value="add user">
-	</form>
-
-	<hr>
-	
-	<p>edit user</p>
-
-	<form id="edit-user">
-		<select name="userID"></select><br>
-		fname <input name="fname" type="text" /><br>
-		lname <input name="lname" type="text" /><br>
-		username <input name="username" type="text" /><br>
-		password <input name="password" type="text" /><br>
-		amount <input name="amount" type="text" /><br>
-		<input type="button" onclick="editUser()" value="edit user">
-	</form>
-
-	<hr>
-
-	<p>delete user</p>
-
-	<form id='delete-user'>
-		<select name="userID"></select><br>
-		<input type="button" onclick="deleteUser()" value="delete user">
-	</form>
-
-	<hr>
+</div>
 
 </body>
 </html>
