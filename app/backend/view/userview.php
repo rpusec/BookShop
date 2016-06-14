@@ -4,6 +4,8 @@ require_once('../controller/usercontr.php');
 
 session_start();
 
+
+
 if(isset($_GET['funct']))
 {
 	switch($_GET['funct']){
