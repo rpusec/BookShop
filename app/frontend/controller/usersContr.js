@@ -1,6 +1,6 @@
-var app = angular.module("myApp", ['ui.bootstrap']);
+var app = angular.module("myApp", ['ui.bootstrap', 'services']);
 
-app.controller("usersContr", function($scope, $http){
+app.controller("usersContr", function($scope, $http, userCrud){
 	$scope.users = null;
 	$scope.popover = {
 		deleteUserTemplateUrl: 'deleteUserTemplateUrl.html',
@@ -32,45 +32,39 @@ app.controller("usersContr", function($scope, $http){
 		$scope.editingUser.lname = lname;
 	}
 
-	$scope.deleteUser = function(){
-		$http({
-			method: 'GET',
-			url: 'app/backend/view/userview.php',
-			params: {funct: 'delete-user', userID: this.userToDeleteID}
-		}).then(function success(response){
-			displayUsers();
-		}, function error(response){
-			console.log(response);
-		});
+	function displayUsers(){
+		userCrud.displayUsers(
+			$scope.pagination.currentPage, 
+			$scope.pagination.itemsPerPage,
+			function(response){
+				$scope.users = response.data.users;
+				$scope.pagination.totalItems = response.data.userCount;
+			},
+			function(response){
+				console.log(response);
+			}
+		);
 	}
 
 	$scope.editUser = function(){
-		this.editUserData.funct = 'edit-user';
-		$http({
-			method: 'GET',
-			url: 'app/backend/view/userview.php',
-			params: this.editUserData
-		}).then(function success(response){
-			displayUsers();
-		}, function error(response){
-			console.log(response);
-		});
+		userCrud.editUser(
+			this.editUserData,
+			function(response){
+				displayUsers();
+			}, function(response){
+				console.log(response);
+			}
+		);
 	}
 
-	function displayUsers(){
-		$http({
-			method: 'GET',
-			url: 'app/backend/view/userview.php?',
-			params: {
-				funct: 'get-users', 
-				currentPage: $scope.pagination.currentPage,
-				perPage: $scope.pagination.itemsPerPage
+	$scope.deleteUser = function(){
+		userCrud.deleteUser(
+			this.userToDeleteID,
+			function(response){
+				displayUsers();
+			}, function(response){
+				console.log(response);
 			}
-		}).then(function success(response){
-			$scope.users = response.data.users;
-			$scope.pagination.totalItems = response.data.userCount;
-		}, function error(response){
-			console.log(response);
-		});
+		);
 	}
 });
