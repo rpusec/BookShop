@@ -6,6 +6,7 @@ require_once('../config/cartconfig.php');
 class UserContr
 {
 	public function loginUser($username, $password){
+		UserDB::startConn();
 		if(($user = UserDB::getUserByUsernameAndPassword($username, $password)) !== null)
 		{
 			$_SESSION['userID'] = $user->userID;
@@ -21,20 +22,28 @@ class UserContr
 		return array('logoutSuccess' => true);
 	}
 
-	public function getUsers(){
-		return array('users' => UserDB::getUsers());		
+	public function getUsers($currentPage, $perPage){
+		UserDB::startConn();
+		$users = UserDB::getUsers($currentPage, $perPage);
+		$userCount = UserDB::getUserCount();
+		return array(
+			'users' => $users,
+			'userCount' => $userCount
+		);		
 	}
 
 	public function getUser($userID){
+		UserDB::startConn();
 		return array('user' => UserDB::getUser($userID));		
 	}
 
 	public function addUser($fname, $lname, $username, $password){
+		UserDB::startConn();
 		return array('userAdded' => UserDB::addUser($fname, $lname, $username, $password, INITIAL_AMOUNT));
 	}
 
 	public function editUser($userID, $fname, $lname, $username, $password, $amount){
-
+		UserDB::startConn();
 		$updateArr = array();
 
 		if($fname !== '')
@@ -56,6 +65,7 @@ class UserContr
 	}
 
 	public function deleteUser($userID){
+		UserDB::startConn();
 		return array('userDeleted' => UserDB::deleteUser($userID));	
 	}
 }

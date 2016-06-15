@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 11, 2016 at 08:30 PM
+-- Generation Time: Jun 15, 2016 at 02:41 PM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS `book` (
   `title` int(11) NOT NULL,
   `author` varchar(100) NOT NULL,
   `description` varchar(100) NOT NULL,
-  `cost` int(11) NOT NULL,
+  `price` int(11) NOT NULL,
   PRIMARY KEY (`book_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -47,7 +47,9 @@ CREATE TABLE IF NOT EXISTS `book_copy` (
   `book_copy_id` int(11) NOT NULL AUTO_INCREMENT,
   `book_id` int(11) NOT NULL,
   `user_id` int(11) NOT NULL,
-  PRIMARY KEY (`book_copy_id`)
+  PRIMARY KEY (`book_copy_id`),
+  KEY `book_id` (`book_id`),
+  KEY `user_id` (`user_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
@@ -64,7 +66,44 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password` varchar(100) NOT NULL,
   `amount` int(11) NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+
+--
+-- Dumping data for table `user`
+--
+
+INSERT INTO `user` (`user_id`, `fname`, `lname`, `username`, `password`, `amount`) VALUES
+(1, 'Roman', 'Pusec', 'rpusec1', 'test', 500),
+(2, 'Teo', 'Ruzic', 'truzic1', 'test', 500),
+(3, 'Toni', 'Golac', 'tgolac1', 'test', 500),
+(4, 'Heizel', 'Raspberry', 'hrap1', 'test', 500),
+(5, 'Roman', 'Pusec', 'rpusec2', 'test', 500),
+(6, 'Teo', 'Ruzic', 'truzic2', 'test', 500),
+(7, 'Toni', 'Golac', 'tgolac2', 'test', 500),
+(8, 'Heizel', 'Raspberry', 'hrap2', 'test', 500),
+(9, 'Roman', 'Pusec', 'rpusec3', 'test', 500),
+(10, 'Teo', 'Ruzic', 'truzic3', 'test', 500),
+(11, 'Toni', 'Golac', 'tgolac3', 'test', 500),
+(12, 'Heizel', 'Raspberry', 'hrap3', 'test', 500),
+(13, 'Roman', 'Pusec', 'rpusec2', 'test', 500),
+(14, 'Teo', 'Ruzic', 'truzic2', 'test', 500),
+(15, 'Toni', 'Golac', 'tgolac2', 'test', 500),
+(16, 'Heizel', 'Raspberry', 'hrap2', 'test', 500),
+(17, 'Roman', 'Pusec', 'rpusec3', 'test', 500),
+(18, 'Teo', 'Ruzic', 'truzic3', 'test', 500),
+(19, 'Toni', 'Golac', 'tgolac3', 'test', 500),
+(20, 'Heizel', 'Raspberry', 'hrap3', 'test', 500);
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `book_copy`
+--
+ALTER TABLE `book_copy`
+  ADD CONSTRAINT `fk_book_id` FOREIGN KEY (`book_id`) REFERENCES `book` (`book_id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
+  ADD CONSTRAINT `fk_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`user_id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

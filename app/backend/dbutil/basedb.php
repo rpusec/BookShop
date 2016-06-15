@@ -6,7 +6,7 @@ abstract class BaseDB {
 
 	private static $conn;
 
-	protected static function startConn(){
+	public static function startConn(){
 		if(isset(self::$conn))
 			self::$conn->close();
 		
@@ -14,11 +14,11 @@ abstract class BaseDB {
 		return self::$conn;
 	}
 
-	protected static function getConn(){
+	public static function getConn(){
 		return self::$conn;
 	}
 
-	protected static function closeConn(){
+	public static function closeConn(){
 		return self::$conn->close();
 	}
 
@@ -35,8 +35,6 @@ abstract class BaseDB {
 	}
 
 	protected static function addEntity($arrEntityInfo, $tablename, $bindStr){
-		self::startConn();
-
 		$sql = "INSERT INTO $tablename (";
 		$values = array();
 
@@ -71,13 +69,10 @@ abstract class BaseDB {
 		$stmt->execute();
 		$ar = $stmt->affected_rows;
 		$stmt->close();
-		self::closeConn();
 		return $ar === 1;			
 	}
 
 	protected static function editEntity($entityID, $updateArr, $tablename, $entityIDName){
-		self::startConn();
-
 		$sql = 'UPDATE ' . $tablename . ' SET ';
 		$bindStr = "";
 		$values = array();
@@ -99,19 +94,16 @@ abstract class BaseDB {
 		$stmt->execute();
 		$ar = $stmt->affected_rows;
 		$stmt->close();
-		self::closeConn();
 
 		return $ar === 1;
 	}
 
 	protected static function deleteEntity($entityID, $tablename, $entityIDName){
-		self::startConn();
 		$stmt = self::getConn()->prepare("DELETE FROM $tablename WHERE $entityIDName=?");
 		$stmt->bind_param("i", $entityID);
 		$stmt->execute();
 		$ar = $stmt->affected_rows;
 		$stmt->close();
-		self::closeConn();
 		return $ar === 1;
 	}
 }

@@ -16,7 +16,7 @@ if(isset($_GET['funct']))
 			print json_encode(UserContr::logoutUser());
 			break;
 		case 'get-users' : 
-			print json_encode(UserContr::getUsers());
+			print json_encode(UserContr::getUsers($_GET['currentPage'], $_GET['perPage']));
 			break;
 		case 'get-user' : 
 			print json_encode(UserContr::getUser($_GET['userID']));
