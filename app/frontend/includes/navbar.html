@@ -1,0 +1,12 @@
+<nav class="navbar navbar-default" ng-controller="navbarContr">
+	<div class="container-fluid">
+		<div class="navbar-header">
+			<a class="navbar-brand" href="#">{{appTitle}}</a>
+		</div>
+		<ul class="nav navbar-nav">
+			<li ng-repeat="navLink in navLinks" class="{{navLink.active}}">
+				<a href="#">{{ navLink.title }}</a>
+			</li>
+		</ul>
+	</div>
+</nav>

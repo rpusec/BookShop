@@ -27,6 +27,11 @@ app.service("userCrud", function($http){
 			method: 'GET',
 			url: 'app/backend/view/userview.php',
 			params: editUserData
-		}).then(onSuccess, onError);
+		}).then(function(){
+			angular.forEach(editUserData, function(value, key){
+				editUserData[key] = '';
+			});
+			onSuccess();
+		}, onError);
 	}
 });

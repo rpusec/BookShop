@@ -1,6 +1,4 @@
-var app = angular.module("myApp", ['ui.bootstrap', 'services']);
-
-app.controller("usersContr", function($scope, $http, userCrud){
+app.controller("usersContr", function($scope, $http, $uibModal, userCrud){
 	$scope.users = null;
 	$scope.popover = {
 		deleteUserTemplateUrl: 'deleteUserTemplateUrl.html',
@@ -9,10 +7,7 @@ app.controller("usersContr", function($scope, $http, userCrud){
 	$scope.modals = {
 		editUserModal: "app/frontend/includes/modals/editUserModal.html"
 	};
-	$scope.editingUser = {
-		fname: '',
-		lname: ''
-	};
+	$scope.editingUser = {};
 	$scope.userToDeleteID = -1;
 	$scope.editUserData = {};
 	$scope.pagination = {
@@ -27,9 +22,9 @@ app.controller("usersContr", function($scope, $http, userCrud){
 	displayUsers();
 
 	$scope.setEditingUserLabel = function(userID, fname, lname){
-		$scope.editUserData.userID = userID;
-		$scope.editingUser.fname = fname;
-		$scope.editingUser.lname = lname;
+		this.editUserData.userID = userID;
+		this.editingUser.fname = fname;
+		this.editingUser.lname = lname;
 	}
 
 	function displayUsers(){
@@ -47,6 +42,7 @@ app.controller("usersContr", function($scope, $http, userCrud){
 	}
 
 	$scope.editUser = function(){
+		$('#editUserModal').modal('hide');
 		userCrud.editUser(
 			this.editUserData,
 			function(response){

@@ -9,49 +9,53 @@
 	<script type="text/javascript" src="js/ui-bootstrap-tpls-1.3.3.min.js"></script>
 	<script type="text/javascript" src="js/angular-animate.min.js"></script>
 	<script type="text/javascript" src="app/frontend/services/userCrudService.js"></script>
+	<script type="text/javascript" src="app/frontend/controller/app.js"></script>
+	<script type="text/javascript" src="app/frontend/controller/navbarContr.js"></script>
 	<script type="text/javascript" src="app/frontend/controller/usersContr.js"></script>
 </head>
 <body ng-app="myApp">
 
-<div class="container" ng-controller="usersContr">
-	<div class="panel panel-default">
-		<div class="panel-body">
-			<h4 ng-hide="users !== null">There are no users to display. </h4>
-			<table class="table" ng-hide="users == null">
-				<thead>
-					<tr>
-						<th>First Name</th>
-						<th>Last Name</th>
-						<th>Username</th>
-						<th>Password</th>
-						<th>amount</th>
-						<th>Edit</th>
-						<th>Delete</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr ng-repeat="user in users">
-						<td>{{ user.fname }}</td>
-						<td>{{ user.lname }}</td>
-						<td>{{ user.username }}</td>
-						<td>{{ user.password }}</td>
-						<td>{{ user.amount }}</td>
-						<td><a href="#"><span data-toggle="modal" data-target="#editUserModal" ng-click="setEditingUserLabel(user.user_id, user.fname, user.lname)" class="glyphicon glyphicon-edit"></span></a></td>
-						<td><a href="#" uib-popover-template="popover.deleteUserTemplateUrl" ng-click="userToDeleteID = user.user_id" popover-placement="{{popover.deleteUserPlacement}}" popover-trigger="outsideClick"><span class="glyphicon glyphicon-remove-circle"></span></a></td>
-					</tr>
-				</tbody>
-			</table>
+<div class="container">
 
-			<uib-pagination total-items="pagination.totalItems" ng-model="pagination.currentPage" items-per-page="pagination.itemsPerPage" ng-change="pagination.onPageChange()"></uib-pagination>
+	<div data-ng-include src="navbarUrl"></div>
 
-			<script type="text/ng-template" id="deleteUserTemplateUrl.html">
-				<button type="button" ng-click="deleteUser()" class="btn btn-danger">Delete user?</button>
-			</script>
+	<div ng-controller="usersContr">
 
-		</div>
+		<h4 ng-hide="users !== null">There are no users to display. </h4>
+		<table class="table" ng-hide="users == null">
+			<thead>
+				<tr>
+					<th>First Name</th>
+					<th>Last Name</th>
+					<th>Username</th>
+					<th>Password</th>
+					<th>amount</th>
+					<th>Edit</th>
+					<th>Delete</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="user in users">
+					<td>{{ user.fname }}</td>
+					<td>{{ user.lname }}</td>
+					<td>{{ user.username }}</td>
+					<td>{{ user.password }}</td>
+					<td>{{ user.amount }}</td>
+					<td><a href="#"><span data-toggle="modal" data-target="#editUserModal" ng-click="setEditingUserLabel(user.user_id, user.fname, user.lname)" class="glyphicon glyphicon-edit"></span></a></td>
+					<td><a href="#" uib-popover-template="popover.deleteUserTemplateUrl" ng-click="userToDeleteID = user.user_id" popover-placement="{{popover.deleteUserPlacement}}" popover-trigger="outsideClick"><span class="glyphicon glyphicon-remove-circle"></span></a></td>
+				</tr>
+			</tbody>
+		</table>
+
+		<uib-pagination total-items="pagination.totalItems" ng-model="pagination.currentPage" items-per-page="pagination.itemsPerPage" ng-change="pagination.onPageChange()"></uib-pagination>
+
+		<script type="text/ng-template" id="deleteUserTemplateUrl.html">
+			<button type="button" ng-click="deleteUser()" class="btn btn-danger">Delete user?</button>
+		</script>
+
+		<div data-ng-include src="modals.editUserModal"></div>
+
 	</div>
-
-	<div data-ng-include src="modals.editUserModal"></div>
 
 </div>
 
