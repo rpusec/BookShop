@@ -28,8 +28,17 @@ if(isset($_GET['funct']))
 				$_GET['title'], 
 				$_GET['author'], 
 				$_GET['description'], 
-				$_GET['price']
-			));
+				$_GET['price'])
+			);
+			break;
+		case 'add-book-copies' : 
+			print json_encode(BookContr::addBookCopies(
+				$_GET['bookID'], 
+				$_GET['copyAmount'])
+			);
+			break;
+		case 'remove-book-copies' : 
+			print json_encode(BookContr::removeBookCopies($_GET['bookCopyIDs']));
 			break;
 		case 'delete-book' : 
 			print json_encode(BookContr::deleteBook($_GET['bookID']));

@@ -40,14 +40,12 @@ class BookDB extends BaseDB
 	}
 
 	public static function getAnAvailableBookCopy($bookID){
-		parent::startConn();
 		$stmt = parent::getConn()->prepare('SELECT book_copy_id FROM book_copy WHERE book_id=? AND user_id IS NULL LIMIT 1');
 		$stmt->bind_param("i", $bookID);
 		$stmt->execute();
 		$stmt->bind_result($bookCopyID);
 		$bookFound = $stmt->fetch();
 		$stmt->close();
-		parent::closeConn();
 		
 		if(!$bookFound)
 			return null;
@@ -55,23 +53,64 @@ class BookDB extends BaseDB
 	}
 
 	public static function addBookCopyToCart($availableBookCopyID, $userID){
-		parent::startConn();
 		$stmt = parent::getConn()->prepare('UPDATE book_copy SET user_id = ? WHERE book_copy_id = ?');
 		$stmt->bind_param("ii", $userID, $availableBookCopyID);
 		$stmt->execute();
 		$stmt->close();
-		parent::closeConn();
 		return $stmt->affected_rows === 1;
 	}
 
 	public static function removeBookCopyFromCart($bookCopyID, $userID){
-		parent::startConn();
 		$stmt = parent::getConn()->prepare('UPDATE book_copy SET user_id = null WHERE book_copy_id = ? AND user_id = ?');
 		$stmt->bind_param("ii", $bookCopyID, $userID);
 		$stmt->execute();
 		$stmt->close();
-		parent::closeConn();
 		return $stmt->affected_rows === 1;
+	}
+
+	public static function addBookCopies($bookID, $copyAmount){
+		$query = 'INSERT INTO book_copy (book_id) VALUES (?)';
+		$values = array();
+		$bindStr = "";
+
+		for($i = 0; $i < $copyAmount; $i++)
+		{
+			$query .= ', (?)';
+			$values[] = &$bookID;
+			$bindStr .= 'i';
+		}
+
+		array_unshift($values, $bindStr);
+		$stmt = parent::getConn()->prepare($query);
+		call_user_func_array(array($stmt, "bind_param"), $values);
+		$stmt->execute();
+		$ar = $stmt->affected_rows;
+		$stmt->close();
+		return $ar;
+	}
+
+	public static function removeBookCopies($arrBookCopyIDs){
+		$query = 'DELETE FROM book_copy WHERE ';
+		$values = array();
+		$bindStr = "";
+
+		foreach($arrBookCopyIDs as $bookCopyKey => $bookCopyVal){
+			$query .= 'book_copy_id = ?';
+
+			if($bookCopyKey !== count($arrBookCopyIDs)-1)
+				$query .= ' OR ';
+
+			$values[] = &$bookCopyVal;
+			$bindStr .= 'i';
+		}
+
+		array_unshift($values, $bindStr);
+		$stmt = parent::getConn()->prepare($query);
+		call_user_func_array(array($stmt, "bind_param"), $values);
+		$stmt->execute();
+		$ar = $stmt->affected_rows;
+		$stmt->close();
+		return $ar;
 	}
 
 	public static function addBook($title, $author, $description, $price){
