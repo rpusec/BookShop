@@ -1,10 +1,8 @@
-var app = angular.module("services", []);
-
-app.service("userCrud", function($http){
+app.service("userService", function($http){
 	this.displayUsers = function(currentPage, itemsPerPage, onSuccess, onError){
 		$http({
 			method: 'GET',
-			url: 'app/backend/view/userview.php?',
+			url: 'app/backend/view/userview.php',
 			params: {
 				funct: 'get-users', 
 				currentPage: currentPage,
@@ -21,17 +19,26 @@ app.service("userCrud", function($http){
 		}).then(onSuccess, onError);
 	}
 
-	this.editUser = function(editUserData, onSuccess, onError){
-		editUserData.funct = 'edit-user';
+	this.addUser = function(userData, onSuccess, onError){
+		userData.funct = 'add-user';
+		addEditUser(userData, onSuccess, onError);
+	}
+
+	this.editUser = function(userData, onSuccess, onError){
+		userData.funct = 'edit-user';
+		addEditUser(userData, onSuccess, onError);
+	}
+
+	function addEditUser(userData, onSuccess, onError){
 		$http({
 			method: 'GET',
 			url: 'app/backend/view/userview.php',
-			params: editUserData
+			params: userData
 		}).then(function(){
-			angular.forEach(editUserData, function(value, key){
-				editUserData[key] = '';
+			angular.forEach(userData, function(value, key){
+				userData[key] = '';
 			});
 			onSuccess();
 		}, onError);
-	}
+	}	
 });

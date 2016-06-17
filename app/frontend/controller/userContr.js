@@ -1,11 +1,12 @@
-app.controller("usersContr", function($scope, $http, $uibModal, userCrud){
+app.controller("userContr", function($scope, userService){
 	$scope.users = null;
+	$scope.metadata = ['First name', 'Last name', 'Username', 'Password', 'Amount', 'Edit', 'Delete'];
 	$scope.popover = {
 		deleteUserTemplateUrl: 'deleteUserTemplateUrl.html',
 		deleteUserPlacement: 'right'
 	};
 	$scope.modals = {
-		editUserModal: "app/frontend/includes/modals/editUserModal.html"
+		userModal: "app/frontend/includes/modals/userModal.html"
 	};
 	$scope.editingUser = {};
 	$scope.userToDeleteID = -1;
@@ -21,14 +22,17 @@ app.controller("usersContr", function($scope, $http, $uibModal, userCrud){
 
 	displayUsers();
 
-	$scope.setEditingUserLabel = function(userID, fname, lname){
+	$scope.setManagingUserInfo = function(userID, fname, lname){
 		this.editUserData.userID = userID;
-		this.editingUser.fname = fname;
-		this.editingUser.lname = lname;
+		
+		if(userID !== -1)
+			this.editingUser.title = 'Editing user: ' + fname + ' ' + lname;
+		else
+			this.editingUser.title = 'Add user';
 	}
 
 	function displayUsers(){
-		userCrud.displayUsers(
+		userService.displayUsers(
 			$scope.pagination.currentPage, 
 			$scope.pagination.itemsPerPage,
 			function(response){
@@ -41,9 +45,21 @@ app.controller("usersContr", function($scope, $http, $uibModal, userCrud){
 		);
 	}
 
+	$scope.addUser = function(){
+		$('#userModal').modal('hide');
+		userService.addUser(
+			this.editUserData,
+			function(response){
+				displayUsers();
+			}, function(response){
+				console.log(response);
+			}
+		);
+	}
+
 	$scope.editUser = function(){
-		$('#editUserModal').modal('hide');
-		userCrud.editUser(
+		$('#userModal').modal('hide');
+		userService.editUser(
 			this.editUserData,
 			function(response){
 				displayUsers();
@@ -54,7 +70,7 @@ app.controller("usersContr", function($scope, $http, $uibModal, userCrud){
 	}
 
 	$scope.deleteUser = function(){
-		userCrud.deleteUser(
+		userService.deleteUser(
 			this.userToDeleteID,
 			function(response){
 				displayUsers();

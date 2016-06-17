@@ -1,1 +1,7 @@
-<p>Test2</p>
+<div ng-controller="adminContr">
+	<ol class="breadcrumb">
+		<li ng-repeat="navLink in navLinks"><a href="#" ui-sref="{{ navLink.uri }}">{{ navLink.title }}</a></li>
+	</ol>
+</div>
+
+<div ui-view></div>

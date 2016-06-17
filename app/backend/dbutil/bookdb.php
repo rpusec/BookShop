@@ -4,26 +4,44 @@ require_once('basedb.php');
 
 class BookDB extends BaseDB
 {
-	public static function getBooks(){
-		parent::startConn();
-		$amountQuery = "SELECT count(*) FROM book_copy WHERE book_copy.book_id = book_id";
-		$query = 	"SELECT book_id, title, author, description, cost, ($amountQuery) as amount FROM book " . 
-					"JOIN book_copy ON (book.book_id = book_copy.book_id)";
-		$result = parent::presentRSAsArray((parent::getConn())->query($query));
-		parent::closeConn();
+	public static function getBooks($currentPage, $perPage){
+		$copiesQuery = "SELECT count(*) FROM book_copy WHERE book_copy.book_id = targetBookID";
+		$query = 	"SELECT book.book_id as targetBookID, title, author, description, price, ($copiesQuery) as copies FROM book LIMIT ? OFFSET ?";
+		
+		$stmt = parent::getConn()->prepare($query);
+
+		if(!$stmt)
+		{
+			echo parent::getConn()->error;
+			exit();
+		}
+
+		$offset = ($currentPage-1)*$perPage;
+		$stmt->bind_param('ii', $perPage, $offset);
+		$stmt->execute();
+		$stmt->bind_result($bookID, $title, $author, $description, $price, $copies);
+		$result = array();
+		while($stmt->fetch())
+		{
+			$result[] = array(
+				'book_id' => $bookID,
+				'title' => $title,
+				'author' => $author,
+				'description' => $description,
+				'price' => $price,
+				'copies' => $copies);
+		}
 		return $result;
 	}
 
 	public static function countBookAmount(){
-		parent::startConn();
-		$result = parent::presentRSAsArray((parent::getConn())->query('SELECT count(*) FROM book'));
-		parent::closeConn();
-		return $result;
+		$result = parent::presentRSAsArray(parent::getConn()->query('SELECT count(*) as bookCount FROM book'));
+		return $result[0]['bookCount'];
 	}
 
 	public static function getAnAvailableBookCopy($bookID){
 		parent::startConn();
-		$stmt = (parent::getConn())->prepare('SELECT book_copy_id FROM book_copy WHERE book_id=? AND user_id IS NULL LIMIT 1');
+		$stmt = parent::getConn()->prepare('SELECT book_copy_id FROM book_copy WHERE book_id=? AND user_id IS NULL LIMIT 1');
 		$stmt->bind_param("i", $bookID);
 		$stmt->execute();
 		$stmt->bind_result($bookCopyID);
@@ -38,7 +56,7 @@ class BookDB extends BaseDB
 
 	public static function addBookCopyToCart($availableBookCopyID, $userID){
 		parent::startConn();
-		$stmt = (parent::getConn())->prepare('UPDATE book_copy SET user_id = ? WHERE book_copy_id = ?');
+		$stmt = parent::getConn()->prepare('UPDATE book_copy SET user_id = ? WHERE book_copy_id = ?');
 		$stmt->bind_param("ii", $userID, $availableBookCopyID);
 		$stmt->execute();
 		$stmt->close();
@@ -48,7 +66,7 @@ class BookDB extends BaseDB
 
 	public static function removeBookCopyFromCart($bookCopyID, $userID){
 		parent::startConn();
-		$stmt = (parent::getConn())->prepare('UPDATE book_copy SET user_id = null WHERE book_copy_id = ? AND user_id = ?');
+		$stmt = parent::getConn()->prepare('UPDATE book_copy SET user_id = null WHERE book_copy_id = ? AND user_id = ?');
 		$stmt->bind_param("ii", $bookCopyID, $userID);
 		$stmt->execute();
 		$stmt->close();
@@ -58,7 +76,7 @@ class BookDB extends BaseDB
 
 	public static function getUsers(){
 		parent::startConn();
-		$result = parent::presentRSAsArray((parent::getConn())->query('SELECT user_id, fname, lname, username, password, amount FROM user'));
+		$result = parent::presentRSAsArray(parent::getConn()->query('SELECT user_id, fname, lname, username, password, amount FROM user'));
 		parent::closeConn();
 		return $result;
 	}

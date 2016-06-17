@@ -1,19 +1,23 @@
 <?php
 
+require_once('../dbutil/bookdb.php');
+
 class BookContr {
 
-	public function getBooks(){
-		$books = BookDB::getBooks();
-		$resultCount = BookDB::countBookAmount();
-		return array('books' => $books, 'resultCount' => $resultCount);
+	public function getBooks($currentPage, $perPage){
+		BookDB::startConn();
+		$books = BookDB::getBooks($currentPage, $perPage);
+		$bookCount = BookDB::countBookAmount();
+		return array('books' => $books, 'bookCount' => $bookCount);
 	}
 
 	public function addBook($title, $author, $description, $price){
+		BookDB::startConn();
 		return array('bookAdded' => BookDB::addBook($title, $author, $description, $price));
 	}
 
 	public function editBook($bookID, $title, $author, $description, $price){
-		$updateArr = new Array();
+		$updateArr = array();
 		
 		if($title !== '')
 			$updateArr['title'] = array('value' => $title, 'type' => 's');
@@ -27,20 +31,24 @@ class BookContr {
 		if($price !== '')
 			$updateArr['price'] = array('value' => $price, 'type' => 'i');
 
+		BookDB::startConn();
 		return array('bookEdited' => BookDB::editBook($bookID, $updateArr));
 	}
 
 	public function removeBook($bookID){
+		BookDB::startConn();
 		return array('bookRemoved' => BookDB::removeBook($bookID));
 	}
 
 	public function addBookToCart($bookID){
+		BookDB::startConn();
 		$availableBookCopyID = BookDB::getAnAvailableBookCopy($bookID);
 		$success = BookDB::addBookCopyToCart($availableBookCopyID, $_SESSION['userID']);
 		return array('bookAddedToCart' => $success);
 	}
 
 	public function removeBookFromCart($bookCopyID){
+		BookDB::startConn();
 		$success = BookDB::removeBookCopyFromCart($bookCopyID, $_SESSION['userID']);
 		return array('bookRemovedFromCart' => $success);
 	}

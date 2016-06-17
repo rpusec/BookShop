@@ -1,12 +1,14 @@
 <?php
 
+require_once('../controller/bookcontr.php');
+
 session_start();
 
 if(isset($_GET['funct']))
 {
-	switch($_GET['funct'])){
+	switch($_GET['funct']){
 		case 'get-books' : 
-			print json_encode(BookContr::getBooks());
+			print json_encode(BookContr::getBooks($_GET['currentPage'], $_GET['perPage']));
 			break;
 		case 'add-book' : 
 			print json_encode(BookContr::addBook(

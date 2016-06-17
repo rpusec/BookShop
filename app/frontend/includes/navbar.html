@@ -5,13 +5,13 @@
 		</div>
 		<ul class="nav navbar-nav">
 			<li ng-repeat="navLink in arrNavLeft" class="{{navLink.active}}">
-				<a href="#" ui-sref="{{navLink.uri}}" ng-click="highlightTitle(navLink.title, true)">{{ navLink.title }}</a>
+				<a ui-sref="{{navLink.uri}}" ng-click="highlightTitle(navLink.title)">{{ navLink.title }}</a>
 			</li>
 		</ul>
 
 		<ul class="nav navbar-nav navbar-right">
-			<li ng-repeat="navLink in arrNavRight" class="{{navLink.active}}">
-				<a href="#" ui-sref="{{navLink.uri}}" ng-click="highlightTitle(navLink.title, false)">{{ navLink.title }}</a>
+			<li ng-repeat="navLink in arrNavRight">
+				<a ui-sref="{{navLink.uri}}" >{{ navLink.title }}</a>
 			</li>
 		</ul>
 	</div>
