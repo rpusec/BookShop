@@ -67,7 +67,7 @@ class UserDB extends BaseDB
 	}
 
 	public static function addUser($fname, $lname, $username, $password, $amount){
-		parent::addEntity(array(
+		return parent::addEntity(array(
 			'fname' => $fname,
 			'lname' => $lname,
 			'username' => $username,
@@ -77,10 +77,10 @@ class UserDB extends BaseDB
 	}
 
 	public static function editUser($userID, $updateArr){
-		parent::editEntity($userID, $updateArr, 'user', 'user_id');
+		return parent::editEntity($userID, $updateArr, 'user', 'user_id');
 	}
 
 	public static function deleteUser($userID){
-		parent::deleteEntity($userID, 'user', 'user_id');
+		return parent::deleteEntity($userID, 'user', 'user_id');
 	}
 }

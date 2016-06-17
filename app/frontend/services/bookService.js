@@ -21,12 +21,12 @@ app.service('bookService', function($http){
 
 	this.addBook = function(bookData, onSuccess, onError){
 		bookData.funct = 'add-book';
-		addEditUser(bookData, onSuccess, onError);
+		addEditBook(bookData, onSuccess, onError);
 	}
 
 	this.editBook = function(bookData, onSuccess, onError){
 		bookData.funct = 'edit-book';
-		addEditUser(bookData, onSuccess, onError);
+		addEditBook(bookData, onSuccess, onError);
 	}
 
 	function addEditBook(bookData, onSuccess, onError){
@@ -34,11 +34,11 @@ app.service('bookService', function($http){
 			method: 'GET',
 			url: 'app/backend/view/bookview.php',
 			params: bookData
-		}).then(function(){
+		}).then(function(response){
 			angular.forEach(bookData, function(value, key){
 				bookData[key] = '';
 			});
-			onSuccess();
+			onSuccess(response);
 		}, onError);
 	}	
 });

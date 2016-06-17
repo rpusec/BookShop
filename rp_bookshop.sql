@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 15, 2016 at 02:41 PM
+-- Generation Time: Jun 17, 2016 at 11:25 PM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -30,12 +30,20 @@ USE `rp_bookshop`;
 
 CREATE TABLE IF NOT EXISTS `book` (
   `book_id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` int(11) NOT NULL,
+  `title` varchar(100) NOT NULL,
   `author` varchar(100) NOT NULL,
   `description` varchar(100) NOT NULL,
   `price` int(11) NOT NULL,
   PRIMARY KEY (`book_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
+
+--
+-- Dumping data for table `book`
+--
+
+INSERT INTO `book` (`book_id`, `title`, `author`, `description`, `price`) VALUES
+(2, 'Ulysses by James Joyce', 'James Jones', 'Proin laoreet mauris ac nibh finibus euismod. Pellentesque at mi cursus, lobortis nulla a, mattis ip', 25),
+(3, 'ffgfg', 'dgsgsddgs', 'dgsfgd', 54);
 
 -- --------------------------------------------------------
 
@@ -66,33 +74,26 @@ CREATE TABLE IF NOT EXISTS `user` (
   `password` varchar(100) NOT NULL,
   `amount` int(11) NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=21 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=18 ;
 
 --
 -- Dumping data for table `user`
 --
 
 INSERT INTO `user` (`user_id`, `fname`, `lname`, `username`, `password`, `amount`) VALUES
-(1, 'Roman', 'Pusec', 'rpusec1', 'test', 500),
-(2, 'Teo', 'Ruzic', 'truzic1', 'test', 500),
-(3, 'Toni', 'Golac', 'tgolac1', 'test', 500),
-(4, 'Heizel', 'Raspberry', 'hrap1', 'test', 500),
-(5, 'Roman', 'Pusec', 'rpusec2', 'test', 500),
-(6, 'Teo', 'Ruzic', 'truzic2', 'test', 500),
-(7, 'Toni', 'Golac', 'tgolac2', 'test', 500),
+(2, 'dsfsdfsd', 'Ruzic', 'truzic1', 'test', 500),
+(3, 'eeee', 'Golac', 'tgolac1', 'test', 500),
+(6, 'ujhk', 'Ruzic', 'truzic2', 'test', 500),
+(7, 'ssss', 'Golac', 'tgolac2', 'test', 500),
 (8, 'Heizel', 'Raspberry', 'hrap2', 'test', 500),
 (9, 'Roman', 'Pusec', 'rpusec3', 'test', 500),
 (10, 'Teo', 'Ruzic', 'truzic3', 'test', 500),
-(11, 'Toni', 'Golac', 'tgolac3', 'test', 500),
+(11, 'Toni', 'Stolac', 'tgolac3', 'test', 500),
 (12, 'Heizel', 'Raspberry', 'hrap3', 'test', 500),
 (13, 'Roman', 'Pusec', 'rpusec2', 'test', 500),
 (14, 'Teo', 'Ruzic', 'truzic2', 'test', 500),
 (15, 'Toni', 'Golac', 'tgolac2', 'test', 500),
-(16, 'Heizel', 'Raspberry', 'hrap2', 'test', 500),
-(17, 'Roman', 'Pusec', 'rpusec3', 'test', 500),
-(18, 'Teo', 'Ruzic', 'truzic3', 'test', 500),
-(19, 'Toni', 'Golac', 'tgolac3', 'test', 500),
-(20, 'Heizel', 'Raspberry', 'hrap3', 'test', 500);
+(17, 'rter', 'wet', 'e', 'etrt', 200);
 
 --
 -- Constraints for dumped tables

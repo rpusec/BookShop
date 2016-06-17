@@ -1,9 +1,13 @@
 app.controller('bookContr', function($scope, bookService){
 	$scope.books = null;
 	$scope.popover = {
-		deleteUserTemplateUrl: 'deleteBookTemplateUrl.html',
-		deleteUserPlacement: 'right'
+		deleteBookTemplateUrl: 'deleteBookTemplateUrl.html',
+		deleteBookPlacement: 'top'
 	};
+	$scope.modals = {
+		bookModal: "app/frontend/includes/modals/bookModal.html"
+	};
+	$scope.editingBook = {};
 	$scope.bookToDeleteID = -1;
 	$scope.editingBookData = {};
 	$scope.pagination = {
@@ -16,6 +20,15 @@ app.controller('bookContr', function($scope, bookService){
 	};
 
 	displayBooks();
+
+	$scope.setManagingBookInfo = function(bookID, title, author){
+		this.editingBookData.bookID = bookID;
+		
+		if(bookID !== -1)
+			this.editingBook.title = 'Editing book: ' + title + ' written by ' + author;
+		else
+			this.editingBook.title = 'Add book';
+	}
 
 	function displayBooks(){
 		bookService.displayBook(
@@ -34,7 +47,7 @@ app.controller('bookContr', function($scope, bookService){
 	$scope.addBook = function(){
 		$('#bookModal').modal('hide');
 		bookService.addBook(
-			this.editUserData,
+			this.editingBookData,
 			function(response){
 				displayBooks();
 			}, function(response){
@@ -46,7 +59,7 @@ app.controller('bookContr', function($scope, bookService){
 	$scope.editBook = function(){
 		$('#bookModal').modal('hide');
 		bookService.editBook(
-			this.editUserData,
+			this.editingBookData,
 			function(response){
 				displayBooks();
 			}, function(response){
@@ -59,6 +72,7 @@ app.controller('bookContr', function($scope, bookService){
 		bookService.deleteBook(
 			this.bookToDeleteID,
 			function(response){
+				console.log(response);
 				displayBooks();
 			}, function(response){
 				console.log(response);

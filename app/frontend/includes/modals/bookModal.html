@@ -1,0 +1,63 @@
+<!-- Modal -->
+<div id="bookModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">{{ editingBook.title }}</h4>
+      </div>
+      <div class="modal-body">
+
+<!-- HTML Form (wrapped in a .bootstrap-iso div) -->
+<div class="bootstrap-iso">
+ <div class="container-fluid">
+  <div class="row">
+   <div class="col-md-6 col-sm-6 col-xs-12">
+    <form method="post">
+      <input type="hidden" id="bookID" name="bookID" ng-model="editingBookData.bookID">
+     <div class="form-group ">
+      <label class="control-label " for="title">
+       Title
+      </label>
+      <input class="form-control" id="title" name="title" type="text" ng-model="editingBookData.title"/>
+     </div>
+     <div class="form-group ">
+      <label class="control-label " for="author">
+       Author
+      </label>
+      <input class="form-control" id="author" name="author" type="text" ng-model="editingBookData.author"/>
+     </div>
+     <div class="form-group ">
+      <label class="control-label " for="description">
+       Description
+      </label>
+      <input class="form-control" id="description" name="description" type="text" ng-model="editingBookData.description"/>
+     </div>
+     <div class="form-group ">
+      <label class="control-label " for="password">
+       Price
+      </label>
+      <input class="form-control" id="password" name="password" type="text" ng-model="editingBookData.price"/>
+     </div>
+     <div class="form-group">
+      <div>
+       <button ng-if="editingBookData.bookID != -1" class="btn btn-primary " ng-click="editBook()" name="submit" type="submit">Edit book</button>
+       <button ng-if="editingBookData.bookID == -1" class="btn btn-primary " ng-click="addBook()" name="submit" type="submit">Add book</button>
+      </div>
+     </div>
+    </form>
+   </div>
+  </div>
+ </div>
+</div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+
+  </div>
+</div>

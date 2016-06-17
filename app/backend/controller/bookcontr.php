@@ -35,9 +35,9 @@ class BookContr {
 		return array('bookEdited' => BookDB::editBook($bookID, $updateArr));
 	}
 
-	public function removeBook($bookID){
+	public function deleteBook($bookID){
 		BookDB::startConn();
-		return array('bookRemoved' => BookDB::removeBook($bookID));
+		return array('bookRemoved' => BookDB::deleteBook($bookID));
 	}
 
 	public function addBookToCart($bookID){

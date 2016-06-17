@@ -16,7 +16,7 @@
 			</tr>
 			<tr>
 				<th>Price</th>
-				<td>{{ book.price }}</td>
+				<td>${{ book.price }}</td>
 			</tr>
 			<tr>
 				<th>Number of copies</th>
@@ -24,7 +24,7 @@
 			</tr>
 			<tr ng-repeat-end="">
 				<td colspan="2">
-					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bookModal" ng-click="setManagingBookInfo(book.book_id)"><span class="glyphicon glyphicon-edit"></span></button>
+					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bookModal" ng-click="setManagingBookInfo(book.book_id, book.title, book.author)"><span class="glyphicon glyphicon-edit"></span></button>
 					<button type="button" class="btn btn-primary" uib-popover-template="popover.deleteBookTemplateUrl" ng-click="bookToDeleteID = book.book_id" popover-placement="{{popover.deleteBookPlacement}}" popover-trigger="outsideClick"><span class="glyphicon glyphicon-remove-circle"></span></button>
 					<button type="button" class="btn btn-primary">Add copies</button>
 					<button type="button" class="btn btn-primary">Remove copies</button>

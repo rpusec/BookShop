@@ -74,15 +74,8 @@ class BookDB extends BaseDB
 		return $stmt->affected_rows === 1;
 	}
 
-	public static function getUsers(){
-		parent::startConn();
-		$result = parent::presentRSAsArray(parent::getConn()->query('SELECT user_id, fname, lname, username, password, amount FROM user'));
-		parent::closeConn();
-		return $result;
-	}
-
 	public static function addBook($title, $author, $description, $price){
-		parent::addEntity(array(
+		return parent::addEntity(array(
 			'title' => $title,
 			'author' => $author,
 			'description' => $description,
@@ -91,10 +84,10 @@ class BookDB extends BaseDB
 	}
 
 	public static function editBook($bookID, $updateArr){
-		parent::editEntity($bookID, $updateArr, 'book', 'sssi');
+		return parent::editEntity($bookID, $updateArr, 'book', 'book_id');
 	}
 
 	public static function deleteBook($bookID){
-		parent::deleteEntity($bookID);
+		return parent::deleteEntity($bookID, 'book', 'book_id');
 	}
 }
