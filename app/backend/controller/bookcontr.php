@@ -40,9 +40,13 @@ class BookContr {
 		return array('bookRemoved' => BookDB::deleteBook($bookID));
 	}
 
-	public static function getBookCopies($bookID){
+	public static function getBookCopies($bookID, $currentPage, $perPage){
 		BookDB::startConn();
-		return array('bookCopies' => BookDB::getBookCopies($bookID));
+		$bookCopies = BookDB::getBookCopies($bookID, $currentPage, $perPage);
+		$bookCopiesCount = BookDB::countBookCopyAmount($bookID);
+		return array(
+			'bookCopies' => $bookCopies,
+			'bookCopyCount' => $bookCopiesCount);
 	}
 
 	public static function addBookCopies($bookID, $copyAmount){
@@ -50,8 +54,9 @@ class BookContr {
 		return array('bookCopiesAdded' => BookDB::addBookCopies($bookID, $copyAmount));
 	}
 
-	public static function removeBookCopies($arrBookCopyIDs){
+	public static function removeBookCopies($strBookCopyIDs){
 		BookDB::startConn();
+		$arrBookCopyIDs = array_map('intval', explode('|', $strBookCopyIDs));
 		return array('bookCopiesRemoved' => BookDB::removeBookCopies($arrBookCopyIDs));	
 	}
 

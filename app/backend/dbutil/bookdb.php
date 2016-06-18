@@ -70,15 +70,18 @@ class BookDB extends BaseDB
 	}
 
 	public static function addBookCopies($bookID, $copyAmount){
-		$query = 'INSERT INTO book_copy (book_id) VALUES (?)';
+		$query = 'INSERT INTO book_copy (book_id) VALUES ';
 		$values = array();
 		$bindStr = "";
 
 		for($i = 0; $i < $copyAmount; $i++)
 		{
-			$query .= ', (?)';
+			$query .= '(?)';
 			$values[] = &$bookID;
 			$bindStr .= 'i';
+
+			if($i !== $copyAmount-1)
+				$query .= ',';
 		}
 
 		array_unshift($values, $bindStr);
@@ -90,23 +93,37 @@ class BookDB extends BaseDB
 		return $ar;
 	}
 
-	public static function getBookCopies($bookID){
-		$query = 'SELECT book_copy_id, book_id, fname, lname FROM book_copy LEFT JOIN user ON (book_copy.user_id = user.user_id) WHERE book_id = ?';
+	public static function getBookCopies($bookID, $currentPage, $perPage){ 
+		$query = 'SELECT book_copy_id, fname, lname FROM book_copy LEFT JOIN user ON (book_copy.user_id = user.user_id) WHERE book_id = ? LIMIT ? OFFSET ?';
 		$stmt = parent::getConn()->prepare($query);
-		$stmt->bind_param("i", $bookID);
+		$offset = ($currentPage-1)*$perPage;
+		$stmt->bind_param("iii", $bookID, $perPage, $offset);
 		$stmt->execute();
-		$stmt->bind_result($bookCopyID, $bookID, $fname, $lname);
+		$stmt->bind_result($bookCopyID, $fname, $lname);
 		$result = array();
 		while($stmt->fetch())
 		{
 			$result[] = array(
 				'book_copy_id' => $bookCopyID,
-				'book_id' => $bookID,
 				'fname' => $fname,
 				'lname' => $lname);
 		}
+
 		$stmt->close();
 		return $result;
+	}
+
+	public static function countBookCopyAmount($bookID){
+		$stmt = parent::getConn()->prepare('SELECT count(*) as bookCopyCount FROM book_copy WHERE book_id = ?');
+		$stmt->bind_param("i", $bookID);
+		$stmt->execute();
+		$stmt->bind_result($bookCopyCount);
+		$bookCopyFound = $stmt->fetch();
+		$stmt->close();
+		
+		if(!$bookCopyFound)
+			return null;
+		return $bookCopyCount;
 	}
 
 	public static function removeBookCopies($arrBookCopyIDs){
@@ -120,7 +137,7 @@ class BookDB extends BaseDB
 			if($bookCopyKey !== count($arrBookCopyIDs)-1)
 				$query .= ' OR ';
 
-			$values[] = &$bookCopyVal;
+			$values[] = &$arrBookCopyIDs[$bookCopyKey];
 			$bindStr .= 'i';
 		}
 

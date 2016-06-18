@@ -25,9 +25,12 @@
 			<tr ng-repeat-end="">
 				<td colspan="2">
 					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bookModal" ng-click="setManagingBookInfo(book.book_id, book.title, book.author)"><span class="glyphicon glyphicon-edit"></span></button>
-					<button type="button" class="btn btn-primary" uib-popover-template="popover.deleteBookTemplateUrl" ng-click="bookToDeleteID = book.book_id" popover-placement="{{popover.deleteBookPlacement}}" popover-trigger="outsideClick"><span class="glyphicon glyphicon-remove-circle"></span></button>
-					<button type="button" class="btn btn-primary">Add copies</button>
-					<button type="button" class="btn btn-primary">Remove copies</button>
+					
+					<button type="button" class="btn btn-primary" uib-popover-template="popover.deleteBookTemplateUrl" ng-click="bookToDeleteID = book.book_id" popover-placement="{{popover.popoverPlacement}}" popover-trigger="outsideClick"><span class="glyphicon glyphicon-remove-circle"></span></button>
+					
+					<button type="button" class="btn btn-primary" ng-click="bookCopiesToAddID = book.book_id" uib-popover-template="popover.addBookCopiesTemplateUrl" popover-placement="{{popover.popoverPlacement}}" popover-trigger="outsideClick">Add copies</button>
+					
+					<button type="button" class="btn btn-primary" data-toggle="modal" ng-click="displayBookCopies(book.book_id, book.title)" data-target="#bookCopiesModal">Remove copies</button>
 				</td>
 			</tr>
 		</tbody>
@@ -43,5 +46,18 @@
 		<button type="button" ng-click="deleteBook()" class="btn btn-danger">Delete book?</button>
 	</script>
 
+	<script type="text/ng-template" id="addBookCopiesTemplateUrl.html">
+		<form>
+			<div class="form-group">
+				<label>Book copies to add:</label> 
+				<input type="text" class="form-control" ng-model="bookAmountToAdd"> 
+			</div>
+			<div class="form-group">
+				<button type="button" ng-click="addBookCopies()" class="btn btn-primary">Add book copies?</button>
+			</div>
+		</form>
+	</script>
+
 	<div data-ng-include src="modals.bookModal"></div>
+	<div data-ng-include src="modals.bookCopiesModal"></div>
 </div>

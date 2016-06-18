@@ -1,0 +1,43 @@
+<!-- Modal -->
+<div id="bookCopiesModal" class="modal fade" role="dialog" ng-controller="bookCopiesContr">
+  <div class="modal-dialog">
+
+    <!-- Modal content-->
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">Looking at copies from the book: <b>{{ bookTitle }}</b></h4>
+      </div>
+      <div class="modal-body">
+
+        <table class="table">
+          <thead>
+            <tr>
+              <th style="text-align:center" ng-repeat="data in metadata">{{ data }}</th>
+              <th style="text-align:center"><button type="button" ng-click="selectAllCopies()" class="btn btn-primary">Select all</button></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr ng-repeat="bookCopy in bookCopies">
+              <td style="text-align:center">{{ bookCopy.book_copy_id }}</td>
+              <td style="text-align:center" ng-if="bookCopy.purchaser !== 'Unknown'">{{ bookCopy.purchaser }}</td>
+              <td style="text-align:center" ng-if="bookCopy.purchaser === 'Unknown'"><i style="color:#ccc;">{{ bookCopy.purchaser }}</i></td>
+              <td style="text-align:center">
+                  <label><input type="checkbox" name="bookCheckBox" ng-model="bookCopy.selected" value=""></label>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <button type="button" class="btn btn-danger" ng-click="deleteBookCopies()">Delete books</button><br />
+
+        <uib-pagination total-items="pagination.totalItems" ng-model="pagination.currentPage" items-per-page="pagination.itemsPerPage" ng-change="pagination.onPageChange()"></uib-pagination>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+
+  </div>
+</div>
