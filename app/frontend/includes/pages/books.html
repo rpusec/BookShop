@@ -26,7 +26,7 @@
 				<td colspan="2">
 					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bookModal" ng-click="setManagingBookInfo(book.book_id, book.title, book.author)"><span class="glyphicon glyphicon-edit"></span></button>
 					
-					<button type="button" class="btn btn-primary" uib-popover-template="popover.deleteBookTemplateUrl" ng-click="bookToDeleteID = book.book_id" popover-placement="{{popover.popoverPlacement}}" popover-trigger="outsideClick"><span class="glyphicon glyphicon-remove-circle"></span></button>
+					<button type="button" class="btn btn-primary" uib-popover-template="popover.deleteBookTemplateUrl" ng-click="bookToDeleteID = book.book_id; targetDelBookCopyNum = book.copies" popover-placement="{{popover.popoverPlacement}}" popover-trigger="outsideClick"><span class="glyphicon glyphicon-remove-circle"></span></button>
 					
 					<button type="button" class="btn btn-primary" ng-click="bookCopiesToAddID = book.book_id" uib-popover-template="popover.addBookCopiesTemplateUrl" popover-placement="{{popover.popoverPlacement}}" popover-trigger="outsideClick">Add copies</button>
 					
@@ -43,7 +43,14 @@
 	<uib-pagination total-items="pagination.totalItems" ng-model="pagination.currentPage" items-per-page="pagination.itemsPerPage" ng-change="pagination.onPageChange()"></uib-pagination>
 
 	<script type="text/ng-template" id="deleteBookTemplateUrl.html">
-		<button type="button" ng-click="deleteBook()" class="btn btn-danger">Delete book?</button>
+		<div style="text-align:center;">
+			<p ng-if="targetDelBookCopyNum >= 1">
+				Are you sure you want to delete this book?
+				<span ng-if="targetDelBookCopyNum > 1">There are <b>{{ targetDelBookCopyNum }}</b> copies of the book left. </span>
+				<span ng-if="targetDelBookCopyNum === 1">There is <b>{{ targetDelBookCopyNum }}</b> copy of the book left. </span>
+			</p>
+			<button type="button" ng-click="deleteBook()" class="btn btn-danger">Delete book?</button>
+		</div>
 	</script>
 
 	<script type="text/ng-template" id="addBookCopiesTemplateUrl.html">

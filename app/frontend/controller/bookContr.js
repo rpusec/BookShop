@@ -11,6 +11,7 @@ app.controller('bookContr', function($scope, bookService){
 	};
 	$scope.editingBook = {};
 	$scope.bookToDeleteID = -1;
+	$scope.targetDelBookCopyNum = 0;
 	$scope.editingBookData = {};
 	$scope.pagination = {
 		totalItems: null,

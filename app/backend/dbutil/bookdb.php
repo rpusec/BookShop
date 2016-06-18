@@ -164,6 +164,11 @@ class BookDB extends BaseDB
 	}
 
 	public static function deleteBook($bookID){
+		$stmt = parent::getConn()->prepare('DELETE FROM book_copy WHERE book_id = ?');
+		$stmt->bind_param("i", $bookID);
+		$stmt->execute();
+		$stmt->close();
+		
 		return parent::deleteEntity($bookID, 'book', 'book_id');
 	}
 }
