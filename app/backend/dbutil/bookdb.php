@@ -31,6 +31,7 @@ class BookDB extends BaseDB
 				'price' => $price,
 				'copies' => $copies);
 		}
+		$stmt->close();
 		return $result;
 	}
 
@@ -87,6 +88,25 @@ class BookDB extends BaseDB
 		$ar = $stmt->affected_rows;
 		$stmt->close();
 		return $ar;
+	}
+
+	public static function getBookCopies($bookID){
+		$query = 'SELECT book_copy_id, book_id, fname, lname FROM book_copy LEFT JOIN user ON (book_copy.user_id = user.user_id) WHERE book_id = ?';
+		$stmt = parent::getConn()->prepare($query);
+		$stmt->bind_param("i", $bookID);
+		$stmt->execute();
+		$stmt->bind_result($bookCopyID, $bookID, $fname, $lname);
+		$result = array();
+		while($stmt->fetch())
+		{
+			$result[] = array(
+				'book_copy_id' => $bookCopyID,
+				'book_id' => $bookID,
+				'fname' => $fname,
+				'lname' => $lname);
+		}
+		$stmt->close();
+		return $result;
 	}
 
 	public static function removeBookCopies($arrBookCopyIDs){

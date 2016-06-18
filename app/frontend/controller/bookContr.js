@@ -79,4 +79,8 @@ app.controller('bookContr', function($scope, bookService){
 			}
 		);
 	}
+
+	$scope.addBookCopies = function(){
+		
+	}
 });

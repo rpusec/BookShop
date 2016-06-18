@@ -40,6 +40,11 @@ class BookContr {
 		return array('bookRemoved' => BookDB::deleteBook($bookID));
 	}
 
+	public static function getBookCopies($bookID){
+		BookDB::startConn();
+		return array('bookCopies' => BookDB::getBookCopies($bookID));
+	}
+
 	public static function addBookCopies($bookID, $copyAmount){
 		BookDB::startConn();
 		return array('bookCopiesAdded' => BookDB::addBookCopies($bookID, $copyAmount));

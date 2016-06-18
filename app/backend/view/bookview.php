@@ -31,6 +31,14 @@ if(isset($_GET['funct']))
 				$_GET['price'])
 			);
 			break;
+		case 'delete-book' : 
+			print json_encode(BookContr::deleteBook($_GET['bookID']));
+			break;
+		case 'get-book-copies' : 
+			print json_encode(BookContr::getBookCopies(
+				$_GET['bookID'])
+			);
+			break;
 		case 'add-book-copies' : 
 			print json_encode(BookContr::addBookCopies(
 				$_GET['bookID'], 
@@ -39,9 +47,6 @@ if(isset($_GET['funct']))
 			break;
 		case 'remove-book-copies' : 
 			print json_encode(BookContr::removeBookCopies($_GET['bookCopyIDs']));
-			break;
-		case 'delete-book' : 
-			print json_encode(BookContr::deleteBook($_GET['bookID']));
 			break;
 		case 'add-book-to-cart' : 
 			print json_encode(BookContr::addBookToCart($_GET['bookID']));
