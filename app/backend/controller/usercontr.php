@@ -9,7 +9,7 @@ class UserContr
 		UserDB::startConn();
 		if(($user = UserDB::getUserByUsernameAndPassword($username, $password)) !== null)
 		{
-			$_SESSION['userID'] = $user->userID;
+			$_SESSION['userID'] = $user['userID'];
 			return array('loginSuccess' => true);
 		}
 

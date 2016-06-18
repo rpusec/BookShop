@@ -4,14 +4,14 @@
 			<a class="navbar-brand" href="#">{{appTitle}}</a>
 		</div>
 		<ul class="nav navbar-nav">
-			<li ng-repeat="navLink in arrNavLeft" class="{{navLink.active}}">
+			<li ng-repeat="navLink in arrNavLinks" class="{{navLink.active}}">
 				<a ui-sref="{{navLink.uri}}" ng-click="highlightTitle(navLink.title)">{{ navLink.title }}</a>
 			</li>
 		</ul>
 
 		<ul class="nav navbar-nav navbar-right">
-			<li ng-repeat="navLink in arrNavRight">
-				<a ui-sref="{{navLink.uri}}" >{{ navLink.title }}</a>
+			<li>
+				<a href="#" ng-click="logout()">Logout</a>
 			</li>
 		</ul>
 	</div>
