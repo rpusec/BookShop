@@ -1,6 +1,6 @@
-<div ng-controller="bookContr">
+<div ng-controller="bookContr" style="width: 60%; margin: 0 auto;">
 	<h4 ng-hide="books !== null">There are no books to display. </h4>
-	<table class="table" ng-hide="books == null">
+	<table class="table table-bordered" ng-hide="books == null">
 		<tbody>
 			<tr ng-repeat-start="book in books">
 				<th>Title</th>
