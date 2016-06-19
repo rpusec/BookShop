@@ -1,0 +1,80 @@
+app.service('authService', function($http, $location, $window){
+	this.login = function(username, password, afterSuccess, onError){
+		$http({
+			method: 'POST',
+			url: 'app/backend/view/userview.php',
+			params: {
+				funct: 'login-user', 
+				username: username, 
+				password: password
+			}
+		}).then(function(response){
+			if(response.data.loginSuccess)
+			{
+				var user = response.data.user;
+				
+				createSession(
+					user.userID, 
+					user.fname, 
+					user.lname,
+					user.username);
+
+				$.notify(response.data.message, {
+					className: 'success',
+					position: 'top center'
+				});
+				$location.path('/catalouge');
+			}
+			else
+			{
+				$('#loginForm').notify(response.data.message, {
+					position: 'top center',
+					className: 'error',
+					autoHideDelay: 2000
+				});
+			}
+
+			if(typeof afterSuccess === 'function')
+				afterSuccess();
+		}, onError);
+	}
+
+	this.logout = function(afterSuccess, onError){
+		$http({
+			method: 'GET',
+			url: 'app/backend/view/userview.php',
+			params: {funct: 'logout-user'}
+		}).then(function(response){
+			if(response.data.logoutSuccess)
+				$location.path('/login');
+			$.notify(response.data.message, {
+				position: 'top center',
+				className: response.data.logoutSuccess ? 'success' : 'error'
+			});
+			session = null;
+			if(typeof afterSuccess === 'function')
+				afterSuccess();
+		}, onError);
+	}
+
+	function createSession(userID, fname, lname, username){
+		$window.localStorage.setItem('UserSession', {
+			userID: userID,
+			lname: lname,
+			fname: fname,
+			username: username
+		});
+	}
+
+	this.getSession = function(){
+		return $window.localStorage.getItem('UserSession');
+	}
+
+	this.destroySession = function(){
+		$window.localStorage.removeItem('UserSession');
+	};
+
+	this.isAuthenticated = function(){
+		return this.getSession() !== null;
+	}
+});

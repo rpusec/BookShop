@@ -1,10 +1,12 @@
-app.controller('navbarContr', function($scope, $state, $location, userService){
+app.controller('navbarContr', function($scope, $state, $location, authService, observerService){
 	$scope.appTitle = 'BookShop';
-	$scope.arrNavLinks = [
+	var arrNavLinks = [
 		{title: 'Catalogue', uri: 'catalogue'},
 		{title: 'Cart', uri: 'cart'},
 		{title: 'Admin', uri: 'admin'}
 	];
+	$scope.arrNavLinks = null;
+	$scope.logoutShown = false;
 
 	$scope.currState = $state;
 	$scope.$watch('currState.current.name', function(val){
@@ -27,16 +29,28 @@ app.controller('navbarContr', function($scope, $state, $location, userService){
 	}
 
 	$scope.logout = function(){
-		userService.logout(function(response){
-			if(response.data.logoutSuccess)
-				$location.path('/login');
-			$scope.highlightTitle('');
-			$.notify('Goodbye!', {
-				position: 'top center',
-				className: 'success'
+		if(authService.isAuthenticated())
+		{
+			authService.logout(function(){
+				authService.destroySession();
+				observerService.notifyAll('auth');
 			});
-		}, function(response){
-
-		});
+			this.highlightTitle('');
+		}
 	}
+
+	observerService.subscribe('auth', function(){
+		if(authService.isAuthenticated())
+		{
+			$scope.arrNavLinks = arrNavLinks;
+			$scope.logoutShown = true;
+		}
+		else
+		{
+			$scope.arrNavLinks = null;
+			$scope.logoutShown = false;
+		}
+	});
+
+	observerService.notifyAll('auth');
 });

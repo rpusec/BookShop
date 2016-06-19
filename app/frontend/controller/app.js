@@ -1,8 +1,9 @@
 var app = angular.module("myApp", ['ui.bootstrap', 'ui.router', 'services']);
 
-app.run(function($rootScope){
+app.run(function($rootScope, observerService){
 	$rootScope.navbarUrl = 'app/frontend/includes/navbar.html';
 	$rootScope.footerUrl = 'app/frontend/includes/footer.html';
+	observerService.createObserver('auth');
 });
 
 app.config(function($stateProvider, $urlRouterProvider, $locationProvider){

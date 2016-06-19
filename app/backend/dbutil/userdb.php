@@ -25,10 +25,10 @@ class UserDB extends BaseDB
 	}
 
 	public static function getUserByUsernameAndPassword($username, $password){
-		$stmt = parent::getConn()->prepare('SELECT user_id, username, password FROM user WHERE username=? AND password=?');
+		$stmt = parent::getConn()->prepare('SELECT user_id, fname, lname, username, password FROM user WHERE username=? AND password=?');
 		$stmt->bind_param("ss", $username, $password);
 		$stmt->execute();
-		$stmt->bind_result($userID, $username, $password);
+		$stmt->bind_result($userID, $fname, $lname, $username, $password);
 		$userFound = $stmt->fetch();
 		$stmt->close();
 		
@@ -36,6 +36,8 @@ class UserDB extends BaseDB
 			return null;
 		return array(
 			'userID' => $userID,
+			'fname' => $fname,
+			'lname' => $lname,
 			'username' => $username,
 			'password' => $password
 		);

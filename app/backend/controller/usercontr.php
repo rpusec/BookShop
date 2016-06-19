@@ -10,16 +10,19 @@ class UserContr
 		if(($user = UserDB::getUserByUsernameAndPassword($username, $password)) !== null)
 		{
 			$_SESSION['userID'] = $user['userID'];
-			return array('loginSuccess' => true);
+			return array('loginSuccess' => true, 'message' => 'Access granted! ', 'user' => $user);
 		}
 
-		return array('loginSuccess' => false);
+		return array('loginSuccess' => false, 'message' => 'Wrong username and/or password. ');
 	}
 
 	public function logoutUser(){
+		if(!isset($_SESSION['userID']))
+			return array('loginSuccess' => false, 'message' => 'You\'re not authenticated. ');
+
 		unset($_SESSION['userID']);
 		session_destroy();
-		return array('logoutSuccess' => true);
+		return array('logoutSuccess' => true, 'message' => 'Goodbye! ');
 	}
 
 	public function getUsers($currentPage, $perPage){
