@@ -10,8 +10,6 @@ app.controller('loginContr', function($scope, $location, authService, observerSe
 				$scope.username = '';
 				$scope.password = '';
 				observerService.notifyAll('auth');
-			}, function(response){
-				console.log(response);
 			}
 		);
 	}

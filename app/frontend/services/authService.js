@@ -34,12 +34,19 @@ app.service('authService', function($http, $location, $window){
 				});
 			}
 
+			console.log(response);
+
 			if(typeof afterSuccess === 'function')
 				afterSuccess();
 		}, onError);
 	}
 
-	this.logout = function(afterSuccess, onError){
+	this.logout = function(params){
+		params = $.extend({
+			afterSuccess: null,
+			onError: null,
+			message: null
+		}, params);
 		$http({
 			method: 'GET',
 			url: 'app/backend/view/userview.php',
@@ -47,14 +54,14 @@ app.service('authService', function($http, $location, $window){
 		}).then(function(response){
 			if(response.data.logoutSuccess)
 				$location.path('/login');
-			$.notify(response.data.message, {
+			$.notify(params.message === null ? response.data.message : params.message, {
 				position: 'top center',
 				className: response.data.logoutSuccess ? 'success' : 'error'
 			});
 			session = null;
-			if(typeof afterSuccess === 'function')
-				afterSuccess();
-		}, onError);
+			if(typeof params.afterSuccess === 'function')
+				params.afterSuccess();
+		}, params.onError);
 	}
 
 	function createSession(userID, fname, lname, username){

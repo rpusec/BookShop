@@ -1,4 +1,4 @@
-app.controller("userContr", function($scope, userService){
+app.controller("userContr", function($scope, userService, authService){
 	$scope.users = null;
 	$scope.metadata = ['First name', 'Last name', 'Username', 'Password', 'Amount', 'Edit', 'Delete'];
 	$scope.popover = {
@@ -36,11 +36,15 @@ app.controller("userContr", function($scope, userService){
 			$scope.pagination.currentPage, 
 			$scope.pagination.itemsPerPage,
 			function(response){
-				$scope.users = response.data.users;
-				$scope.pagination.totalItems = response.data.userCount;
-			},
-			function(response){
-				console.log(response);
+				if(response.data.authenticated)
+				{
+					$scope.users = response.data.users;
+					$scope.pagination.totalItems = response.data.userCount;
+				}
+				else
+					authService.logout({
+						message: response.data.message
+					});
 			}
 		);
 	}
@@ -50,9 +54,15 @@ app.controller("userContr", function($scope, userService){
 		userService.addUser(
 			this.editUserData,
 			function(response){
-				displayUsers();
-			}, function(response){
-				console.log(response);
+				if(response.data.authenticated)
+				{
+					displayUsers();
+					displaySuccessMessage(response.data.message);
+				}
+				else
+					authService.logout({
+						message: response.data.message
+					});
 			}
 		);
 	}
@@ -62,9 +72,15 @@ app.controller("userContr", function($scope, userService){
 		userService.editUser(
 			this.editUserData,
 			function(response){
-				displayUsers();
-			}, function(response){
-				console.log(response);
+				if(response.data.authenticated)
+				{
+					displayUsers();
+					displaySuccessMessage(response.data.message);
+				}
+				else
+					authService.logout({
+						message: response.data.message
+					});
 			}
 		);
 	}
@@ -73,10 +89,20 @@ app.controller("userContr", function($scope, userService){
 		userService.deleteUser(
 			this.userToDeleteID,
 			function(response){
-				displayUsers();
-			}, function(response){
-				console.log(response);
+				if(response.data.authenticated)
+				{
+					displayUsers();
+					displaySuccessMessage(response.data.message);
+				}
+				else
+					authService.logout({
+						message: response.data.message
+					});
 			}
 		);
+	}
+
+	function displaySuccessMessage(message){
+		$.notify(message, {className:'success', position: 'top center'});
 	}
 });

@@ -31,9 +31,11 @@ app.controller('navbarContr', function($scope, $state, $location, authService, o
 	$scope.logout = function(){
 		if(authService.isAuthenticated())
 		{
-			authService.logout(function(){
-				authService.destroySession();
-				observerService.notifyAll('auth');
+			authService.logout({
+				afterSuccess: function(){
+					authService.destroySession();
+					observerService.notifyAll('auth');
+				}
 			});
 			this.highlightTitle('');
 		}

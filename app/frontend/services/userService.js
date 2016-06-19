@@ -34,11 +34,11 @@ app.service("userService", function($http){
 			method: 'GET',
 			url: 'app/backend/view/userview.php',
 			params: userData
-		}).then(function(){
+		}).then(function(response){
 			angular.forEach(userData, function(value, key){
 				userData[key] = '';
 			});
-			onSuccess();
+			onSuccess(response);
 		}, onError);
 	}	
 });
