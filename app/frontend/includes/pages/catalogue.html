@@ -1,1 +1,36 @@
-<p>Test123</p>
+<div ng-controller="catalogueContr" style="width: 60%; margin: 0 auto;">
+	<p ng-hide="books !== null">There are no books in this catalogue. </p>
+	<table class="table table-bordered" ng-hide="books == null">
+		<tbody>
+			<tr ng-repeat-start="book in books">
+				<th>Title</th>
+				<td>{{ book.title }}</td>
+			</tr>
+			<tr>
+				<th>Author</th>
+				<td>{{ book.author }}</td>
+			</tr>
+			<tr>
+				<th>Description</th>
+				<td>{{ book.description }}</td>
+			</tr>
+			<tr>
+				<th>Price</th>
+				<td>${{ book.price }}</td>
+			</tr>
+			<tr>
+				<th>Copies left</th>
+				<td>{{ book.availCopyNum }}</td>
+			</tr>
+			<tr ng-repeat-end="">
+				<td colspan="2">
+					<button type="button" class="btn btn-primary" ng-click="addToCart(book.book_id)">Add to cart</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<p><b>Results found: {{ pagination.totalItems }}</b></p>
+
+	<uib-pagination total-items="pagination.totalItems" ng-model="pagination.currentPage" items-per-page="pagination.itemsPerPage" ng-change="pagination.onPageChange()"></uib-pagination>
+</div>

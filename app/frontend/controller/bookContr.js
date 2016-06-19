@@ -36,7 +36,7 @@ app.controller('bookContr', function($scope, bookService, authService){
 	}
 
 	function displayBooks(){
-		bookService.displayBook(
+		bookService.displayBooks(
 			$scope.pagination.currentPage, 
 			$scope.pagination.itemsPerPage,
 			function(response){

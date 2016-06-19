@@ -1,5 +1,5 @@
 app.service('bookService', function($http){
-	this.displayBook = function(currentPage, itemsPerPage, onSuccess, onError){
+	this.displayBooks = function(currentPage, itemsPerPage, onSuccess, onError){
 		$http({
 			method: 'GET',
 			url: 'app/backend/view/bookview.php',

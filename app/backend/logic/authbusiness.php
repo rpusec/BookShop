@@ -9,6 +9,10 @@ class AuthBusiness{
 		return isset($_SESSION['userID']);
 	}
 
+	public static function getUser(){
+		return $_SESSION['userID'];
+	}
+
 	public static function logoutUser(){
 		unset($_SESSION['userID']);
 		session_destroy();

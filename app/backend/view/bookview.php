@@ -50,6 +50,9 @@ if(isset($_GET['funct']))
 		case 'delete-book-copies' : 
 			print json_encode(BookContr::removeBookCopies($_GET['strBookCopyIDs']));
 			break;
+		case 'get-catalogue' : 
+			print json_encode(BookContr::getCatalogue($_GET['currentPage'], $_GET['perPage']));
+			break;
 		case 'add-book-to-cart' : 
 			print json_encode(BookContr::addBookToCart($_GET['bookID']));
 			break;

@@ -57,8 +57,9 @@ class BookDB extends BaseDB
 		$stmt = parent::getConn()->prepare('UPDATE book_copy SET user_id = ? WHERE book_copy_id = ?');
 		$stmt->bind_param("ii", $userID, $availableBookCopyID);
 		$stmt->execute();
+		$ar = $stmt->affected_rows === 1;
 		$stmt->close();
-		return $stmt->affected_rows === 1;
+		return $ar;
 	}
 
 	public static function removeBookCopyFromCart($bookCopyID, $userID){
@@ -168,7 +169,29 @@ class BookDB extends BaseDB
 		$stmt->bind_param("i", $bookID);
 		$stmt->execute();
 		$stmt->close();
-		
 		return parent::deleteEntity($bookID, 'book', 'book_id');
+	}
+
+	public static function getBooksWithAvailableCopyAmount($currentPage, $perPage){
+		$subQuery = "SELECT count(*) FROM book_copy WHERE book_copy.user_id IS NULL AND book_copy.book_id = book.book_id";
+		$query = "SELECT book_id, title, author, description, price, ($subQuery) as availCopyNum FROM book LIMIT ? OFFSET ?";
+		$stmt = parent::getConn()->prepare($query);
+		$offset = ($currentPage-1)*$perPage;
+		$stmt->bind_param("ii", $perPage, $offset);
+		$stmt->execute();
+		$stmt->bind_result($bookID, $title, $author, $description, $price, $availCopyNum);
+		$result = array();
+		while($stmt->fetch())
+		{
+			$result[] = array(
+				'book_id' => $bookID,
+				'title' => $title,
+				'author' => $author,
+				'description' => $description,
+				'price' => $price,
+				'availCopyNum' => $availCopyNum);
+		}
+		$stmt->close();
+		return $result;
 	}
 }
