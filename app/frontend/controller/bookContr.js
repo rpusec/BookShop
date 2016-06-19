@@ -1,4 +1,4 @@
-app.controller('bookContr', function($scope, bookService){
+app.controller('bookContr', function($scope, bookService, authService){
 	$scope.books = null;
 	$scope.popover = {
 		deleteBookTemplateUrl: 'deleteBookTemplateUrl.html',
@@ -40,11 +40,15 @@ app.controller('bookContr', function($scope, bookService){
 			$scope.pagination.currentPage, 
 			$scope.pagination.itemsPerPage,
 			function(response){
-				$scope.books = response.data.books;
-				$scope.pagination.totalItems = response.data.bookCount;
-			},
-			function(response){
-				console.log(response);
+				if(response.data.authenticated)
+				{
+					$scope.books = response.data.books;
+					$scope.pagination.totalItems = response.data.bookCount;
+				}
+				else
+					authService.logout({
+						message: response.data.message
+					});
 			}
 		);
 	}
@@ -54,9 +58,15 @@ app.controller('bookContr', function($scope, bookService){
 		bookService.addBook(
 			this.editingBookData,
 			function(response){
-				displayBooks();
-			}, function(response){
-				console.log(response);
+				if(response.data.authenticated)
+				{
+					displayBooks();
+					displaySuccessMessage(response.data.message);
+				}
+				else
+					authService.logout({
+						message: response.data.message
+					});
 			}
 		);
 	}
@@ -66,9 +76,15 @@ app.controller('bookContr', function($scope, bookService){
 		bookService.editBook(
 			this.editingBookData,
 			function(response){
-				displayBooks();
-			}, function(response){
-				console.log(response);
+				if(response.data.authenticated)
+				{
+					displayBooks();
+					displaySuccessMessage(response.data.message);
+				}
+				else
+					authService.logout({
+						message: response.data.message
+					});
 			}
 		);
 	}
@@ -77,9 +93,15 @@ app.controller('bookContr', function($scope, bookService){
 		bookService.deleteBook(
 			this.bookToDeleteID,
 			function(response){
-				displayBooks();
-			}, function(response){
-				console.log(response);
+				if(response.data.authenticated)
+				{
+					displayBooks();
+					displaySuccessMessage(response.data.message);
+				}
+				else
+					authService.logout({
+						message: response.data.message
+					});
 			}
 		);
 	}
@@ -96,9 +118,15 @@ app.controller('bookContr', function($scope, bookService){
 			this.bookCopiesToAddID,
 			this.bookAmountToAdd,
 			function(response){
-				displayBooks();
-			}, function(response){
-				console.log(response);
+				if(response.data.authenticated)
+				{
+					displayBooks();
+					displaySuccessMessage(response.data.message);
+				}
+				else
+					authService.logout({
+						message: response.data.message
+					});
 			}
 		);
 	}
@@ -106,6 +134,10 @@ app.controller('bookContr', function($scope, bookService){
 	$scope.$on('updateListAfterDeletingCopies', function(e){
 		displayBooks();
 	});
+
+	function displaySuccessMessage(message){
+		$.notify(message, {className:'success', position: 'top center'});
+	}
 });
 
 app.controller('bookCopiesContr', function($scope, bookService){
@@ -134,11 +166,15 @@ app.controller('bookCopiesContr', function($scope, bookService){
 			$scope.pagination.currentPage,
 			$scope.pagination.itemsPerPage,
 			function(response){
-				$scope.bookCopies = response.data.bookCopies;
-				$scope.pagination.totalItems = response.data.bookCopyCount;
-			},
-			function(response){
-				console.log(response);
+				if(response.data.authenticated)
+				{
+					$scope.bookCopies = response.data.bookCopies;
+					$scope.pagination.totalItems = response.data.bookCopyCount;
+				}
+				else
+					authService.logout({
+						message: response.data.message
+					});
 			}
 		);
 	}
@@ -147,11 +183,16 @@ app.controller('bookCopiesContr', function($scope, bookService){
 		bookService.deleteBookCopies(
 			this.bookCopies,
 			function(response){
-				displayBookCopies();
-				$scope.$emit('updateListAfterDeletingCopies');
-			},
-			function(response){
-				console.log(response);
+				if(response.data.authenticated)
+				{
+					displayBookCopies();
+					$scope.$emit('updateListAfterDeletingCopies');
+					displaySuccessMessage(response.data.message);
+				}
+				else
+					authService.logout({
+						message: response.data.message
+					});
 			}
 		);
 	}
@@ -170,5 +211,9 @@ app.controller('bookCopiesContr', function($scope, bookService){
 			else
 				val.selected = false;
 		});
+	}
+
+	function displaySuccessMessage(message){
+		$.notify(message, {className:'success', position: 'top center'});
 	}
 });
