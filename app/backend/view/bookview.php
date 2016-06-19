@@ -53,11 +53,14 @@ if(isset($_GET['funct']))
 		case 'get-catalogue' : 
 			print json_encode(BookContr::getCatalogue($_GET['currentPage'], $_GET['perPage']));
 			break;
+		case 'get-books-from-cart' : 
+			print json_encode(BookContr::getBooksFromCart($_GET['currentPage'], $_GET['perPage']));
+			break;
 		case 'add-book-to-cart' : 
 			print json_encode(BookContr::addBookToCart($_GET['bookID']));
 			break;
 		case 'remove-book-from-cart' : 
-			print json_encode(BookContr::removeBookFromCart($_GET['bookCopyID']));
+			print json_encode(BookContr::removeBookFromCart($_GET['bookID']));
 			break;
 	}
 }

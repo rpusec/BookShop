@@ -1,23 +1,23 @@
-app.controller('catalogueContr', function($scope, catalogueService, authService){
+app.controller('cartContr', function($scope, cartService, authService){
 	$scope.books = null;
 	$scope.pagination = {
 		totalItems: null,
 		currentPage: 1,
 		itemsPerPage: 5,
 		onPageChange: function(){
-			getCatalogue();
+			getBooksFromCart();
 		}
 	};
 
-	getCatalogue();
+	getBooksFromCart();
 
-	$scope.addToCart = function(bookID){
-		catalogueService.addToCart(
+	$scope.removeFromCart = function(bookID){
+		cartService.removeFromCart(
 			bookID,
 			function(response){
 				if(response.data.authenticated)
 				{
-					getCatalogue();
+					getBooksFromCart();
 					displaySuccessMessage(response.data.message);
 				}
 				else
@@ -28,11 +28,12 @@ app.controller('catalogueContr', function($scope, catalogueService, authService)
 		);
 	}
 
-	function getCatalogue(){
-		catalogueService.getCatalogue(
+	function getBooksFromCart(){
+		cartService.getBooksFromCart(
 			$scope.pagination.currentPage,
 			$scope.pagination.itemsPerPage,
 			function(response){
+				console.log(response);
 				if(response.data.authenticated)
 				{
 					$scope.books = response.data.books;

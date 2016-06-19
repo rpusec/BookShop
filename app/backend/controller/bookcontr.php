@@ -115,6 +115,19 @@ class BookContr {
 			'bookCount' => $bookCount);
 	}
 
+	public function getBooksFromCart($currentPage, $perPage){
+		if(!AuthBusiness::isAuthenticated())
+			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
+
+		BookDB::startConn();
+		$books = BookDB::getBooksFromCart($currentPage, $perPage, AuthBusiness::getUser());
+		$bookCount = BookDB::countBooksFromCart(AuthBusiness::getUser());
+		return array(
+			'authenticated' => true,
+			'books' => $books,
+			'bookCount' => $bookCount);
+	}
+
 	public function addBookToCart($bookID){
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
@@ -124,16 +137,17 @@ class BookContr {
 		$success = BookDB::addBookCopyToCart($availableBookCopyID, AuthBusiness::getUser());
 		return array(
 			'authenticated' => true, 
-			'message' => 'Book added to cart. ',
+			'message' => $success ? 'Book added to cart. ' : 'No copies left anymore. ',
 			'bookAddedToCart' => $success);
 	}
 
-	public function removeBookFromCart($bookCopyID){
+	public function removeBookFromCart($bookID){
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
 
 		BookDB::startConn();
-		$success = BookDB::removeBookCopyFromCart($bookCopyID, AuthBusiness::getUser());
+		$bookCopyFromUserID = BookDB::getABookCopyFromUser($bookID, AuthBusiness::getUser());
+		$success = BookDB::removeBookCopyFromCart($bookCopyFromUserID, AuthBusiness::getUser());
 		return array(
 			'authenticated' => true, 
 			'message' => 'Book removed from cart. ',

@@ -53,6 +53,44 @@ class BookDB extends BaseDB
 		return $bookCopyID;
 	}
 
+	public static function getABookCopyFromUser($bookID, $userID){
+		$stmt = parent::getConn()->prepare('SELECT book_copy_id FROM book_copy WHERE book_id=? AND user_id=? LIMIT 1');
+		$stmt->bind_param("ii", $bookID, $userID);
+		$stmt->execute();
+		$stmt->bind_result($bookCopyID);
+		$bookFound = $stmt->fetch();
+		$stmt->close();
+		
+		if(!$bookFound)
+			return null;
+		return $bookCopyID;
+	}
+
+	public static function getBooksFromCart($currentPage, $perPage, $userID){
+		$innerQuery = "SELECT count(*) FROM book_copy WHERE book_copy.user_id = ? AND book_copy.book_id = book.book_id";
+		$query = "SELECT book_id, title, author, description, price, ($innerQuery) as copiesInCart FROM book HAVING copiesInCart > 0 LIMIT ? OFFSET ?";
+		$stmt = parent::getConn()->prepare($query);
+
+		$offset = ($currentPage-1)*$perPage;
+		$stmt->bind_param("iii", $userID, $perPage, $offset);
+		$stmt->execute();
+		$stmt->bind_result($bookID, $title, $author, $description, $price, $copiesInCart);
+		$result = array();
+		while($stmt->fetch())
+		{
+			$result[] = array(
+				'book_id' => $bookID,
+				'title' => $title,
+				'author' => $author,
+				'description' => $description,
+				'price' => $price,
+				'copiesInCart' => $copiesInCart);
+		}
+
+		$stmt->close();
+		return $result;
+	}
+
 	public static function addBookCopyToCart($availableBookCopyID, $userID){
 		$stmt = parent::getConn()->prepare('UPDATE book_copy SET user_id = ? WHERE book_copy_id = ?');
 		$stmt->bind_param("ii", $userID, $availableBookCopyID);
@@ -66,8 +104,22 @@ class BookDB extends BaseDB
 		$stmt = parent::getConn()->prepare('UPDATE book_copy SET user_id = null WHERE book_copy_id = ? AND user_id = ?');
 		$stmt->bind_param("ii", $bookCopyID, $userID);
 		$stmt->execute();
+		$ar = $stmt->affected_rows === 1;
 		$stmt->close();
-		return $stmt->affected_rows === 1;
+		return $ar;
+	}
+
+	public static function countBooksFromCart($userID){
+		$stmt = parent::getConn()->prepare('SELECT count(DISTINCT book_copy.book_id) as count FROM book_copy WHERE user_id = ?');
+		$stmt->bind_param("i", $userID);
+		$stmt->execute();
+		$stmt->bind_result($bookCopyCount);
+		$bookCopyFound = $stmt->fetch();
+		$stmt->close();
+		
+		if(!$bookCopyFound)
+			return null;
+		return $bookCopyCount;
 	}
 
 	public static function addBookCopies($bookID, $copyAmount){
