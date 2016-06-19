@@ -24,7 +24,14 @@
 			</tr>
 			<tr ng-repeat-end="">
 				<td colspan="2">
-					<button type="button" class="btn btn-primary" ng-click="addToCart(book.book_id)" ng-disabled="book.availCopyNum === 0">Add to cart</button>
+					<button type="button" class="btn btn-primary" ng-click="addToCart(book.book_id)" ng-disabled="book.availCopyNum === 0 || !canAfford(book)">
+						<span ng-if="canAfford(book)">
+							Add to cart
+						</span>
+						<span ng-if="!canAfford(book)">
+							Can't afford
+						</span>
+					</button>
 				</td>
 			</tr>
 		</tbody>

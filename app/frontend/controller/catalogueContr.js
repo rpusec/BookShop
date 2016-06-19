@@ -33,6 +33,10 @@ app.controller('catalogueContr', function($scope, $location, catalogueService, a
 		);
 	}
 
+	$scope.canAfford = function(book){
+		return this.balance - book.price >= 0;
+	}
+
 	function getCatalogue(){
 		catalogueService.getCatalogue(
 			$scope.pagination.currentPage,
