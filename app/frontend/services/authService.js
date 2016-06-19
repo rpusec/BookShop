@@ -52,12 +52,13 @@ app.service('authService', function($http, $location, $window){
 			url: 'app/backend/view/userview.php',
 			params: {funct: 'logout-user'}
 		}).then(function(response){
-			if(response.data.logoutSuccess)
-				$location.path('/login');
+			console.log(response);
 			$.notify(params.message === null ? response.data.message : params.message, {
 				position: 'top center',
 				className: response.data.logoutSuccess ? 'success' : 'error'
 			});
+			if(response.data.logoutSuccess)
+				$location.path('/login');
 			session = null;
 			if(typeof params.afterSuccess === 'function')
 				params.afterSuccess();

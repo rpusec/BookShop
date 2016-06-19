@@ -1,8 +1,8 @@
 <?php
 
-require_once('../controller/bookcontr.php');
-
 session_start();
+
+require_once('../controller/bookcontr.php');
 
 if(isset($_GET['funct']))
 {
