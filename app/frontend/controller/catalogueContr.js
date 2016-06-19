@@ -1,4 +1,7 @@
-app.controller('catalogueContr', function($scope, catalogueService, authService){
+app.controller('catalogueContr', function($scope, $location, catalogueService, authService){
+	if(!authService.isAuthenticated())
+		$location.path('/login');
+
 	$scope.books = null;
 	$scope.pagination = {
 		totalItems: null,
@@ -8,6 +11,7 @@ app.controller('catalogueContr', function($scope, catalogueService, authService)
 			getCatalogue();
 		}
 	};
+	$scope.balance = 0;
 
 	getCatalogue();
 
@@ -33,10 +37,12 @@ app.controller('catalogueContr', function($scope, catalogueService, authService)
 			$scope.pagination.currentPage,
 			$scope.pagination.itemsPerPage,
 			function(response){
+				console.log(response);
 				if(response.data.authenticated)
 				{
 					$scope.books = response.data.books;
 					$scope.pagination.totalItems = response.data.bookCount;
+					$scope.balance = response.data.balance;
 				}
 				else
 					authService.logout({

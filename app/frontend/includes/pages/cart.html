@@ -32,5 +32,7 @@
 
 	<p><b>Results found: {{ pagination.totalItems }}</b></p>
 
+	<h3>Current balance: ${{ balance }}</h3>
+	
 	<uib-pagination total-items="pagination.totalItems" ng-model="pagination.currentPage" items-per-page="pagination.itemsPerPage" ng-change="pagination.onPageChange()"></uib-pagination>
 </div>

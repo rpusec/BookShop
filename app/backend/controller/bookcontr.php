@@ -2,6 +2,7 @@
 
 require_once('../dbutil/bookdb.php');
 require_once('../config/appconfig.php');
+require_once('../logic/bookbusiness.php');
 require_once('../logic/authbusiness.php');
 
 class BookContr {
@@ -109,10 +110,12 @@ class BookContr {
 		BookDB::startConn();
 		$books = BookDB::getBooksWithAvailableCopyAmount($currentPage, $perPage);
 		$bookCount = BookDB::countBookAmount();
+		$balance = BookBusiness::calcUserBookBalance(AuthBusiness::getUser());
 		return array(
 			'authenticated' => true,
 			'books' => $books,
-			'bookCount' => $bookCount);
+			'bookCount' => $bookCount,
+			'balance' => $balance);
 	}
 
 	public function getBooksFromCart($currentPage, $perPage){
@@ -122,10 +125,12 @@ class BookContr {
 		BookDB::startConn();
 		$books = BookDB::getBooksFromCart($currentPage, $perPage, AuthBusiness::getUser());
 		$bookCount = BookDB::countBooksFromCart(AuthBusiness::getUser());
+		$balance = BookBusiness::calcUserBookBalance(AuthBusiness::getUser());
 		return array(
 			'authenticated' => true,
 			'books' => $books,
-			'bookCount' => $bookCount);
+			'bookCount' => $bookCount,
+			'balance' => $balance);
 	}
 
 	public function addBookToCart($bookID){

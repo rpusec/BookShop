@@ -1,4 +1,7 @@
-app.controller('cartContr', function($scope, cartService, authService){
+app.controller('cartContr', function($scope, $location, cartService, authService){
+	if(!authService.isAuthenticated())
+		$location.path('/login');
+
 	$scope.books = null;
 	$scope.pagination = {
 		totalItems: null,
@@ -8,6 +11,7 @@ app.controller('cartContr', function($scope, cartService, authService){
 			getBooksFromCart();
 		}
 	};
+	$scope.balance = 0;
 
 	getBooksFromCart();
 
@@ -38,6 +42,7 @@ app.controller('cartContr', function($scope, cartService, authService){
 				{
 					$scope.books = response.data.books;
 					$scope.pagination.totalItems = response.data.bookCount;
+					$scope.balance = response.data.balance;
 				}
 				else
 					authService.logout({

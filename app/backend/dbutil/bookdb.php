@@ -68,11 +68,21 @@ class BookDB extends BaseDB
 
 	public static function getBooksFromCart($currentPage, $perPage, $userID){
 		$innerQuery = "SELECT count(*) FROM book_copy WHERE book_copy.user_id = ? AND book_copy.book_id = book.book_id";
-		$query = "SELECT book_id, title, author, description, price, ($innerQuery) as copiesInCart FROM book HAVING copiesInCart > 0 LIMIT ? OFFSET ?";
+		$query = "SELECT book_id, title, author, description, price, ($innerQuery) as copiesInCart FROM book HAVING copiesInCart > 0 ";
+
+		if($currentPage !== null && $perPage !== null)
+			$query .= "LIMIT ? OFFSET ?";
+
 		$stmt = parent::getConn()->prepare($query);
 
-		$offset = ($currentPage-1)*$perPage;
-		$stmt->bind_param("iii", $userID, $perPage, $offset);
+		if($currentPage !== null && $perPage !== null)
+		{
+			$offset = ($currentPage-1)*$perPage;
+			$stmt->bind_param("iii", $userID, $perPage, $offset);
+		}
+		else
+			$stmt->bind_param("i", $userID);
+
 		$stmt->execute();
 		$stmt->bind_result($bookID, $title, $author, $description, $price, $copiesInCart);
 		$result = array();
