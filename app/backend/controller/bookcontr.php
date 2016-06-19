@@ -138,10 +138,21 @@ class BookContr {
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
 
 		BookDB::startConn();
-		$availableBookCopyID = BookDB::getAnAvailableBookCopy($bookID);
-		$success = BookDB::addBookCopyToCart($availableBookCopyID, AuthBusiness::getUser());
+		
+		if(BookBusiness::isUserAbleToAfford(AuthBusiness::getUser(), $bookID))
+		{
+			$availableBookCopyID = BookDB::getAnAvailableBookCopy($bookID);
+			$success = BookDB::addBookCopyToCart($availableBookCopyID, AuthBusiness::getUser());
+		}
+		else
+			return array(
+				'authenticated' => true,
+				'canAfford' => false,
+				'message' => 'Can\'t afford the book. ');
+
 		return array(
 			'authenticated' => true, 
+			'canAfford' => true,
 			'message' => $success ? 'Book added to cart. ' : 'No copies left anymore. ',
 			'bookAddedToCart' => $success);
 	}

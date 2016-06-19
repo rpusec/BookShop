@@ -18,4 +18,13 @@ class BookBusiness{
 		return $balance - $spentCash;
 	}
 
+	public static function isUserAbleToAfford($userID, $bookID){
+		$spentCash = self::calcUserBookBalance($userID);
+		$book = BookDB::getBook($bookID);
+
+		if($spentCash - $book['price'] < 0)
+			return false;
+		return true;
+	}
+
 }

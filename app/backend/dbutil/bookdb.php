@@ -35,6 +35,24 @@ class BookDB extends BaseDB
 		return $result;
 	}
 
+	public static function getBook($bookID){
+		$stmt = parent::getConn()->prepare("SELECT title, author, description, price FROM book WHERE book_id = ?");
+		$stmt->bind_param("i", $bookID);
+		$stmt->execute();
+		$stmt->bind_result($title, $author, $description, $price);
+		$bookFound = $stmt->fetch();
+		$stmt->close();
+		
+		if(!$bookFound)
+			return null;
+		return array(
+			'book_id' => $bookID,
+			'title' => $title,
+			'author' => $author,
+			'description' => $description,
+			'price' => $price);
+	}
+
 	public static function countBookAmount(){
 		$result = parent::presentRSAsArray(parent::getConn()->query('SELECT count(*) as bookCount FROM book'));
 		return $result[0]['bookCount'];

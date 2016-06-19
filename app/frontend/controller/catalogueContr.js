@@ -19,10 +19,11 @@ app.controller('catalogueContr', function($scope, $location, catalogueService, a
 		catalogueService.addToCart(
 			bookID,
 			function(response){
+				console.log(response);
 				if(response.data.authenticated)
 				{
 					getCatalogue();
-					displaySuccessMessage(response.data.message);
+					displayMessage(response.data.message, response.data.canAfford ? 'success' : 'warning');
 				}
 				else
 					authService.logout({
@@ -52,7 +53,9 @@ app.controller('catalogueContr', function($scope, $location, catalogueService, a
 		);
 	}
 
-	function displaySuccessMessage(message){
-		$.notify(message, {className:'success', position: 'top center'});
+	function displayMessage(message, className){
+		if(typeof className === 'undefined')
+			className = 'success';
+		$.notify(message, {className: className, position: 'top center'});
 	}
 });
