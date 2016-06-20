@@ -1,4 +1,4 @@
-app.controller('bookContr', function($scope, bookService, authService){
+app.controller('bookContr', function($scope, bookService, authService, formHelper){
 	$scope.books = null;
 	$scope.popover = {
 		deleteBookTemplateUrl: 'deleteBookTemplateUrl.html',
@@ -23,6 +23,7 @@ app.controller('bookContr', function($scope, bookService, authService){
 	};
 	$scope.bookCopiesToAddID = null;
 	$scope.bookAmountToAdd = 0;
+	$scope.formHelper = formHelper;
 
 	displayBooks();
 

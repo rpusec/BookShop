@@ -1,4 +1,4 @@
-app.controller("userContr", function($scope, userService, authService){
+app.controller("userContr", function($scope, userService, authService, formHelper){
 	$scope.users = null;
 	$scope.metadata = ['First name', 'Last name', 'Username', 'Password', 'Amount', 'Edit', 'Delete'];
 	$scope.popover = {
@@ -19,6 +19,7 @@ app.controller("userContr", function($scope, userService, authService){
 			displayUsers();
 		}
 	};
+	$scope.formHelper = formHelper;
 
 	displayUsers();
 

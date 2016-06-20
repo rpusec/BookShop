@@ -15,31 +15,31 @@
  <div class="container-fluid">
   <div class="row">
    <div class="col-md-6 col-sm-6 col-xs-12">
-    <form method="post">
+    <form method="post" name="bookForm">
       <input type="hidden" id="bookID" name="bookID" ng-model="editingBookData.bookID">
-     <div class="form-group ">
+     <div class="form-group {{formHelper.validateInput(editingBookData.title, bookForm.title.$valid, true)}}">
       <label class="control-label " for="title">
        Title
       </label>
-      <input class="form-control" id="title" name="title" type="text" ng-model="editingBookData.title"/>
+      <input class="form-control" id="title" name="title" type="text" ng-model="editingBookData.title" input-length="5;18"/>
      </div>
-     <div class="form-group ">
+     <div class="form-group {{formHelper.validateInput(editingBookData.author, bookForm.author.$valid, true)}}">
       <label class="control-label " for="author">
        Author
       </label>
-      <input class="form-control" id="author" name="author" type="text" ng-model="editingBookData.author"/>
+      <input class="form-control" id="author" name="author" type="text" ng-model="editingBookData.author" input-length="6;18"/>
      </div>
-     <div class="form-group ">
+     <div class="form-group {{formHelper.validateInput(editingBookData.description, bookForm.description.$valid, true)}}">
       <label class="control-label " for="description">
        Description
       </label>
-      <input class="form-control" id="description" name="description" type="text" ng-model="editingBookData.description"/>
+      <input class="form-control" id="description" name="description" type="text" ng-model="editingBookData.description" input-length="25;150"/>
      </div>
-     <div class="form-group ">
-      <label class="control-label " for="password">
+     <div class="form-group {{formHelper.validateInput(editingBookData.password, bookForm.price.$valid, true)}}">
+      <label class="control-label " for="price">
        Price
       </label>
-      <input class="form-control" id="password" name="password" type="text" ng-model="editingBookData.price"/>
+      <input class="form-control" id="price" name="price" type="text" ng-model="editingBookData.price" input-size="5;100"/>
      </div>
      <div class="form-group">
       <div>
