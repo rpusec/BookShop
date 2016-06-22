@@ -15,37 +15,37 @@
          <div class="container-fluid">
           <div class="row">
            <div class="col-md-6 col-sm-6 col-xs-12">
-            <form method="post" name="userForm">
+            <form method="post">
               <input type="hidden" id="userID" name="userID" ng-model="editUserData.userID">
-             <div class="form-group {{formHelper.validateInput(editUserData.fname, userForm.fname.$valid, true)}}">
+             <div class="form-group ">
               <label class="control-label " for="fname">
                First name
               </label>
-              <input class="form-control" id="fname" name="fname" ng-model="editUserData.fname" type="text" input-length="3;20" tooltip-enable="{{!userForm.fname.$valid}}" uib-tooltip="Invalid input length. "/>
+              <input class="form-control" id="fname" name="fname" ng-model="editUserData.fname" type="text"/>
              </div>
-             <div class="form-group {{formHelper.validateInput(editUserData.lname, userForm.lname.$valid, true)}}">
+             <div class="form-group ">
               <label class="control-label " for="lname">
                Last name
               </label>
-              <input class="form-control" id="lname" name="lname" ng-model="editUserData.lname" type="text" input-length="3;20" tooltip-enable="{{!userForm.lname.$valid}}" uib-tooltip="Invalid input length. "/>
+              <input class="form-control" id="lname" name="lname" ng-model="editUserData.lname" type="text"/>
              </div>
-             <div class="form-group {{formHelper.validateInput(editUserData.username, userForm.username.$valid, true)}}">
+             <div class="form-group ">
               <label class="control-label " for="username">
                Username
               </label>
-              <input class="form-control" id="username" name="username" ng-model="editUserData.username" type="text" input-length="5;20" tooltip-enable="{{!userForm.username.$valid}}" uib-tooltip="Invalid input length. "/>
+              <input class="form-control" id="username" name="username" ng-model="editUserData.username" type="text"/>
              </div>
-             <div class="form-group {{formHelper.validateInput(editUserData.password, userForm.password.$valid, true)}}">
+             <div class="form-group ">
               <label class="control-label " for="password">
                Password
               </label>
-              <input class="form-control" id="password" name="password" ng-model="editUserData.password" type="text" input-length="8;50" tooltip-enable="{{!userForm.password.$valid}}" uib-tooltip="Invalid input length. "/>
+              <input class="form-control" id="password" name="password" ng-model="editUserData.password" type="text"/>
              </div>
-             <div class="form-group {{formHelper.validateInput(editUserData.amount, userForm.amount.$valid, true)}}">
+             <div class="form-group ">
               <label class="control-label " for="amount">
                Amount
               </label>
-              <input class="form-control" id="amount" name="amount" ng-model="editUserData.amount" type="text" input-size="0;500" tooltip-enable="{{!userForm.amount.$valid}}" uib-tooltip="Invalid input size. "/>
+              <input class="form-control" id="amount" name="amount" ng-model="editUserData.amount" type="text"/>
              </div>
              <div class="form-group">
               <div>
