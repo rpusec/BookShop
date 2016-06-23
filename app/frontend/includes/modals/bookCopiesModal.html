@@ -29,7 +29,7 @@
           </tbody>
         </table>
         
-        <button type="button" class="btn btn-danger" ng-click="deleteBookCopies()">Delete books</button><br />
+        <button type="button" class="btn btn-danger" ng-click="deleteBookCopies()" ng-disabled="!isOneCopySelected()">Delete books</button><br />
 
         <uib-pagination total-items="pagination.totalItems" ng-model="pagination.currentPage" items-per-page="pagination.itemsPerPage" ng-change="pagination.onPageChange()"></uib-pagination>
 

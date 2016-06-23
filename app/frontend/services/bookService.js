@@ -92,9 +92,6 @@ app.service('bookService', function($http){
 			url: 'app/backend/view/bookview.php',
 			params: bookData
 		}).then(function(response){
-			angular.forEach(bookData, function(value, key){
-				bookData[key] = '';
-			});
 			onSuccess(response);
 		}, onError);
 	}	

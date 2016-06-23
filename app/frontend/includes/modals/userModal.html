@@ -17,31 +17,31 @@
            <div class="col-md-6 col-sm-6 col-xs-12">
             <form method="post">
               <input type="hidden" id="userID" name="userID" ng-model="editUserData.userID">
-             <div class="form-group ">
+             <div class="form-group {{ editUserData.fname_error ? 'has-error' : '' }}">
               <label class="control-label " for="fname">
                First name
               </label>
               <input class="form-control" id="fname" name="fname" ng-model="editUserData.fname" type="text"/>
              </div>
-             <div class="form-group ">
+             <div class="form-group {{ editUserData.lname_error ? 'has-error' : '' }}">
               <label class="control-label " for="lname">
                Last name
               </label>
               <input class="form-control" id="lname" name="lname" ng-model="editUserData.lname" type="text"/>
              </div>
-             <div class="form-group ">
+             <div class="form-group {{ editUserData.username_error ? 'has-error' : '' }}">
               <label class="control-label " for="username">
                Username
               </label>
               <input class="form-control" id="username" name="username" ng-model="editUserData.username" type="text"/>
              </div>
-             <div class="form-group ">
+             <div class="form-group {{ editUserData.password_error ? 'has-error' : '' }}">
               <label class="control-label " for="password">
                Password
               </label>
               <input class="form-control" id="password" name="password" ng-model="editUserData.password" type="text"/>
              </div>
-             <div class="form-group ">
+             <div class="input-group {{ editUserData.amount_error ? 'has-error' : '' }}">
               <label class="control-label " for="amount">
                Amount
               </label>

@@ -1,6 +1,9 @@
 app.controller('catalogueContr', function($scope, $location, catalogueService, authService){
 	if(!authService.isAuthenticated())
+	{
 		$location.path('/login');
+		return;
+	}
 
 	$scope.books = null;
 	$scope.pagination = {

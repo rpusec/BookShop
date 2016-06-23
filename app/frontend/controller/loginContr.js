@@ -1,6 +1,9 @@
 app.controller('loginContr', function($scope, $location, authService, observerService){
 	if(authService.isAuthenticated())
+	{
 		$location.path('/catalogue');
+		return;
+	}
 
 	$scope.login = function(){
 		authService.login(

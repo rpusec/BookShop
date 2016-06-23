@@ -4,6 +4,7 @@ require_once('../dbutil/bookdb.php');
 require_once('../config/appconfig.php');
 require_once('../logic/bookbusiness.php');
 require_once('../logic/authbusiness.php');
+require_once('../validation/ValidationHelper.class.php');
 
 class BookContr {
 
@@ -24,8 +25,22 @@ class BookContr {
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
 
+		ValidationHelper::validateInput($title, 'alphaNumericSpace', BOOK_TITLE_ERROR, 'title');
+		ValidationHelper::validateInput($author, 'alphabeticSpace', AUTHOR_NAME_ERROR, 'author');
+		ValidationHelper::validateInput($description, 'alphabeticNumericPunct', DESCR_ERROR, 'description');
+		ValidationHelper::validateInput($price, 'numeric', PRICE_ERROR, 'price');
+
+		ValidationHelper::checkAppropriateInputLength($title, TITLE_LENGTH_FROM, TITLE_LENGTH_TO, 'title', 'title');
+		ValidationHelper::checkAppropriateInputLength($author, AUTHOR_LENGTH_FROM, AUTHOR_LENGTH_TO, 'author', 'author');
+		ValidationHelper::checkAppropriateInputLength($description, DESCR_LENGTH_FROM, DESCR_LENGTH_TO, 'description', 'description');
+		ValidationHelper::checkAppropriateInputLength($price, PRICE_LENGTH_FROM, PRICE_LENGTH_TO, 'price', 'price');
+
+		if(ValidationHelper::hasErrors())
+			return array('authenticated' => true, 'hasErrors' => true, 'errors' => ValidationHelper::getErrors());
+
 		BookDB::startConn();
 		return array(
+			'hasErrors' => false,
 			'authenticated' => true, 
 			'message' => 'Book added. ',
 			'bookAdded' => BookDB::addBook($title, $author, $description, $price));
@@ -34,6 +49,36 @@ class BookContr {
 	public function editBook($bookID, $title, $author, $description, $price){
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
+
+		if($title !== '')
+		{
+			ValidationHelper::validateInput($title, 'alphaNumericSpace', BOOK_TITLE_ERROR, 'title');
+			ValidationHelper::checkAppropriateInputLength($title, TITLE_LENGTH_FROM, TITLE_LENGTH_TO, 'title', 'title');
+		}
+		
+		if($author !== '')
+		{
+			ValidationHelper::validateInput($author, 'alphabeticSpace', AUTHOR_NAME_ERROR, 'author');
+			ValidationHelper::checkAppropriateInputLength($author, AUTHOR_LENGTH_FROM, AUTHOR_LENGTH_TO, 'author', 'author');
+		}
+		
+		if($description !== '')
+		{
+			ValidationHelper::validateInput($description, 'alphabeticNumericPunct', DESCR_ERROR, 'description');
+			ValidationHelper::checkAppropriateInputLength($description, DESCR_LENGTH_FROM, DESCR_LENGTH_TO, 'description', 'description');
+		}
+		
+		if($price !== '')
+		{
+			ValidationHelper::validateInput($price, 'numeric', PRICE_ERROR, 'price');
+			ValidationHelper::checkAppropriateInputLength($price, PRICE_LENGTH_FROM, PRICE_LENGTH_TO, 'price', 'price');
+		}
+
+		if($title == '' && $author == '' && $description == '' && $price == '')
+			ValidationHelper::addError('Please change at least one input. ', 'none');
+
+		if(ValidationHelper::hasErrors())
+			return array('authenticated' => true, 'hasErrors' => true, 'errors' => ValidationHelper::getErrors());
 
 		$updateArr = array();
 		
@@ -51,6 +96,7 @@ class BookContr {
 
 		BookDB::startConn();
 		return array(
+			'hasErrors' => false,
 			'authenticated' => true, 
 			'message' => 'Book edited. ',
 			'bookEdited' => BookDB::editBook($bookID, $updateArr));

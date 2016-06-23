@@ -53,36 +53,37 @@ app.controller("userContr", function($scope, userService, authService){
 		$('#userModal').modal('hide');
 		userService.addUser(
 			this.editUserData,
-			function(response){
-				if(response.data.authenticated)
-				{
-					displayUsers();
-					displaySuccessMessage(response.data.message);
-				}
-				else
-					authService.logout({
-						message: response.data.message
-					});
-			}
-		);
+			addEditResp);
 	}
 
 	$scope.editUser = function(){
 		$('#userModal').modal('hide');
 		userService.editUser(
 			this.editUserData,
-			function(response){
-				if(response.data.authenticated)
-				{
-					displayUsers();
-					displaySuccessMessage(response.data.message);
-				}
-				else
-					authService.logout({
-						message: response.data.message
-					});
+			addEditResp);
+	}
+
+	function addEditResp(){
+		if(response.data.authenticated)
+		{
+			if(!response.data.hasErrors)
+			{
+				displayBooks();
+				displaySuccessMessage(response.data.message);
+				$('#userModal').modal('hide');
 			}
-		);
+			else
+			{
+				angular.forEach(response.data.errors, function(errorMessage, errorKey){
+					$scope.editingBookData[errorKey + '_error'] = true;
+					$.notify(errorMessage, {className: 'error', position: 'top center'});
+				});
+			}
+		}
+		else
+			authService.logout({
+				message: response.data.message
+			});
 	}
 
 	$scope.deleteUser = function(){

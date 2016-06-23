@@ -58,7 +58,10 @@ app.service('authService', function($http, $location, $window){
 				className: response.data.logoutSuccess ? 'success' : 'error'
 			});
 			if(response.data.logoutSuccess)
+			{
+				console.log('test');
 				$location.path('/login');
+			}
 			session = null;
 			if(typeof params.afterSuccess === 'function')
 				params.afterSuccess();

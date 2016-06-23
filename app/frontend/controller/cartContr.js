@@ -1,6 +1,9 @@
 app.controller('cartContr', function($scope, $location, cartService, authService){
 	if(!authService.isAuthenticated())
+	{
 		$location.path('/login');
+		return;
+	}
 
 	$scope.books = null;
 	$scope.pagination = {

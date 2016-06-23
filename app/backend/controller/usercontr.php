@@ -3,6 +3,7 @@
 require_once('../dbutil/userdb.php');
 require_once('../config/appconfig.php');
 require_once('../logic/authbusiness.php');
+require_once('../validation/ValidationHelper.php');
 
 class UserContr
 {
@@ -57,6 +58,21 @@ class UserContr
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
 
+		ValidationHelper::validateInput($fname, 'alphabetic', FNAME_ERROR, 'fname');
+		ValidationHelper::checkAppropriateInputLength($fname, FNAME_LENGTH_FROM, FNAME_LENGTH_TO, 'fname', 'fname');
+
+		ValidationHelper::validateInput($lname, 'alphabetic', LNAME_ERROR, 'lname');
+		ValidationHelper::checkAppropriateInputLength($lname, LNAME_LENGTH_FROM, LNAME_LENGTH_TO, 'lname', 'lname');
+
+		ValidationHelper::validateInput($username, 'alphabetic', USERNAME_ERROR, 'username');
+		ValidationHelper::checkAppropriateInputLength($username, USERNAME_LENGTH_FROM, USERNAME_LENGTH_TO, 'username', 'username');
+
+		ValidationHelper::validateInput($password, 'alphabetic', PASSWORD_ERROR, 'password');
+		ValidationHelper::checkAppropriateInputLength($password, PASSWORD_LENGTH_FROM, PASSWORD_LENGTH_TO, 'password', 'password');
+
+		ValidationHelper::validateInput($amount, 'alphabetic', AMOUNT_ERROR, 'amount');
+		ValidationHelper::checkAppropriateInputLength($amount, AMOUNT_LENGTH_FROM, AMOUNT_LENGTH_TO, 'amount', 'amount');
+
 		UserDB::startConn();
 		return array(
 			'authenticated' => true,
@@ -67,6 +83,42 @@ class UserContr
 	public function editUser($userID, $fname, $lname, $username, $password, $amount){
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
+
+		if($fname !== '')
+		{
+			ValidationHelper::validateInput($fname, 'alphabetic', FNAME_ERROR, 'fname');
+			ValidationHelper::checkAppropriateInputLength($fname, FNAME_LENGTH_FROM, FNAME_LENGTH_TO, 'fname', 'fname');
+		}
+
+		if($lname !== '')
+		{
+			ValidationHelper::validateInput($lname, 'alphabetic', LNAME_ERROR, 'lname');
+			ValidationHelper::checkAppropriateInputLength($lname, LNAME_LENGTH_FROM, LNAME_LENGTH_TO, 'lname', 'lname');
+		}
+
+		if($username !== '')
+		{
+			ValidationHelper::validateInput($username, 'alphabetic', USERNAME_ERROR, 'username');
+			ValidationHelper::checkAppropriateInputLength($username, USERNAME_LENGTH_FROM, USERNAME_LENGTH_TO, 'username', 'username');
+		}
+
+		if($password !== '')
+		{
+			ValidationHelper::validateInput($password, 'alphabetic', PASSWORD_ERROR, 'password');
+			ValidationHelper::checkAppropriateInputLength($password, PASSWORD_LENGTH_FROM, PASSWORD_LENGTH_TO, 'password', 'password');
+		}
+
+		if($amount !== '')
+		{
+			ValidationHelper::validateInput($amount, 'alphabetic', AMOUNT_ERROR, 'amount');
+			ValidationHelper::checkAppropriateInputLength($amount, AMOUNT_LENGTH_FROM, AMOUNT_LENGTH_TO, 'amount', 'amount');
+		}
+
+		if($fname == '' && $lname == '' && $username == '' && $password == '' && $amount == '')
+			ValidationHelper::addError('Please change at least one input. ', 'none');
+
+		if(ValidationHelper::hasErrors())
+			return array('authenticated' => true, 'hasErrors' => true, 'errors' => ValidationHelper::getErrors());
 
 		UserDB::startConn();
 		$updateArr = array();

@@ -35,9 +35,6 @@ app.service("userService", function($http){
 			url: 'app/backend/view/userview.php',
 			params: userData
 		}).then(function(response){
-			angular.forEach(userData, function(value, key){
-				userData[key] = '';
-			});
 			onSuccess(response);
 		}, onError);
 	}	

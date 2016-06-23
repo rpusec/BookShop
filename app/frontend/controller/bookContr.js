@@ -54,39 +54,38 @@ app.controller('bookContr', function($scope, bookService, authService){
 	}
 
 	$scope.addBook = function(){
-		$('#bookModal').modal('hide');
 		bookService.addBook(
 			this.editingBookData,
-			function(response){
-				if(response.data.authenticated)
-				{
-					displayBooks();
-					displaySuccessMessage(response.data.message);
-				}
-				else
-					authService.logout({
-						message: response.data.message
-					});
-			}
-		);
+			addEditResp);
 	}
 
 	$scope.editBook = function(){
-		$('#bookModal').modal('hide');
 		bookService.editBook(
 			this.editingBookData,
-			function(response){
-				if(response.data.authenticated)
-				{
-					displayBooks();
-					displaySuccessMessage(response.data.message);
-				}
-				else
-					authService.logout({
-						message: response.data.message
-					});
+			addEditResp);
+	}
+
+	function addEditResp(response){
+		if(response.data.authenticated)
+		{
+			if(!response.data.hasErrors)
+			{
+				displayBooks();
+				displaySuccessMessage(response.data.message);
+				$('#bookModal').modal('hide');
 			}
-		);
+			else
+			{
+				angular.forEach(response.data.errors, function(errorMessage, errorKey){
+					$scope.editingBookData[errorKey + '_error'] = true;
+					$.notify(errorMessage, {className: 'error', position: 'top center'});
+				});
+			}
+		}
+		else
+			authService.logout({
+				message: response.data.message
+			});
 	}
 
 	$scope.deleteBook = function(){
@@ -211,6 +210,20 @@ app.controller('bookCopiesContr', function($scope, bookService){
 			else
 				val.selected = false;
 		});
+	}
+
+	$scope.isOneCopySelected = function(){
+		var atLeastOneSelected = false;
+
+		angular.forEach(this.bookCopies, function(copy){
+			if(copy.hasOwnProperty('selected') && copy.selected)
+			{
+				atLeastOneSelected = true;
+				return false;
+			}
+		});
+
+		return atLeastOneSelected;
 	}
 
 	function displaySuccessMessage(message){
