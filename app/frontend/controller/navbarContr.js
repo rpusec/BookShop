@@ -33,7 +33,6 @@ app.controller('navbarContr', function($scope, $state, $location, authService, o
 		{
 			authService.logout({
 				afterSuccess: function(){
-					authService.destroySession();
 					observerService.notifyAll('auth');
 				}
 			});

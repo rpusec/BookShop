@@ -30,7 +30,8 @@ app.controller('catalogueContr', function($scope, $location, catalogueService, a
 				}
 				else
 					authService.logout({
-						message: response.data.message
+						message: response.data.message,
+						messageType: 'error'
 					});
 			}
 		);
@@ -54,7 +55,8 @@ app.controller('catalogueContr', function($scope, $location, catalogueService, a
 				}
 				else
 					authService.logout({
-						message: response.data.message
+						message: response.data.message,
+						messageType: 'error'
 					});
 			}
 		);

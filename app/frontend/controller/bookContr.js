@@ -47,7 +47,8 @@ app.controller('bookContr', function($scope, bookService, authService){
 				}
 				else
 					authService.logout({
-						message: response.data.message
+						message: response.data.message,
+						messageType: 'error'
 					});
 			}
 		);
@@ -84,7 +85,8 @@ app.controller('bookContr', function($scope, bookService, authService){
 		}
 		else
 			authService.logout({
-				message: response.data.message
+				message: response.data.message,
+				messageType: 'error'
 			});
 	}
 
@@ -99,7 +101,8 @@ app.controller('bookContr', function($scope, bookService, authService){
 				}
 				else
 					authService.logout({
-						message: response.data.message
+						message: response.data.message,
+						messageType: 'error'
 					});
 			}
 		);
@@ -124,7 +127,8 @@ app.controller('bookContr', function($scope, bookService, authService){
 				}
 				else
 					authService.logout({
-						message: response.data.message
+						message: response.data.message,
+						messageType: 'error'
 					});
 			}
 		);
@@ -172,7 +176,8 @@ app.controller('bookCopiesContr', function($scope, bookService){
 				}
 				else
 					authService.logout({
-						message: response.data.message
+						message: response.data.message,
+						messageType: 'error'
 					});
 			}
 		);
@@ -190,7 +195,8 @@ app.controller('bookCopiesContr', function($scope, bookService){
 				}
 				else
 					authService.logout({
-						message: response.data.message
+						message: response.data.message,
+						messageType: 'error'
 					});
 			}
 		);

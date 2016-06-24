@@ -43,7 +43,8 @@ app.controller("userContr", function($scope, userService, authService){
 				}
 				else
 					authService.logout({
-						message: response.data.message
+						message: response.data.message,
+						messageType: 'error'
 					});
 			}
 		);
@@ -80,7 +81,8 @@ app.controller("userContr", function($scope, userService, authService){
 		}
 		else
 			authService.logout({
-				message: response.data.message
+				message: response.data.message,
+				messageType: 'error'
 			});
 	}
 
@@ -95,7 +97,8 @@ app.controller("userContr", function($scope, userService, authService){
 				}
 				else
 					authService.logout({
-						message: response.data.message
+						message: response.data.message,
+						messageType: 'error'
 					});
 			}
 		);

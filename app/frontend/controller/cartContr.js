@@ -29,7 +29,8 @@ app.controller('cartContr', function($scope, $location, cartService, authService
 				}
 				else
 					authService.logout({
-						message: response.data.message
+						message: response.data.message,
+						messageType: 'error'
 					});
 			}
 		);
@@ -49,7 +50,8 @@ app.controller('cartContr', function($scope, $location, cartService, authService
 				}
 				else
 					authService.logout({
-						message: response.data.message
+						message: response.data.message,
+						messageType: 'error'
 					});
 			}
 		);

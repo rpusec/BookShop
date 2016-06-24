@@ -1,5 +1,7 @@
 app.service('authService', function($http, $location, $window){
-	this.login = function(username, password, afterSuccess, onError){
+	var authService = {};
+
+	authService.login = function(username, password, afterSuccess, onError){
 		$http({
 			method: 'POST',
 			url: 'app/backend/view/userview.php',
@@ -34,35 +36,32 @@ app.service('authService', function($http, $location, $window){
 				});
 			}
 
-			console.log(response);
-
 			if(typeof afterSuccess === 'function')
 				afterSuccess();
 		}, onError);
 	}
 
-	this.logout = function(params){
+	authService.logout = function(params){
 		params = $.extend({
 			afterSuccess: null,
 			onError: null,
-			message: null
+			message: null,
+			messageType: null
 		}, params);
 		$http({
 			method: 'GET',
 			url: 'app/backend/view/userview.php',
 			params: {funct: 'logout-user'}
 		}).then(function(response){
-			console.log(response);
 			$.notify(params.message === null ? response.data.message : params.message, {
 				position: 'top center',
-				className: response.data.logoutSuccess ? 'success' : 'error'
+				className: !params.messageType ? (response.data.logoutSuccess ? 'success' : 'error') : params.messageType
 			});
 			if(response.data.logoutSuccess)
 			{
-				console.log('test');
+				authService.destroySession();
 				$location.path('/login');
 			}
-			session = null;
 			if(typeof params.afterSuccess === 'function')
 				params.afterSuccess();
 		}, params.onError);
@@ -77,15 +76,17 @@ app.service('authService', function($http, $location, $window){
 		});
 	}
 
-	this.getSession = function(){
+	authService.getSession = function(){
 		return $window.localStorage.getItem('UserSession');
 	}
 
-	this.destroySession = function(){
+	authService.destroySession = function(){
 		$window.localStorage.removeItem('UserSession');
 	};
 
-	this.isAuthenticated = function(){
-		return this.getSession() !== null;
+	authService.isAuthenticated = function(){
+		return authService.getSession() !== null;
 	}
+
+	return authService;
 });

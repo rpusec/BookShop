@@ -22,9 +22,6 @@ class UserContr
 	}
 
 	public function logoutUser(){
-		if(!AuthBusiness::isAuthenticated())
-			return array('logoutSuccess' => false, 'message' => AUTHENTICATION_ERROR);
-
 		AuthBusiness::logoutUser();
 		return array('logoutSuccess' => true, 'message' => LOGOUT_MESSAGE);
 	}
