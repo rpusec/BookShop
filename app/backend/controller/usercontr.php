@@ -3,7 +3,7 @@
 require_once('../dbutil/userdb.php');
 require_once('../config/appconfig.php');
 require_once('../logic/authbusiness.php');
-require_once('../validation/ValidationHelper.php');
+require_once('../validation/ValidationHelper.class.php');
 
 class UserContr
 {
@@ -59,18 +59,15 @@ class UserContr
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
 
 		ValidationHelper::validateInput($fname, 'alphabetic', FNAME_ERROR, 'fname');
-		ValidationHelper::checkAppropriateInputLength($fname, FNAME_LENGTH_FROM, FNAME_LENGTH_TO, 'fname', 'fname');
-
 		ValidationHelper::validateInput($lname, 'alphabetic', LNAME_ERROR, 'lname');
-		ValidationHelper::checkAppropriateInputLength($lname, LNAME_LENGTH_FROM, LNAME_LENGTH_TO, 'lname', 'lname');
-
 		ValidationHelper::validateInput($username, 'alphabetic', USERNAME_ERROR, 'username');
-		ValidationHelper::checkAppropriateInputLength($username, USERNAME_LENGTH_FROM, USERNAME_LENGTH_TO, 'username', 'username');
-
 		ValidationHelper::validateInput($password, 'alphabetic', PASSWORD_ERROR, 'password');
-		ValidationHelper::checkAppropriateInputLength($password, PASSWORD_LENGTH_FROM, PASSWORD_LENGTH_TO, 'password', 'password');
-
 		ValidationHelper::validateInput($amount, 'alphabetic', AMOUNT_ERROR, 'amount');
+
+		ValidationHelper::checkAppropriateInputLength($fname, FNAME_LENGTH_FROM, FNAME_LENGTH_TO, 'fname', 'fname');
+		ValidationHelper::checkAppropriateInputLength($lname, LNAME_LENGTH_FROM, LNAME_LENGTH_TO, 'lname', 'lname');
+		ValidationHelper::checkAppropriateInputLength($username, USERNAME_LENGTH_FROM, USERNAME_LENGTH_TO, 'username', 'username');
+		ValidationHelper::checkAppropriateInputLength($password, PASSWORD_LENGTH_FROM, PASSWORD_LENGTH_TO, 'password', 'password');
 		ValidationHelper::checkAppropriateInputLength($amount, AMOUNT_LENGTH_FROM, AMOUNT_LENGTH_TO, 'amount', 'amount');
 
 		UserDB::startConn();
@@ -139,6 +136,7 @@ class UserContr
 			$updateArr['amount'] = array('value' => $amount, 'type' => 'i');
 
 		return array(
+			'hasErrors' => false,
 			'authenticated' => true,
 			'message' => 'User edited. ',
 			'userEdited' => UserDB::editUser($userID, $updateArr));

@@ -50,32 +50,30 @@ app.controller("userContr", function($scope, userService, authService){
 	}
 
 	$scope.addUser = function(){
-		$('#userModal').modal('hide');
 		userService.addUser(
 			this.editUserData,
 			addEditResp);
 	}
 
 	$scope.editUser = function(){
-		$('#userModal').modal('hide');
 		userService.editUser(
 			this.editUserData,
 			addEditResp);
 	}
 
-	function addEditResp(){
+	function addEditResp(response){
 		if(response.data.authenticated)
 		{
 			if(!response.data.hasErrors)
 			{
-				displayBooks();
+				displayUsers();
 				displaySuccessMessage(response.data.message);
 				$('#userModal').modal('hide');
 			}
 			else
 			{
 				angular.forEach(response.data.errors, function(errorMessage, errorKey){
-					$scope.editingBookData[errorKey + '_error'] = true;
+					$scope.editUserData[errorKey + '_error'] = true;
 					$.notify(errorMessage, {className: 'error', position: 'top center'});
 				});
 			}
