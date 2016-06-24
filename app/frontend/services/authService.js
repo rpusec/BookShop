@@ -1,4 +1,4 @@
-app.service('authService', function($http, $location, $window){
+app.service('authService', function($http, $location, $window, observerService){
 	var authService = {};
 
 	authService.login = function(username, password, afterSuccess, onError){
@@ -60,6 +60,7 @@ app.service('authService', function($http, $location, $window){
 			if(response.data.logoutSuccess)
 			{
 				authService.destroySession();
+				observerService.notifyAll('auth');
 				$location.path('/login');
 			}
 			if(typeof params.afterSuccess === 'function')

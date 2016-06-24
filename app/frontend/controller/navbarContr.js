@@ -1,10 +1,12 @@
 app.controller('navbarContr', function($scope, $state, $location, authService, observerService){
 	$scope.appTitle = 'BookShop';
+	
 	var arrNavLinks = [
 		{title: 'Catalogue', uri: 'catalogue'},
 		{title: 'Cart', uri: 'cart'},
 		{title: 'Admin', uri: 'admin'}
 	];
+
 	$scope.arrNavLinks = null;
 	$scope.logoutShown = false;
 
@@ -31,11 +33,7 @@ app.controller('navbarContr', function($scope, $state, $location, authService, o
 	$scope.logout = function(){
 		if(authService.isAuthenticated())
 		{
-			authService.logout({
-				afterSuccess: function(){
-					observerService.notifyAll('auth');
-				}
-			});
+			authService.logout();
 			this.highlightTitle('');
 		}
 	}
