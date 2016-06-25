@@ -69,16 +69,18 @@ app.service('authService', function($http, $location, $window, observerService){
 	}
 
 	function createSession(userID, fname, lname, username){
-		$window.localStorage.setItem('UserSession', {
+		$window.localStorage.setItem('UserSession', angular.toJson({
 			userID: userID,
 			lname: lname,
 			fname: fname,
 			username: username
-		});
+		}));
 	}
 
 	authService.getSession = function(){
-		return $window.localStorage.getItem('UserSession');
+		if(typeof $window.localStorage.getItem('UserSession') === 'string')
+			return angular.fromJson($window.localStorage.getItem('UserSession'));
+		return null;
 	}
 
 	authService.destroySession = function(){

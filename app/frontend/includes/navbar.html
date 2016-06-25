@@ -9,10 +9,10 @@
 			</li>
 		</ul>
 
-		<ul class="nav navbar-nav navbar-right" ng-show="logoutShown">
-			<li>
-				<a ng-click="logout()" style="cursor:pointer;">Logout</a>
-			</li>
-		</ul>
+		<p class="navbar-text navbar-right" ng-show="userBarShown" style="margin-right:10px">
+			Welcome <b>{{ fname + ' ' + lname }}</b>! 
+			<a style="cursor:pointer;">Account settings <span class="glyphicon glyphicon-edit"></span></a> 
+			<a ng-click="logout()" style="cursor:pointer;">Logout <span class="glyphicon glyphicon-off"></span></a>
+		</p>
 	</div>
 </nav>

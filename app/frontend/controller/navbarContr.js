@@ -8,7 +8,7 @@ app.controller('navbarContr', function($scope, $state, $location, authService, o
 	];
 
 	$scope.arrNavLinks = null;
-	$scope.logoutShown = false;
+	$scope.userBarShown = false;
 
 	$scope.currState = $state;
 	$scope.$watch('currState.current.name', function(val){
@@ -42,12 +42,16 @@ app.controller('navbarContr', function($scope, $state, $location, authService, o
 		if(authService.isAuthenticated())
 		{
 			$scope.arrNavLinks = arrNavLinks;
-			$scope.logoutShown = true;
+			$scope.userBarShown = true;
+			
+			var session = authService.getSession();
+			$scope.fname = session.fname;
+			$scope.lname = session.lname;
 		}
 		else
 		{
 			$scope.arrNavLinks = null;
-			$scope.logoutShown = false;
+			$scope.userBarShown = false;
 		}
 	});
 
