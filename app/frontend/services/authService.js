@@ -77,6 +77,25 @@ app.service('authService', function($http, $location, $window, observerService){
 		}));
 	}
 
+	authService.updateSession = function(onSuccess){
+		if(!this.isAuthenticated())
+			return;
+
+		$http({
+			method: 'GET',
+			url: 'app/backend/view/userview.php',
+			params: {funct: 'get-user', userID: this.getSession().userID}
+		}).then(function(response){
+			var data = response.data.user;
+			createSession(
+				data.userID,
+				data.fname,
+				data.lname,
+				data.username);
+			onSuccess(response);
+		});
+	}
+
 	authService.getSession = function(){
 		if(typeof $window.localStorage.getItem('UserSession') === 'string')
 			return angular.fromJson($window.localStorage.getItem('UserSession'));

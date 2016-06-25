@@ -14,6 +14,7 @@ app.config(function($stateProvider, $urlRouterProvider, $locationProvider){
 		.state('catalogue', {url: '/catalogue', templateUrl: 'app/frontend/includes/pages/catalogue.html'})	
 		.state('cart', {url: '/cart', templateUrl: 'app/frontend/includes/pages/cart.html'})		
 		.state('logout', {url: '/logout', templateUrl: 'app/frontend/includes/pages/logout.html'})
+		.state('accsettings', {url: '/accsettings', templateUrl: 'app/frontend/includes/pages/accsettings.html'})
 		//admin
 		.state('admin', {url: '/admin', templateUrl: 'app/frontend/includes/pages/admin.html'})
 		.state('users', {url: '/users', templateUrl: 'app/frontend/includes/pages/users.html', parent: 'admin'})

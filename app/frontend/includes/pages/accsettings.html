@@ -1,0 +1,49 @@
+<div ng-controller="accSettingsContr">
+	<h2 style="text-align:center;">Account settings</h2>
+	<!-- HTML Form (wrapped in a .bootstrap-iso div) -->
+	<div class="bootstrap-iso">
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-4 col-md-offset-4">
+					<form method="post">
+						<div class="form-group {{ data.fname_error ? 'has-error' : '' }}">
+							<label class="control-label " for="fname">
+							First name
+							</label>
+							<input class="form-control" id="fname" name="fname" ng-model="data.fname" type="text"/>
+						</div>
+						<div class="form-group {{ data.lname_error ? 'has-error' : '' }}">
+							<label class="control-label " for="lname">
+							Last name
+							</label>
+							<input class="form-control" id="lname" name="lname" ng-model="data.lname" type="text"/>
+						</div>
+						<div class="form-group {{ data.username_error ? 'has-error' : '' }}">
+							<label class="control-label " for="username">
+							Username
+							</label>
+							<input class="form-control" id="username" name="username" ng-model="data.username" type="text"/>
+						</div>
+						<div class="form-group {{ data.password_error ? 'has-error' : '' }}">
+							<label class="control-label " for="password">
+							Password
+							</label>
+							<input class="form-control" id="password" name="password" ng-model="data.password" type="password"/>
+						</div>
+						<div class="form-group {{ data.amount_error ? 'has-error' : '' }}">
+							<label class="control-label " for="amount">
+							Amount
+							</label>
+							<input class="form-control" id="amount" name="amount" ng-model="data.amount" type="text"/>
+						</div>
+						<div class="form-group">
+							<div>
+								<button class="btn btn-primary " ng-click="saveSettings()" name="submit" type="submit">Save settings</button>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

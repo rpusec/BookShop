@@ -16,7 +16,6 @@ app.controller('entityModalContr', function($scope, editingEntity, entityService
 	}
 
 	function addEditResp(response){
-		console.log(response);
 		if(response.data.authenticated)
 		{
 			if(!response.data.hasErrors)

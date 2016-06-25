@@ -31,12 +31,22 @@ app.controller('navbarContr', function($scope, $state, $location, authService, o
 	}
 
 	$scope.logout = function(){
-		if(authService.isAuthenticated())
-		{
-			authService.logout();
-			this.highlightTitle('');
-		}
+		if(!authService.isAuthenticated())
+			return;
+		
+		authService.logout();
+		this.highlightTitle('');
 	}
+
+	$scope.openAccountSettings = function(){
+		$location.path('/accsettings');
+	}
+
+	$scope.$on('updateNavbarData', function(e, data){
+		$scope.fname = data.fname;
+		$scope.lname = data.lname;
+		$location.path('/catalogue');
+	});
 
 	observerService.subscribe('auth', function(){
 		if(authService.isAuthenticated())

@@ -11,7 +11,7 @@
 
 		<p class="navbar-text navbar-right" ng-show="userBarShown" style="margin-right:10px">
 			Welcome <b>{{ fname + ' ' + lname }}</b>! 
-			<a style="cursor:pointer;">Account settings <span class="glyphicon glyphicon-edit"></span></a> 
+			<a ng-click="openAccountSettings()" style="cursor:pointer;">Account settings <span class="glyphicon glyphicon-edit"></span></a> 
 			<a ng-click="logout()" style="cursor:pointer;">Logout <span class="glyphicon glyphicon-off"></span></a>
 		</p>
 	</div>
