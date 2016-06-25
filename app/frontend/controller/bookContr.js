@@ -58,10 +58,8 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 			controller: 'entityModalContr',
 			templateUrl: 'bookModal.html',
 			resolve: {
-				entityData: function(){
-					return {
-						editingEntity: $scope.editingBook
-					};
+				editingEntity: function(){
+					return $scope.editingBook;
 				},
 				entityService: bookService,
 				functNames: function(){

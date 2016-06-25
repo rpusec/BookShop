@@ -55,10 +55,8 @@ app.controller("userContr", function($scope, $uibModal, userService, authService
 			controller: 'entityModalContr',
 			templateUrl: 'userModal.html',
 			resolve: {
-				entityData: function(){
-					return {
-						editingEntity: $scope.editingUser
-					}
+				editingEntity: function(){
+					return $scope.editingUser;
 				},
 				entityService: userService,
 				functNames: function(){

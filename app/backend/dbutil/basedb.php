@@ -77,14 +77,20 @@ abstract class BaseDB {
 		$bindStr = "";
 		$values = array();
 
+		end($updateArr);
+		$lastKey = key($updateArr);
+
 		foreach($updateArr as $updateKey => $updateInfo)
 		{
-			$sql .= "$updateKey=? ";
+			$sql .= "$updateKey=?";
 			$bindStr .= $updateInfo['type'];
-			$values[] = &$updateInfo['value'];
+			$values[] = &$updateArr[$updateKey]['value'];
+
+			if($updateKey != $lastKey)
+				$sql .= ", ";
 		}
 
-		$sql .= "WHERE $entityIDName=?";
+		$sql .= " WHERE $entityIDName=?";
 		$bindStr .= "i";
 		$values[] = &$entityID;
 		array_unshift($values, $bindStr);

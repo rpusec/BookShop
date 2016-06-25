@@ -1,6 +1,6 @@
-app.controller('entityModalContr', function($scope, entityData, entityService, functNames, authService){
+app.controller('entityModalContr', function($scope, editingEntity, entityService, functNames, authService){
 	$scope[functNames.editingEntityData] = {};
-	$scope[functNames.editingEntity] = entityData.editingEntity;
+	$scope[functNames.editingEntity] = editingEntity;
 
 	$scope[functNames.addEntity] = function(){
 		entityService[functNames.addEntity](
@@ -9,13 +9,14 @@ app.controller('entityModalContr', function($scope, entityData, entityService, f
 	}
 
 	$scope[functNames.editEntity] = function(){	
-		$scope[functNames.editingEntityData][functNames.entityIDLabel] = entityData.editingEntity[functNames.entityIDLabel];
+		$scope[functNames.editingEntityData][functNames.entityIDLabel] = editingEntity[functNames.entityIDLabel];
 		entityService[functNames.editEntity](
 			$scope[functNames.editingEntityData],
 			addEditResp);
 	}
 
 	function addEditResp(response){
+		console.log(response);
 		if(response.data.authenticated)
 		{
 			if(!response.data.hasErrors)
