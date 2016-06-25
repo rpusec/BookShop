@@ -1,4 +1,4 @@
-app.controller("userContr", function($scope, userService, authService){
+app.controller("userContr", function($scope, $uibModal, userService, authService){
 	$scope.users = null;
 	$scope.metadata = ['First name', 'Last name', 'Username', 'Password', 'Amount', 'Edit', 'Delete'];
 	$scope.popover = {
@@ -23,7 +23,7 @@ app.controller("userContr", function($scope, userService, authService){
 	displayUsers();
 
 	$scope.setManagingUserInfo = function(userID, fname, lname){
-		this.editUserData.userID = userID;
+		this.editingUser.userID = userID;
 		
 		if(userID !== -1)
 			this.editingUser.title = 'Editing user: ' + fname + ' ' + lname;
@@ -50,41 +50,34 @@ app.controller("userContr", function($scope, userService, authService){
 		);
 	}
 
-	$scope.addUser = function(){
-		userService.addUser(
-			this.editUserData,
-			addEditResp);
-	}
-
-	$scope.editUser = function(){
-		userService.editUser(
-			this.editUserData,
-			addEditResp);
-	}
-
-	function addEditResp(response){
-		if(response.data.authenticated)
-		{
-			if(!response.data.hasErrors)
-			{
-				displayUsers();
-				displaySuccessMessage(response.data.message);
-				$('#userModal').modal('hide');
-				$('#userModal').find('.has-error').removeClass('has-error');
+	$scope.openUserModal = function(){
+		var m = $uibModal.open({
+			controller: 'entityModalContr',
+			templateUrl: 'userModal.html',
+			resolve: {
+				entityData: function(){
+					return {
+						editingEntity: $scope.editingUser
+					}
+				},
+				entityService: userService,
+				functNames: function(){
+					return {
+						editingEntityData: 'editingUserData',
+						editingEntity: 'editingUser',
+						addEntity: 'addUser',
+						editEntity: 'editUser',
+						entityIDLabel: 'userID'
+					}
+				}
 			}
-			else
-			{
-				angular.forEach(response.data.errors, function(errorMessage, errorKey){
-					$scope.editUserData[errorKey + '_error'] = true;
-					$.notify(errorMessage, {className: 'error', position: 'top center'});
-				});
-			}
-		}
-		else
-			authService.logout({
-				message: response.data.message,
-				messageType: 'error'
-			});
+		});
+
+		m.closed.then(function(result){
+			displayUsers();
+		});
+
+		return m;
 	}
 
 	$scope.deleteUser = function(){

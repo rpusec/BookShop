@@ -55,7 +55,6 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 
 	$scope.openBookModal = function(){
 		var m = $uibModal.open({
-			animation: true,
 			controller: 'entityModalContr',
 			templateUrl: 'bookModal.html',
 			resolve: {
