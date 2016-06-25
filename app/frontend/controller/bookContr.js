@@ -12,7 +12,6 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 	$scope.editingBook = {};
 	$scope.bookToDeleteID = -1;
 	$scope.targetDelBookCopyNum = 0;
-	$scope.editingBookData = {};
 	$scope.pagination = {
 		totalItems: null,
 		currentPage: 1,
@@ -27,7 +26,7 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 	displayBooks();
 
 	$scope.setManagingBookInfo = function(bookID, title, author){
-		this.editingBookData.bookID = bookID;
+		this.editingBook.bookID = bookID;
 		
 		if(bookID !== -1)
 			this.editingBook.title = 'Editing book: ' + title + ' written by ' + author;
@@ -54,23 +53,26 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 		);
 	}
 
-	var bookModal = null;
-
 	$scope.openBookModal = function(){
-		bookModal = setupBookModal();
-	}
-
-	function setupBookModal(){
 		var m = $uibModal.open({
 			animation: true,
-			controller: 'bookModalContr',
+			controller: 'entityModalContr',
 			templateUrl: 'bookModal.html',
 			resolve: {
-				bookData: function(){
+				entityData: function(){
 					return {
-						editingBookData: $scope.editingBookData,
-						editingBook: $scope.editingBook
+						editingEntity: $scope.editingBook
 					};
+				},
+				entityService: bookService,
+				functNames: function(){
+					return {
+						editingEntityData: 'editingBookData',
+						editingEntity: 'editingBook',
+						addEntity: 'addBook',
+						editEntity: 'editBook',
+						entityIDLabel: 'bookID'
+					}
 				}
 			}
 		});
@@ -236,48 +238,5 @@ app.controller('bookCopiesContr', function($scope, bookService){
 
 	function displaySuccessMessage(message){
 		$.notify(message, {className:'success', position: 'top center'});
-	}
-});
-
-app.controller('bookModalContr', function($scope, bookData, bookService, authService){
-	$scope.editingBookData = bookData.editingBookData;
-	$scope.editingBook = bookData.editingBook;
-
-	$scope.addBook = function(){
-		bookService.addBook(
-			this.editingBookData,
-			addEditResp);
-	}
-
-	$scope.editBook = function(){		
-		bookService.editBook(
-			this.editingBookData,
-			addEditResp);
-	}
-
-	function addEditResp(response){
-		if(response.data.authenticated)
-		{
-			if(!response.data.hasErrors)
-			{
-				$.notify(response.data.message, {className:'success', position: 'top center'});	
-				$scope.$close();
-			}
-			else
-			{
-				angular.forEach(response.data.errors, function(errorMessage, errorKey){
-					$scope.editingBookData[errorKey + '_error'] = true;
-					$.notify(errorMessage, {className: 'error', position: 'top center'});
-				});
-			}
-		}
-		else
-		{
-			$scope.$close();
-			authService.logout({
-				message: response.data.message,
-				messageType: 'error'
-			});
-		}
 	}
 });
