@@ -1,11 +1,9 @@
-<!-- Modal -->
-<div id="bookModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+<script type="text/ng-template" id="bookModal.html">
 
-    <!-- Modal content-->
-    <div class="modal-content">
+<!-- Modal -->
+
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close" ng-click="$close()">&times;</button>
         <h4 class="modal-title">{{ editingBook.title }}</h4>
       </div>
       <div class="modal-body">
@@ -55,9 +53,8 @@
 
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        <button type="button" class="btn btn-default" ng-click="$close()">Cancel</button>
       </div>
-    </div>
 
-  </div>
-</div>
+
+</script>

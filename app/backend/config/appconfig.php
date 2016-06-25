@@ -36,3 +36,7 @@ define('PASSWORD_LENGTH_FROM', 8);
 define('PASSWORD_LENGTH_TO', 100);
 define('AMOUNT_LENGTH_FROM', 0);
 define('AMOUNT_LENGTH_TO', 500);
+
+define('COPY_AMOUNT_ERROR', 'The specified book copy amount should have been an integer. ');
+define('COPY_AMOUNT_FROM', 1);
+define('COPY_AMOUNT_TO', 5);

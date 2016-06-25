@@ -130,8 +130,15 @@ class BookContr {
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
 
+		ValidationHelper::validateInput($copyAmount, 'integer', COPY_AMOUNT_ERROR, 'bookcopy');
+		ValidationHelper::checkAppropriateInputLength($copyAmount, COPY_AMOUNT_FROM, COPY_AMOUNT_TO, 'book copy', 'bookcopy');
+
+		if(ValidationHelper::hasErrors())
+			return array('authenticated' => true, 'hasErrors' => true, 'errors' => ValidationHelper::getErrors());
+
 		BookDB::startConn();
 		return array(
+			'hasErrors' => false,
 			'authenticated' => true, 
 			'message' => 'Book copies added. ',
 			'bookCopiesAdded' => BookDB::addBookCopies($bookID, $copyAmount));

@@ -70,6 +70,7 @@ app.controller("userContr", function($scope, userService, authService){
 				displayUsers();
 				displaySuccessMessage(response.data.message);
 				$('#userModal').modal('hide');
+				$('#userModal').find('.has-error').removeClass('has-error');
 			}
 			else
 			{

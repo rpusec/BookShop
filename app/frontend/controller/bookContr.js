@@ -1,4 +1,4 @@
-app.controller('bookContr', function($scope, bookService, authService){
+app.controller('bookContr', function($scope, $uibModal, bookService, authService){
 	$scope.books = null;
 	$scope.popover = {
 		deleteBookTemplateUrl: 'deleteBookTemplateUrl.html',
@@ -54,40 +54,32 @@ app.controller('bookContr', function($scope, bookService, authService){
 		);
 	}
 
-	$scope.addBook = function(){
-		bookService.addBook(
-			this.editingBookData,
-			addEditResp);
+	var bookModal = null;
+
+	$scope.openBookModal = function(){
+		bookModal = setupBookModal();
 	}
 
-	$scope.editBook = function(){
-		bookService.editBook(
-			this.editingBookData,
-			addEditResp);
-	}
+	function setupBookModal(){
+		var m = $uibModal.open({
+			animation: true,
+			controller: 'bookModalContr',
+			templateUrl: 'bookModal.html',
+			resolve: {
+				bookData: function(){
+					return {
+						editingBookData: $scope.editingBookData,
+						editingBook: $scope.editingBook
+					};
+				}
+			}
+		});
 
-	function addEditResp(response){
-		if(response.data.authenticated)
-		{
-			if(!response.data.hasErrors)
-			{
-				displayBooks();
-				displaySuccessMessage(response.data.message);
-				$('#bookModal').modal('hide');
-			}
-			else
-			{
-				angular.forEach(response.data.errors, function(errorMessage, errorKey){
-					$scope.editingBookData[errorKey + '_error'] = true;
-					$.notify(errorMessage, {className: 'error', position: 'top center'});
-				});
-			}
-		}
-		else
-			authService.logout({
-				message: response.data.message,
-				messageType: 'error'
-			});
+		m.closed.then(function(result){
+			displayBooks();
+		});
+
+		return m;
 	}
 
 	$scope.deleteBook = function(){
@@ -120,10 +112,20 @@ app.controller('bookContr', function($scope, bookService, authService){
 			this.bookCopiesToAddID,
 			this.bookAmountToAdd,
 			function(response){
+				console.log(response);
 				if(response.data.authenticated)
 				{
-					displayBooks();
-					displaySuccessMessage(response.data.message);
+					if(!response.data.hasErrors)
+					{
+						displayBooks();
+						displaySuccessMessage(response.data.message);
+					}
+					else
+					{
+						angular.forEach(response.data.errors, function(errorMessage, errorKey){
+							$.notify(errorMessage, {className: 'error', position: 'top center'});
+						});
+					}
 				}
 				else
 					authService.logout({
@@ -134,7 +136,7 @@ app.controller('bookContr', function($scope, bookService, authService){
 		);
 	}
 
-	$scope.$on('updateListAfterDeletingCopies', function(e){
+	$scope.$on('updateBooks', function(e){
 		displayBooks();
 	});
 
@@ -190,7 +192,7 @@ app.controller('bookCopiesContr', function($scope, bookService){
 				if(response.data.authenticated)
 				{
 					displayBookCopies();
-					$scope.$emit('updateListAfterDeletingCopies');
+					$scope.$emit('updateBooks');
 					displaySuccessMessage(response.data.message);
 				}
 				else
@@ -234,5 +236,48 @@ app.controller('bookCopiesContr', function($scope, bookService){
 
 	function displaySuccessMessage(message){
 		$.notify(message, {className:'success', position: 'top center'});
+	}
+});
+
+app.controller('bookModalContr', function($scope, bookData, bookService, authService){
+	$scope.editingBookData = bookData.editingBookData;
+	$scope.editingBook = bookData.editingBook;
+
+	$scope.addBook = function(){
+		bookService.addBook(
+			this.editingBookData,
+			addEditResp);
+	}
+
+	$scope.editBook = function(){		
+		bookService.editBook(
+			this.editingBookData,
+			addEditResp);
+	}
+
+	function addEditResp(response){
+		if(response.data.authenticated)
+		{
+			if(!response.data.hasErrors)
+			{
+				$.notify(response.data.message, {className:'success', position: 'top center'});	
+				$scope.$close();
+			}
+			else
+			{
+				angular.forEach(response.data.errors, function(errorMessage, errorKey){
+					$scope.editingBookData[errorKey + '_error'] = true;
+					$.notify(errorMessage, {className: 'error', position: 'top center'});
+				});
+			}
+		}
+		else
+		{
+			$scope.$close();
+			authService.logout({
+				message: response.data.message,
+				messageType: 'error'
+			});
+		}
 	}
 });

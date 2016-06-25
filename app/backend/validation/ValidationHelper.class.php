@@ -48,7 +48,7 @@ class ValidationHelper
 	public static function checkAppropriateInputLength($input, $lengthFrom, $lengthTo, $inputLabel, $errorAssociation){
 		$errorMessage = ucfirst($inputLabel) . ' input size should be between ' . $lengthFrom . ' and ' . $lengthTo . ' in length. ';
 
-		if(is_string($input))
+		if(!numeric($input))
 		{
 			if(strlen($input) < $lengthFrom || strlen($input) > $lengthTo)
 				self::$errors[$errorAssociation] = $errorMessage;

@@ -57,9 +57,9 @@ class UserContr
 
 		ValidationHelper::validateInput($fname, 'alphabetic', FNAME_ERROR, 'fname');
 		ValidationHelper::validateInput($lname, 'alphabetic', LNAME_ERROR, 'lname');
-		ValidationHelper::validateInput($username, 'alphabetic', USERNAME_ERROR, 'username');
-		ValidationHelper::validateInput($password, 'alphabetic', PASSWORD_ERROR, 'password');
-		ValidationHelper::validateInput($amount, 'alphabetic', AMOUNT_ERROR, 'amount');
+		ValidationHelper::validateInput($username, 'alphaNumeric', USERNAME_ERROR, 'username');
+		ValidationHelper::validateInput($password, 'alphaNumeric', PASSWORD_ERROR, 'password');
+		ValidationHelper::validateInput($amount, 'decimal', AMOUNT_ERROR, 'amount');
 
 		ValidationHelper::checkAppropriateInputLength($fname, FNAME_LENGTH_FROM, FNAME_LENGTH_TO, 'fname', 'fname');
 		ValidationHelper::checkAppropriateInputLength($lname, LNAME_LENGTH_FROM, LNAME_LENGTH_TO, 'lname', 'lname');
@@ -92,19 +92,19 @@ class UserContr
 
 		if($username !== '')
 		{
-			ValidationHelper::validateInput($username, 'alphabetic', USERNAME_ERROR, 'username');
+			ValidationHelper::validateInput($username, 'alphaNumeric', USERNAME_ERROR, 'username');
 			ValidationHelper::checkAppropriateInputLength($username, USERNAME_LENGTH_FROM, USERNAME_LENGTH_TO, 'username', 'username');
 		}
 
 		if($password !== '')
 		{
-			ValidationHelper::validateInput($password, 'alphabetic', PASSWORD_ERROR, 'password');
+			ValidationHelper::validateInput($password, 'alphaNumeric', PASSWORD_ERROR, 'password');
 			ValidationHelper::checkAppropriateInputLength($password, PASSWORD_LENGTH_FROM, PASSWORD_LENGTH_TO, 'password', 'password');
 		}
 
 		if($amount !== '')
 		{
-			ValidationHelper::validateInput($amount, 'alphabetic', AMOUNT_ERROR, 'amount');
+			ValidationHelper::validateInput($amount, 'numeric', AMOUNT_ERROR, 'amount');
 			ValidationHelper::checkAppropriateInputLength($amount, AMOUNT_LENGTH_FROM, AMOUNT_LENGTH_TO, 'amount', 'amount');
 		}
 

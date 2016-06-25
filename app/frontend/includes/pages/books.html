@@ -24,7 +24,7 @@
 			</tr>
 			<tr ng-repeat-end="">
 				<td colspan="2">
-					<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bookModal" ng-click="setManagingBookInfo(book.book_id, book.title, book.author)"><span class="glyphicon glyphicon-edit"></span></button>
+					<button type="button" class="btn btn-primary" ng-click="setManagingBookInfo(book.book_id, book.title, book.author); openBookModal()"><span class="glyphicon glyphicon-edit"></span></button>
 					
 					<button type="button" class="btn btn-primary" uib-popover-template="popover.deleteBookTemplateUrl" ng-click="bookToDeleteID = book.book_id; targetDelBookCopyNum = book.copies" popover-placement="{{popover.popoverPlacement}}" popover-trigger="outsideClick"><span class="glyphicon glyphicon-remove-circle"></span></button>
 					
