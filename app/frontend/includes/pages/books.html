@@ -1,4 +1,5 @@
 <div ng-controller="bookContr" style="width: 60%; margin: 0 auto;">
+	<h2>Books</h2>
 	<h4 ng-hide="books !== null">There are no books to display. </h4>
 	<table class="table table-bordered" ng-hide="books == null">
 		<tbody>
@@ -36,7 +37,7 @@
 		</tbody>
 	</table>
 
-	<p><b>Results found: {{ pagination.totalItems }}</b></p>
+	<results-found value="{{ pagination.totalItems }}"></results-found>
 
 	<button data-toggle="modal" data-target="#bookModal" ng-click="setManagingBookInfo(-1)" type="button" class="btn btn-primary">Add book</button><br />
 

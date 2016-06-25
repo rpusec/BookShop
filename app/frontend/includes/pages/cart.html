@@ -1,4 +1,5 @@
 <div ng-controller="cartContr" style="width: 60%; margin: 0 auto;">
+	<h2>Cart</h2>
 	<p ng-hide="books !== null">There are no books in your cart. </p>
 	<table class="table table-bordered" ng-hide="books == null">
 		<tbody>
@@ -30,9 +31,8 @@
 		</tbody>
 	</table>
 
-	<p><b>Results found: {{ pagination.totalItems }}</b></p>
-
-	<h3>Current balance: ${{ balance }}</h3>
+	<results-found value="{{ pagination.totalItems }}"></results-found>
+	<current-balance value="{{ balance }}"/>
 	
 	<uib-pagination total-items="pagination.totalItems" ng-model="pagination.currentPage" items-per-page="pagination.itemsPerPage" ng-change="pagination.onPageChange()"></uib-pagination>
 </div>
