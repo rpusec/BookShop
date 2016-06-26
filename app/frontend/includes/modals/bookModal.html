@@ -29,7 +29,7 @@
       <label class="control-label " for="description">
        Description
       </label>
-      <input class="form-control" id="description" name="description" type="text" ng-model="editingBookData.description"/>
+      <textarea class="form-control" id="description" name="description" type="text" ng-model="editingBookData.description" style="max-width:100%"></textarea>
      </div>
      <div class="form-group {{ editingBookData.price_error ? 'has-error' : '' }}">
       <label class="control-label " for="price">

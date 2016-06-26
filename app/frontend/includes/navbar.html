@@ -5,7 +5,7 @@
 		</div>
 		<ul class="nav navbar-nav">
 			<li ng-repeat="navLink in arrNavLinks" class="{{navLink.active}}">
-				<a ui-sref="{{navLink.uri}}" ng-click="highlightTitle(navLink.title)">{{ navLink.title }}</a>
+				<a ui-sref="{{navLink.uri}}" ng-click="highlightTitle(navLink.title)" ng-hide="navLink.hide">{{ navLink.title }}</a>
 			</li>
 		</ul>
 

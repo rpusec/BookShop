@@ -15,7 +15,7 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 	$scope.pagination = {
 		totalItems: null,
 		currentPage: 1,
-		itemsPerPage: 5,
+		itemsPerPage: 3,
 		onPageChange: function(){
 			displayBooks();
 		}

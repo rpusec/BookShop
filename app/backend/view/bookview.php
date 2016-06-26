@@ -11,6 +11,10 @@ if(isset($_GET['funct']))
 			print json_encode(BookContr::getBooks($_GET['currentPage'], $_GET['perPage']));
 			break;
 		case 'add-book' : 
+			if(!isset($_GET['title'])){$_GET['title'] = '';}
+			if(!isset($_GET['author'])){$_GET['author'] = '';}
+			if(!isset($_GET['description'])){$_GET['description'] = '';}
+			if(!isset($_GET['price'])){$_GET['price'] = '';}
 			print json_encode(BookContr::addBook(
 				$_GET['title'], 
 				$_GET['author'], 

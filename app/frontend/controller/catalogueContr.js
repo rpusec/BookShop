@@ -9,7 +9,7 @@ app.controller('catalogueContr', function($scope, $location, catalogueService, a
 	$scope.pagination = {
 		totalItems: null,
 		currentPage: 1,
-		itemsPerPage: 5,
+		itemsPerPage: 3,
 		onPageChange: function(){
 			getCatalogue();
 		}
