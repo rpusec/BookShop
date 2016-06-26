@@ -12,10 +12,15 @@ class UserContr
 			AuthBusiness::logoutUser();
 
 		UserDB::startConn();
-		if(isset($username) && isset($password) && ($user = UserDB::getUserByUsernameAndPassword($username, $password)) !== null)
+		if(isset($username) && isset($password) && ($user = UserDB::getUserByUsername($username)) !== null)
 		{
-			AuthBusiness::setUser($user['userID'], $user['is_admin']);
-			return array('loginSuccess' => true, 'message' => LOGIN_MESSAGE, 'user' => $user);
+			if(password_verify($password, $user['password']))
+			{
+				AuthBusiness::setUser($user['userID'], $user['is_admin']);
+				return array('loginSuccess' => true, 'message' => LOGIN_MESSAGE, 'user' => $user);
+			}
+
+			return array('loginSuccess' => false, 'message' => WRONG_CREDENTIALS_ERROR); 
 		}
 
 		return array('loginSuccess' => false, 'message' => WRONG_CREDENTIALS_ERROR);
@@ -146,7 +151,7 @@ class UserContr
 			$updateArr['username'] = array('value' => $username, 'type' => 's');
 
 		if($password !== '')
-			$updateArr['password'] = array('value' => $password, 'type' => 's');
+			$updateArr['password'] = array('value' => password_hash($password, PASSWORD_DEFAULT), 'type' => 's');
 
 		if($amount !== '')
 			$updateArr['amount'] = array('value' => $amount, 'type' => 'i');

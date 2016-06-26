@@ -43,7 +43,7 @@
               </label>
               <input class="form-control" id="amount" name="amount" ng-model="editingUserData.amount" type="text"/>
              </div>
-             <div class="form-group">
+             <div class="form-group {{ editingUserData.is_admin_error ? 'has-error' : '' }}">
               <label class="control-label " for="is_admin_sel">
                Admin
               </label>
