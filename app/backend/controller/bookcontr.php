@@ -12,6 +12,9 @@ class BookContr {
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
 
+		if(!AuthBusiness::isAdmin())
+			return array('authenticated' => false, 'message' => INSUFFICIENT_PRIVILEGE);
+		
 		BookDB::startConn();
 		$books = BookDB::getBooks($currentPage, $perPage);
 		$bookCount = BookDB::countBookAmount();
@@ -24,6 +27,9 @@ class BookContr {
 	public function addBook($title, $author, $description, $price){
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
+
+		if(!AuthBusiness::isAdmin())
+			return array('authenticated' => false, 'message' => INSUFFICIENT_PRIVILEGE);
 
 		ValidationHelper::validateInput($title, 'alphaNumericSpace', BOOK_TITLE_ERROR, 'title');
 		ValidationHelper::validateInput($author, 'alphabeticSpace', AUTHOR_NAME_ERROR, 'author');
@@ -49,6 +55,9 @@ class BookContr {
 	public function editBook($bookID, $title, $author, $description, $price){
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
+
+		if(!AuthBusiness::isAdmin())
+			return array('authenticated' => false, 'message' => INSUFFICIENT_PRIVILEGE);
 
 		if($title !== '')
 		{
@@ -106,6 +115,9 @@ class BookContr {
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
 
+		if(!AuthBusiness::isAdmin())
+			return array('authenticated' => false, 'message' => INSUFFICIENT_PRIVILEGE);
+
 		BookDB::startConn();
 		return array(
 			'authenticated' => true, 
@@ -116,6 +128,9 @@ class BookContr {
 	public static function getBookCopies($bookID, $currentPage, $perPage){
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
+
+		if(!AuthBusiness::isAdmin())
+			return array('authenticated' => false, 'message' => INSUFFICIENT_PRIVILEGE);
 
 		BookDB::startConn();
 		$bookCopies = BookDB::getBookCopies($bookID, $currentPage, $perPage);
@@ -129,6 +144,9 @@ class BookContr {
 	public static function addBookCopies($bookID, $copyAmount){
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
+
+		if(!AuthBusiness::isAdmin())
+			return array('authenticated' => false, 'message' => INSUFFICIENT_PRIVILEGE);
 
 		ValidationHelper::validateInput($copyAmount, 'integer', COPY_AMOUNT_ERROR, 'bookcopy');
 		ValidationHelper::checkAppropriateInputLength($copyAmount, COPY_AMOUNT_FROM, COPY_AMOUNT_TO, 'book copy', 'bookcopy');
@@ -147,6 +165,9 @@ class BookContr {
 	public static function removeBookCopies($strBookCopyIDs){
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
+
+		if(!AuthBusiness::isAdmin())
+			return array('authenticated' => false, 'message' => INSUFFICIENT_PRIVILEGE);
 
 		BookDB::startConn();
 		$arrBookCopyIDs = array_map('intval', explode('|', $strBookCopyIDs));

@@ -1,6 +1,6 @@
 app.controller("userContr", function($scope, $uibModal, userService, authService){
 	$scope.users = null;
-	$scope.metadata = ['First name', 'Last name', 'Username', 'Password', 'Amount', 'Edit', 'Delete'];
+	$scope.metadata = ['First name', 'Last name', 'Username', 'Password', 'Amount', 'Admin', 'Edit', 'Delete'];
 	$scope.popover = {
 		deleteUserTemplateUrl: 'deleteUserTemplateUrl.html',
 		deleteUserPlacement: 'right'

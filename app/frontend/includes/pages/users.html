@@ -14,6 +14,7 @@
 				<td>{{ user.username }}</td>
 				<td>{{ user.password }}</td>
 				<td>{{ user.amount }}</td>
+				<td>{{ user.is_admin == 0 ? 'No' : 'Yes' }}</td>
 				<td><button type="button" class="btn btn-primary" ng-click="setManagingUserInfo(user.user_id, user.fname, user.lname); openUserModal()"><span class="glyphicon glyphicon-edit"></span></button></td>
 				<td><button type="button" class="btn btn-primary" uib-popover-template="popover.deleteUserTemplateUrl" ng-click="userToDeleteID = user.user_id" popover-placement="{{popover.deleteUserPlacement}}" popover-trigger="outsideClick"><span class="glyphicon glyphicon-remove-circle"></span></button></td>
 			</tr>
@@ -22,7 +23,7 @@
 
 	<results-found value="{{ pagination.totalItems }}"></results-found>
 	
-	<button ng-click="setManagingUserInfo(-1)" type="button" class="btn btn-primary">Add user</button><br />
+	<button ng-click="setManagingUserInfo(-1); openUserModal()" type="button" class="btn btn-primary">Add user</button><br />
 
 	<uib-pagination total-items="pagination.totalItems" ng-model="pagination.currentPage" items-per-page="pagination.itemsPerPage" ng-change="pagination.onPageChange()"></uib-pagination>
 

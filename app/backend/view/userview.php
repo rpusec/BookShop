@@ -20,11 +20,19 @@ if(isset($_GET['funct']))
 			print json_encode(UserContr::getUser($_GET['userID']));
 			break;
 		case 'add-user' :
+			if(!isset($_GET['fname'])){$_GET['fname'] = '';}
+			if(!isset($_GET['lname'])){$_GET['lname'] = '';}
+			if(!isset($_GET['username'])){$_GET['username'] = '';}
+			if(!isset($_GET['password'])){$_GET['password'] = '';}
+			if(!isset($_GET['amount'])){$_GET['amount'] = '';}
+			if(!isset($_GET['is_admin'])){$_GET['is_admin'] = '';}
 			print json_encode(UserContr::addUser(
 				$_GET['fname'], 
 				$_GET['lname'], 
 				$_GET['username'], 
-				$_GET['password']
+				$_GET['password'],
+				$_GET['amount'],
+				$_GET['is_admin']
 			)); 
 			break;
 		case 'edit-user' : 
@@ -33,13 +41,15 @@ if(isset($_GET['funct']))
 			if(!isset($_GET['username'])){$_GET['username'] = '';}
 			if(!isset($_GET['password'])){$_GET['password'] = '';}
 			if(!isset($_GET['amount'])){$_GET['amount'] = '';}
+			if(!isset($_GET['is_admin'])){$_GET['is_admin'] = '';}
 			print json_encode(UserContr::editUser(
 				$_GET['userID'], 
 				$_GET['fname'], 
 				$_GET['lname'], 
 				$_GET['username'], 
 				$_GET['password'],
-				$_GET['amount']
+				$_GET['amount'],
+				$_GET['is_admin']
 			));
 			break;
 		case 'delete-user' : 

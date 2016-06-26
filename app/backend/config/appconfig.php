@@ -2,6 +2,7 @@
 
 define('AUTHENTICATION_ERROR', 'You\'re not authenticated to the application. ');
 define('WRONG_CREDENTIALS_ERROR', 'Wrong username and/or password. ');
+define('INSUFFICIENT_PRIVILEGE', 'You do not have sufficient privilege. ');
 define('LOGIN_MESSAGE', 'Access granted! ');
 define('LOGOUT_MESSAGE', 'Goodbye! ');
 define('INITIAL_AMOUNT', 200);
@@ -28,7 +29,7 @@ define('AMOUNT_ERROR', 'The amount should be numeric. ');
 
 define('FNAME_LENGTH_FROM', 3);
 define('FNAME_LENGTH_TO', 20);
-define('LNAME_LENGTH_FROM', 5);
+define('LNAME_LENGTH_FROM', 3);
 define('LNAME_LENGTH_TO', 30);
 define('USERNAME_LENGTH_FROM', 5);
 define('USERNAME_LENGTH_TO', 30);

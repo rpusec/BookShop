@@ -12,9 +12,9 @@ class UserContr
 			AuthBusiness::logoutUser();
 
 		UserDB::startConn();
-		if(($user = UserDB::getUserByUsernameAndPassword($username, $password)) !== null)
+		if(isset($username) && isset($password) && ($user = UserDB::getUserByUsernameAndPassword($username, $password)) !== null)
 		{
-			AuthBusiness::setUser($user['userID']);
+			AuthBusiness::setUser($user['userID'], $user['is_admin']);
 			return array('loginSuccess' => true, 'message' => LOGIN_MESSAGE, 'user' => $user);
 		}
 
@@ -30,6 +30,9 @@ class UserContr
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
 
+		if(!AuthBusiness::isAdmin())
+			return array('authenticated' => false, 'message' => INSUFFICIENT_PRIVILEGE);
+
 		UserDB::startConn();
 		$users = UserDB::getUsers($currentPage, $perPage);
 		$userCount = UserDB::getUserCount();
@@ -44,6 +47,9 @@ class UserContr
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
 
+		if(!AuthBusiness::isAdmin() && $userID != AuthBusiness::getUser())
+			return array('authenticated' => false, 'message' => INSUFFICIENT_PRIVILEGE);
+
 		UserDB::startConn();
 		return array(
 			'authenticated' => true,
@@ -51,32 +57,45 @@ class UserContr
 			'user' => UserDB::getUser($userID));		
 	}
 
-	public function addUser($fname, $lname, $username, $password){
+	public function addUser($fname, $lname, $username, $password, $amount, $is_admin){
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
+
+		if(!AuthBusiness::isAdmin())
+			return array('authenticated' => false, 'message' => INSUFFICIENT_PRIVILEGE);
 
 		ValidationHelper::validateInput($fname, 'alphabetic', FNAME_ERROR, 'fname');
 		ValidationHelper::validateInput($lname, 'alphabetic', LNAME_ERROR, 'lname');
 		ValidationHelper::validateInput($username, 'alphaNumeric', USERNAME_ERROR, 'username');
 		ValidationHelper::validateInput($password, 'alphaNumeric', PASSWORD_ERROR, 'password');
-		ValidationHelper::validateInput($amount, 'decimal', AMOUNT_ERROR, 'amount');
+		ValidationHelper::validateInput($amount, 'numeric', AMOUNT_ERROR, 'amount');
 
 		ValidationHelper::checkAppropriateInputLength($fname, FNAME_LENGTH_FROM, FNAME_LENGTH_TO, 'fname', 'fname');
 		ValidationHelper::checkAppropriateInputLength($lname, LNAME_LENGTH_FROM, LNAME_LENGTH_TO, 'lname', 'lname');
 		ValidationHelper::checkAppropriateInputLength($username, USERNAME_LENGTH_FROM, USERNAME_LENGTH_TO, 'username', 'username');
 		ValidationHelper::checkAppropriateInputLength($password, PASSWORD_LENGTH_FROM, PASSWORD_LENGTH_TO, 'password', 'password');
 		ValidationHelper::checkAppropriateInputLength($amount, AMOUNT_LENGTH_FROM, AMOUNT_LENGTH_TO, 'amount', 'amount');
+		
+		if(!ValidationHelper::checkAppropriateInputLength($is_admin, 0, 1, 'is admin', 'is_admin'))
+			ValidationHelper::checkIfEmpty($is_admin, 'admin', 'is_admin');
+
+		if(ValidationHelper::hasErrors())
+			return array('authenticated' => true, 'hasErrors' => true, 'errors' => ValidationHelper::getErrors());
 
 		UserDB::startConn();
 		return array(
+			'hasErrors' => false,
 			'authenticated' => true,
 			'message' => 'User added. ',
-			'userAdded' => UserDB::addUser($fname, $lname, $username, $password, INITIAL_AMOUNT));
+			'userAdded' => UserDB::addUser($fname, $lname, $username, $password, $amount, $is_admin));
 	}
 
-	public function editUser($userID, $fname, $lname, $username, $password, $amount){
+	public function editUser($userID, $fname, $lname, $username, $password, $amount, $is_admin){
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
+
+		if(!AuthBusiness::isAdmin() && $userID != AuthBusiness::getUser())
+			return array('authenticated' => false, 'message' => INSUFFICIENT_PRIVILEGE);
 
 		if($fname !== '')
 		{
@@ -108,7 +127,7 @@ class UserContr
 			ValidationHelper::checkAppropriateInputLength($amount, AMOUNT_LENGTH_FROM, AMOUNT_LENGTH_TO, 'amount', 'amount');
 		}
 
-		if($fname == '' && $lname == '' && $username == '' && $password == '' && $amount == '')
+		if($fname == '' && $lname == '' && $username == '' && $password == '' && $amount == '' && $is_admin == '')
 			ValidationHelper::addError('Please change at least one input. ', 'none');
 
 		if(ValidationHelper::hasErrors())
@@ -132,6 +151,12 @@ class UserContr
 		if($amount !== '')
 			$updateArr['amount'] = array('value' => $amount, 'type' => 'i');
 
+		if($is_admin !== '')
+		{
+			$is_admin = filter_var($is_admin, FILTER_VALIDATE_BOOLEAN);
+			$updateArr['is_admin'] = array('value' => $is_admin ? 1 : 0, 'type' => 'i');
+		}
+
 		return array(
 			'hasErrors' => false,
 			'authenticated' => true,
@@ -142,6 +167,9 @@ class UserContr
 	public function deleteUser($userID){
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
+
+		if(!AuthBusiness::isAdmin())
+			return array('authenticated' => false, 'message' => INSUFFICIENT_PRIVILEGE);
 
 		UserDB::startConn();
 		return array(

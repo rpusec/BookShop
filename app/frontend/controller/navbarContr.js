@@ -60,6 +60,7 @@ app.controller('navbarContr', function($scope, $state, $location, authService, o
 		}
 		else
 		{
+			$scope.highlightTitle('');
 			$scope.arrNavLinks = null;
 			$scope.userBarShown = false;
 		}

@@ -14,36 +14,45 @@ app.controller('accSettingsContr', function($scope, $rootScope, $location, authS
 			return;
 		}
 
-		this.data.userID = authService.getSession().userID;
-		userService.editUser(this.data, function(response){
-			if(response.data.authenticated)
+		authService.updateSession(function(response){
+			if(!response.data.authenticated)
 			{
-				if(!response.data.hasErrors)
+				forceLogout(response.data.message);
+				return;
+			}
+
+			$scope.data.userID = authService.getSession().userID;
+			userService.editUser($scope.data, function(response){
+				if(response.data.authenticated)
 				{
-					$.notify('Settings successfully updated. ', {className: 'success', position: 'top center'});
-					authService.updateSession(function(response){
-						if(response.data.authenticated)
-							$rootScope.$broadcast('updateNavbarData', response.data.user);
-						else
-							authService.logout({
-								message: response.data.message,
-								messageType: 'error'
-							});
-					});
+					if(!response.data.hasErrors)
+					{
+						$.notify('Settings successfully updated. ', {className: 'success', position: 'top center'});
+						authService.updateSession(function(response){
+							if(response.data.authenticated)
+								$rootScope.$broadcast('updateNavbarData', response.data.user);
+							else
+								forceLogout(response.data.message);
+						});
+					}
+					else
+					{
+						angular.forEach(response.data.errors, function(errorMessage, errorKey){
+							$scope.data[errorKey + '_error'] = true;
+							$.notify(errorMessage, {className: 'error', position: 'top center'});
+						});
+					}
 				}
 				else
-				{
-					angular.forEach(response.data.errors, function(errorMessage, errorKey){
-						$scope.data[errorKey + '_error'] = true;
-						$.notify(errorMessage, {className: 'error', position: 'top center'});
-					});
-				}
-			}
-			else
-				authService.logout({
-					message: response.data.message,
-					messageType: 'error'
-				});
+					forceLogout(response.data.message);
+			});
+		});
+	}
+
+	function forceLogout(msg){
+		authService.logout({
+			message: msg,
+			messageType: 'error'
 		});
 	}
 });

@@ -39,7 +39,7 @@
 
 	<results-found value="{{ pagination.totalItems }}"></results-found>
 
-	<button data-toggle="modal" data-target="#bookModal" ng-click="setManagingBookInfo(-1)" type="button" class="btn btn-primary">Add book</button><br />
+	<button data-toggle="modal" data-target="#bookModal" ng-click="setManagingBookInfo(-1); openBookModal()" type="button" class="btn btn-primary">Add book</button><br />
 
 	<uib-pagination total-items="pagination.totalItems" ng-model="pagination.currentPage" items-per-page="pagination.itemsPerPage" ng-change="pagination.onPageChange()"></uib-pagination>
 

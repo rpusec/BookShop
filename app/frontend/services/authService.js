@@ -19,7 +19,8 @@ app.service('authService', function($http, $location, $window, observerService){
 					user.userID, 
 					user.fname, 
 					user.lname,
-					user.username);
+					user.username,
+					user.is_admin);
 
 				$.notify(response.data.message, {
 					className: 'success',
@@ -37,7 +38,7 @@ app.service('authService', function($http, $location, $window, observerService){
 			}
 
 			if(typeof afterSuccess === 'function')
-				afterSuccess();
+				afterSuccess(response);
 		}, onError);
 	}
 
@@ -68,12 +69,13 @@ app.service('authService', function($http, $location, $window, observerService){
 		}, params.onError);
 	}
 
-	function createSession(userID, fname, lname, username){
+	function createSession(userID, fname, lname, username, isAdmin){
 		$window.localStorage.setItem('UserSession', angular.toJson({
 			userID: userID,
 			lname: lname,
 			fname: fname,
-			username: username
+			username: username,
+			isAdmin: isAdmin
 		}));
 	}
 
@@ -86,13 +88,23 @@ app.service('authService', function($http, $location, $window, observerService){
 			url: 'app/backend/view/userview.php',
 			params: {funct: 'get-user', userID: this.getSession().userID}
 		}).then(function(response){
-			var data = response.data.user;
-			createSession(
-				data.userID,
-				data.fname,
-				data.lname,
-				data.username);
-			onSuccess(response);
+			if(response.data.authenticated)
+			{
+				var data = response.data.user;
+				console.log(data);
+				createSession(
+					data.userID,
+					data.fname,
+					data.lname,
+					data.username,
+					parseInt(data.is_admin));
+				onSuccess(response);
+			}
+			else
+				authService.logout({
+					message: response.data.message,
+					messageType: 'error'
+				});
 		});
 	}
 
@@ -108,6 +120,14 @@ app.service('authService', function($http, $location, $window, observerService){
 
 	authService.isAuthenticated = function(){
 		return authService.getSession() !== null;
+	}
+
+	authService.isAdmin = function(){
+		if(!this.isAuthenticated())
+			return false;
+
+		var session = authService.getSession();
+		return session.isAdmin;
 	}
 
 	return authService;

@@ -52,12 +52,16 @@ class ValidationHelper
 		{
 			if(strlen($input) < $lengthFrom || strlen($input) > $lengthTo)
 				self::$errors[$errorAssociation] = $errorMessage;
+			return false;
 		}
 		else
 		{
 			if($input < $lengthFrom || $input > $lengthTo)
 				self::$errors[$errorAssociation] = $errorMessage;
+			return false;
 		}
+
+		return true;
 	}
 	
 	/**
@@ -70,7 +74,11 @@ class ValidationHelper
 	 */
 	public static function validateInput($input, $validationFunct, $errorMessage, $errorAssociation, $bool = FALSE){
 		if(call_user_func($validationFunct, $input) == $bool)
+		{
 			self::$errors[$errorAssociation] = $errorMessage;
+			return false;
+		}
+		return true;
 	}
 
 	/**
@@ -83,7 +91,20 @@ class ValidationHelper
 	 */
 	public static function checkIfEqual($value1, $value2, $label1, $label2, $errorAssociation){
 		if($value1 != $value2)
+		{
 			self::$errors[$errorAssociation] = ucfirst($label1) . ' value is inequivalent to ' . $label2 . ' value. ';
+			return false;
+		}
+		return true;
+	}
+
+	public static function checkIfEmpty($value, $label, $errorAssociation){
+		if($value == '')
+		{
+			self::$errors[$errorAssociation] = ucfirst($label) . ' value should not be empty. ';
+			return false;
+		}
+		return true;
 	}
 
 	/**
