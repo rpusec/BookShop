@@ -1,13 +1,21 @@
 app.service("userService", function($http){
-	this.displayUsers = function(currentPage, itemsPerPage, onSuccess, onError){
+	this.displayUsers = function(currentPage, itemsPerPage, searchBy, filter, onSuccess, onError){
+		var params = {
+			funct: 'get-users', 
+			currentPage: currentPage,
+			perPage: itemsPerPage
+		}
+
+		if(searchBy !== null)
+			params['searchBy'] = searchBy;
+
+		if(filter !== null)
+			params['filter'] = filter;
+
 		$http({
 			method: 'GET',
 			url: 'app/backend/view/userview.php',
-			params: {
-				funct: 'get-users', 
-				currentPage: currentPage,
-				perPage: itemsPerPage
-			}
+			params: params
 		}).then(onSuccess, onError);
 	}
 

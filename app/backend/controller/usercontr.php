@@ -31,7 +31,7 @@ class UserContr
 		return array('logoutSuccess' => true, 'message' => LOGOUT_MESSAGE);
 	}
 
-	public function getUsers($currentPage, $perPage){
+	public function getUsers($currentPage, $perPage, $searchBy, $filter){
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
 
@@ -39,8 +39,8 @@ class UserContr
 			return array('authenticated' => false, 'message' => INSUFFICIENT_PRIVILEGE);
 
 		UserDB::startConn();
-		$users = UserDB::getUsers($currentPage, $perPage);
-		$userCount = UserDB::getUserCount();
+		$users = UserDB::getUsers($currentPage, $perPage, $searchBy, $filter);
+		$userCount = UserDB::getUserCount($searchBy, $filter);
 		return array(
 			'authenticated' => true,
 			'users' => $users,

@@ -46,10 +46,23 @@ class UserDB extends BaseDB
 		);
 	}
 
-	public static function getUsers($currentPage, $perPage){
-		$stmt = parent::getConn()->prepare('SELECT user_id, fname, lname, username, password, amount, is_admin FROM user LIMIT ? OFFSET ?');
+	public static function getUsers($currentPage, $perPage, $searchBy, $filter){
+		$query = 'SELECT user_id, fname, lname, username, password, amount, is_admin FROM user ';
+		if($searchBy !== null && $filter !== null)
+			$query .= "WHERE $filter LIKE ? ";
+		$query .= 'LIMIT ? OFFSET ?';
+
+		$stmt = parent::getConn()->prepare($query);
 		$offset = ($currentPage-1)*$perPage;
-		$stmt->bind_param('ii', $perPage, $offset);
+
+		if($searchBy !== null && $filter !== null)
+		{
+			$searchBy = "%{$searchBy}%";
+			$stmt->bind_param('sii', $searchBy, $perPage, $offset);
+		}
+		else
+			$stmt->bind_param('ii', $perPage, $offset);
+
 		$stmt->execute();
 		$stmt->bind_result($userID, $fname, $lname, $username, $password, $amount, $is_admin);
 		$result = array();
@@ -68,9 +81,23 @@ class UserDB extends BaseDB
 		return $result;
 	}
 
-	public static function getUserCount(){
-		$result = parent::presentRSAsArray(parent::getConn()->query('SELECT count(user_id) as userCount FROM user'));
-		return $result[0]['userCount'];
+	public static function getUserCount($searchBy, $filter){
+		$query = "SELECT count(user_id) as userCount FROM user ";
+		if($searchBy !== null && $filter !== null)
+			$query .= "WHERE $filter LIKE ? ";
+
+		$stmt = parent::getConn()->prepare($query);
+
+		if($searchBy !== null && $filter !== null)
+		{
+			$searchBy = "%{$searchBy}%";
+			$stmt->bind_param('s', $searchBy);
+		}
+
+		$stmt->execute();
+		$stmt->bind_result($count);
+		$stmt->fetch();
+		return $count;
 	}
 
 	public static function addUser($fname, $lname, $username, $password, $amount, $is_admin){

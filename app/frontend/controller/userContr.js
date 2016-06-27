@@ -16,11 +16,9 @@ app.controller("userContr", function($scope, $uibModal, userService, authService
 		currentPage: 1,
 		itemsPerPage: 5,
 		onPageChange: function(){
-			displayUsers();
+			$scope.displayUsers();
 		}
 	};
-
-	displayUsers();
 
 	$scope.setManagingUserInfo = function(userID, fname, lname){
 		this.editingUser.userID = userID;
@@ -31,11 +29,14 @@ app.controller("userContr", function($scope, $uibModal, userService, authService
 			this.editingUser.title = 'Add user';
 	}
 
-	function displayUsers(){
+	$scope.displayUsers = function(){
 		userService.displayUsers(
 			$scope.pagination.currentPage, 
 			$scope.pagination.itemsPerPage,
+			typeof $scope.searchOptions === 'undefined' ? null : !$scope.searchOptions.searchMode ? null : $scope.searchOptions.chosenSeachBy,
+			typeof $scope.searchOptions === 'undefined' ? null : !$scope.searchOptions.searchMode ? null : $scope.searchOptions.chosenFilter,
 			function(response){
+				console.log(response);
 				if(response.data.authenticated)
 				{
 					$scope.users = response.data.users;
@@ -49,6 +50,8 @@ app.controller("userContr", function($scope, $uibModal, userService, authService
 			}
 		);
 	}
+
+	$scope.displayUsers();
 
 	$scope.openUserModal = function(){
 		var m = $uibModal.open({
@@ -72,7 +75,7 @@ app.controller("userContr", function($scope, $uibModal, userService, authService
 		});
 
 		m.closed.then(function(result){
-			displayUsers();
+			$scope.displayUsers();
 		});
 
 		return m;
@@ -84,7 +87,7 @@ app.controller("userContr", function($scope, $uibModal, userService, authService
 			function(response){
 				if(response.data.authenticated)
 				{
-					displayUsers();
+					$scope.displayUsers();
 					displaySuccessMessage(response.data.message);
 				}
 				else
