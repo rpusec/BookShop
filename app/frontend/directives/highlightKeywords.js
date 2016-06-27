@@ -24,7 +24,7 @@ app.directive('highlightKeywords', function(){
 				,	indOfStart = 0
 				,	pos = 0;
 
-				while((pos = filteredValue.indexOf(searchBy, indOfStart)) !== -1){
+				while((pos = filteredValue.toLowerCase().indexOf(searchBy, indOfStart)) !== -1){
 					filteredValue = filteredValue.substr(0, pos) + 
 					elemOpen + 
 					filteredValue.substr(pos, searchBy.length) + 
