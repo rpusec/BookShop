@@ -1,3 +1,8 @@
+/**
+ * Handles all of the functionality for the user entities. 
+ * @author Roman Pusec
+ * @see userService
+ */
 app.controller("userContr", function($scope, $uibModal, userService, authService){
 	$scope.users = null;
 	$scope.metadata = ['First name', 'Last name', 'Username', 'Amount', 'Admin', 'Edit', 'Delete'];
@@ -20,6 +25,12 @@ app.controller("userContr", function($scope, $uibModal, userService, authService
 		}
 	};
 
+	/**
+	 * Sets the user information which is related to editing or adding a user. 
+	 * @param {Integer} userID The database ID value of the user. 
+	 * @param {String} fname  The first name of the user. 
+	 * @param {String} lname The last name of the user. 
+	 */
 	$scope.setManagingUserInfo = function(userID, fname, lname){
 		this.editingUser.userID = userID;
 		
@@ -29,6 +40,10 @@ app.controller("userContr", function($scope, $uibModal, userService, authService
 			this.editingUser.title = 'Add user';
 	}
 
+	/**
+	 * Displays the users from the userService. 
+	 * @see userService.displayUsers
+	 */
 	$scope.displayUsers = function(){
 		userService.displayUsers(
 			$scope.pagination.currentPage, 
@@ -53,6 +68,10 @@ app.controller("userContr", function($scope, $uibModal, userService, authService
 
 	$scope.displayUsers();
 
+	/**
+	 * Opens the modal window for editing or adding a user. 
+	 * @see entityModalContr for more info. 
+	 */
 	$scope.openUserModal = function(){
 		var m = $uibModal.open({
 			controller: 'entityModalContr',
@@ -81,6 +100,10 @@ app.controller("userContr", function($scope, $uibModal, userService, authService
 		return m;
 	}
 
+	/**
+	 * Deletes a specific user. 
+	 * @see userService.deleteUser
+	 */
 	$scope.deleteUser = function(){
 		userService.deleteUser(
 			this.userToDeleteID,
@@ -99,6 +122,10 @@ app.controller("userContr", function($scope, $uibModal, userService, authService
 		);
 	}
 
+	/**
+	 * Displays the success message. 
+	 * @param  {String} message The message. 
+	 */
 	function displaySuccessMessage(message){
 		$.notify(message, {className:'success', position: 'top center'});
 	}

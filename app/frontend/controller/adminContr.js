@@ -1,3 +1,9 @@
+/**
+ * The base page for the administration panel. Serves no purpose other than providing links
+ * to the 'Users' and 'Books' secrion and to redirect the user if the user is not an admin 
+ * or is not authenticated.  
+ * @author Roman Pusec
+ */
 app.controller('adminContr', function($scope, $location, authService){
 	if(!authService.isAuthenticated())
 	{

@@ -1,3 +1,8 @@
+/**
+ * Handles all of the necessary processes regarding books. 
+ * @author Roman Pusec
+ * @see bookService 
+ */
 app.controller('bookContr', function($scope, $uibModal, bookService, authService){
 	$scope.books = null;
 	$scope.popover = {
@@ -23,6 +28,12 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 	$scope.bookCopiesToAddID = null;
 	$scope.bookAmountToAdd = 0;
 
+	/**
+	 * Sets the book information which is related to editing or adding a book. 
+	 * @param {Integer} bookID The database ID value of the book. 
+	 * @param {String} title  The title of the book. 
+	 * @param {String} author The author of the book. 
+	 */
 	$scope.setManagingBookInfo = function(bookID, title, author){
 		this.editingBook.bookID = bookID;
 		
@@ -32,6 +43,10 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 			this.editingBook.title = 'Add book';
 	}
 
+	/**
+	 * Displays the books fetched from the bookService. 
+	 * @see bookService.displayBooks
+	 */
 	$scope.displayBooks = function(){
 		bookService.displayBooks(
 			$scope.pagination.currentPage, 
@@ -55,6 +70,10 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 
 	$scope.displayBooks();
 
+	/**
+	 * Opens the modal window for editing or adding a book. 
+	 * @see entityModalContr for more info. 
+	 */
 	$scope.openBookModal = function(){
 		var m = $uibModal.open({
 			controller: 'entityModalContr',
@@ -83,6 +102,11 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 		return m;
 	}
 
+	/**
+	 * Deletes a book entity, identified by 
+	 * the $scope.bookToDeleteID variable. 
+	 * @see bookService.deleteBook
+	 */
 	$scope.deleteBook = function(){
 		bookService.deleteBook(
 			this.bookToDeleteID,
@@ -101,13 +125,25 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 		);
 	}
 
+	/**
+	 * Displays the list of copies of a specified book. 
+	 * This controller contacts its child controller (bookCopiesContr)
+	 * via $broadcast event, afterwards the child controller updates
+	 * its view accordingly. 
+	 * @param  {[type]} bookID    The ID of the book. 
+	 * @param  {[type]} bookTitle The book title. 
+	 */
 	$scope.displayBookCopies = function(bookID, bookTitle){
-		$scope.$broadcast('bookCopyInfoEvent', {
+		$scope.$broadcast('displayBookCopiesEvent', {
 			bookID: bookID,
 			bookTitle: bookTitle
 		});
 	}
 
+	/**
+	 * Adds book copies. 
+	 * @see bookService.addBookCopies
+	 */
 	$scope.addBookCopies = function(){
 		bookService.addBookCopies(
 			this.bookCopiesToAddID,
@@ -141,11 +177,19 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 		$scope.displayBooks();
 	});
 
+	/**
+	 * Displays the success message. 
+	 * @param  {String} message The message. 
+	 */
 	function displaySuccessMessage(message){
 		$.notify(message, {className:'success', position: 'top center'});
 	}
 });
 
+/**
+ * Handles book copy processes. Its parent controller is 'bookContr'. 
+ * @author Roman Pusec 
+ */
 app.controller('bookCopiesContr', function($scope, bookService){
 	$scope.bookTitle = null;
 	$scope.bookID = null;
@@ -160,12 +204,16 @@ app.controller('bookCopiesContr', function($scope, bookService){
 		}
 	};
 
-	$scope.$on('bookCopyInfoEvent', function(e, data){
+	$scope.$on('displayBookCopiesEvent', function(e, data){
 		$scope.bookID = data.bookID;
 		$scope.bookTitle = data.bookTitle;
 		displayBookCopies();
 	});
 
+	/**
+	 * Displays the book copies. 
+	 * @see bookService.displayBookCopies
+	 */
 	function displayBookCopies(){
 		bookService.displayBookCopies(
 			$scope.bookID,
@@ -186,6 +234,10 @@ app.controller('bookCopiesContr', function($scope, bookService){
 		);
 	}
 
+	/**
+	 * Deletes the book copies. 
+	 * @see bookService.deleteBookCopies
+	 */
 	$scope.deleteBookCopies = function(){
 		bookService.deleteBookCopies(
 			this.bookCopies,
@@ -205,6 +257,11 @@ app.controller('bookCopiesContr', function($scope, bookService){
 		);
 	}
 
+	/**
+	 * Selects all of the copies in the list. The attribute that
+	 * handles the selection is called 'selected' and is bound with
+	 * the view. 
+	 */
 	$scope.selectAllCopies = function(){
 		var allSelected = true;
 
@@ -221,6 +278,9 @@ app.controller('bookCopiesContr', function($scope, bookService){
 		});
 	}
 
+	/**
+	 * Checks if at least one copy is selected. 
+	 */
 	$scope.isOneCopySelected = function(){
 		var atLeastOneSelected = false;
 
@@ -235,6 +295,10 @@ app.controller('bookCopiesContr', function($scope, bookService){
 		return atLeastOneSelected;
 	}
 
+	/**
+	 * Displays the success message. 
+	 * @param  {String} message The message. 
+	 */
 	function displaySuccessMessage(message){
 		$.notify(message, {className:'success', position: 'top center'});
 	}

@@ -1,3 +1,7 @@
+/**
+ * Handles simple user authenticaiton. 
+ * @author Roman Pusec
+ */
 app.controller('loginContr', function($scope, $location, authService, observerService){
 	if(authService.isAuthenticated())
 	{
@@ -5,6 +9,9 @@ app.controller('loginContr', function($scope, $location, authService, observerSe
 		return;
 	}
 
+	/**
+	 * Authenticates the user to the application. 
+	 */
 	$scope.login = function(){
 		authService.login(
 			this.username, 
@@ -13,7 +20,6 @@ app.controller('loginContr', function($scope, $location, authService, observerSe
 				$scope.username = '';
 				$scope.password = '';
 				observerService.notifyAll('auth');
-				console.log(response);
 			}
 		);
 	}

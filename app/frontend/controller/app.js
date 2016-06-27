@@ -1,11 +1,25 @@
+/**
+ * App instance shared by all controllers. 
+ * @author Roman Pusec
+ */
 var app = angular.module("myApp", ['ui.bootstrap', 'ui.router', 'services']);
 
+/**
+ * Storing variables shared by all pages. 
+ * @author Roman Pusec
+ * @see ovserverService
+ */
 app.run(function($rootScope, observerService){
 	$rootScope.navbarUrl = 'app/frontend/includes/navbar.html';
 	$rootScope.footerUrl = 'app/frontend/includes/footer.html';
 	observerService.createObserver('auth');
 });
 
+/**
+ * Configuring all various states of the application. 
+ * @author Roman Pusec
+ * @see tutorial for Angular UI Router. 
+ */
 app.config(function($stateProvider, $urlRouterProvider, $locationProvider){
 	$urlRouterProvider.otherwise('/catalogue');
 	$stateProvider

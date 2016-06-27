@@ -1,3 +1,7 @@
+/**
+ * Handles the account settings of the authenticated user. 
+ * @author Roman Pusec
+ */
 app.controller('accSettingsContr', function($scope, $rootScope, $location, authService, userService){
 	if(!authService.isAuthenticated())
 	{
@@ -7,6 +11,12 @@ app.controller('accSettingsContr', function($scope, $rootScope, $location, authS
 
 	$scope.data = {};
 
+	/**
+	 * Saves the updated user settings. 
+	 * The session is first updated to avoid any possible cross site scripting attacks, since the data
+	 * is stored in localStorage and can be accessed and edited in the browser. 
+	 * @see authService.updateSession
+	 */
 	$scope.saveSettings = function(){
 		if(!authService.isAuthenticated())
 		{
@@ -49,6 +59,10 @@ app.controller('accSettingsContr', function($scope, $rootScope, $location, authS
 		});
 	}
 
+	/**
+	 * Logs the authenticated user out of the application. 
+	 * @param  {String} msg The message to display. 
+	 */
 	function forceLogout(msg){
 		authService.logout({
 			message: msg,
