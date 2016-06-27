@@ -1,5 +1,6 @@
 <div ng-controller="cartContr" style="width: 60%; margin: 0 auto;">
 	<h2>Cart</h2>
+	<search-options filters="title=Title;author=Author;description=Description;price=Price" searchfunct="getBooksFromCart" />
 	<p ng-hide="books !== null">There are no books in your cart. </p>
 	<table class="table table-bordered" ng-hide="books == null">
 		<tbody>

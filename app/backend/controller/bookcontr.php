@@ -8,7 +8,7 @@ require_once('../validation/ValidationHelper.class.php');
 
 class BookContr {
 
-	public function getBooks($currentPage, $perPage){
+	public function getBooks($currentPage, $perPage, $searchBy, $filter){
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
 
@@ -16,8 +16,8 @@ class BookContr {
 			return array('authenticated' => false, 'message' => INSUFFICIENT_PRIVILEGE);
 		
 		BookDB::startConn();
-		$books = BookDB::getBooks($currentPage, $perPage);
-		$bookCount = BookDB::countBookAmount();
+		$books = BookDB::getBooks($currentPage, $perPage, $searchBy, $filter);
+		$bookCount = BookDB::countBookAmount($searchBy, $filter);
 		return array(
 			'authenticated' => true, 
 			'books' => $books, 
@@ -177,13 +177,13 @@ class BookContr {
 			'bookCopiesRemoved' => BookDB::removeBookCopies($arrBookCopyIDs));	
 	}
 
-	public function getCatalogue($currentPage, $perPage){
+	public function getCatalogue($currentPage, $perPage, $searchBy, $filter){
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
 
 		BookDB::startConn();
-		$books = BookDB::getBooksWithAvailableCopyAmount($currentPage, $perPage);
-		$bookCount = BookDB::countBookAmount();
+		$books = BookDB::getBooksWithAvailableCopyAmount($currentPage, $perPage, $searchBy, $filter);
+		$bookCount = BookDB::countBookAmount($searchBy, $filter);
 		$balance = BookBusiness::calcUserBookBalance(AuthBusiness::getUser());
 		return array(
 			'authenticated' => true,
@@ -192,13 +192,13 @@ class BookContr {
 			'balance' => $balance);
 	}
 
-	public function getBooksFromCart($currentPage, $perPage){
+	public function getBooksFromCart($currentPage, $perPage, $searchBy, $filter){
 		if(!AuthBusiness::isAuthenticated())
 			return array('authenticated' => false, 'message' => AUTHENTICATION_ERROR);
 
 		BookDB::startConn();
-		$books = BookDB::getBooksFromCart($currentPage, $perPage, AuthBusiness::getUser());
-		$bookCount = BookDB::countBooksFromCart(AuthBusiness::getUser());
+		$books = BookDB::getBooksFromCart($currentPage, $perPage, AuthBusiness::getUser(), $searchBy, $filter);
+		$bookCount = BookDB::countBooksFromCart(AuthBusiness::getUser(), $searchBy, $filter);
 		$balance = BookBusiness::calcUserBookBalance(AuthBusiness::getUser());
 		return array(
 			'authenticated' => true,

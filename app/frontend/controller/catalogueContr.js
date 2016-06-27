@@ -11,12 +11,10 @@ app.controller('catalogueContr', function($scope, $location, catalogueService, a
 		currentPage: 1,
 		itemsPerPage: 3,
 		onPageChange: function(){
-			getCatalogue();
+			$scope.getCatalogue();
 		}
 	};
 	$scope.balance = 0;
-
-	getCatalogue();
 
 	$scope.addToCart = function(bookID){
 		catalogueService.addToCart(
@@ -25,7 +23,7 @@ app.controller('catalogueContr', function($scope, $location, catalogueService, a
 				console.log(response);
 				if(response.data.authenticated)
 				{
-					getCatalogue();
+					$scope.getCatalogue();
 					displayMessage(response.data.message, response.data.canAfford ? 'success' : 'warning');
 				}
 				else
@@ -41,10 +39,12 @@ app.controller('catalogueContr', function($scope, $location, catalogueService, a
 		return this.balance - book.price >= 0;
 	}
 
-	function getCatalogue(){
+	$scope.getCatalogue = function(){
 		catalogueService.getCatalogue(
 			$scope.pagination.currentPage,
 			$scope.pagination.itemsPerPage,
+			typeof $scope.searchOptions === 'undefined' ? null : !$scope.searchOptions.searchMode ? null : $scope.searchOptions.chosenSeachBy,
+			typeof $scope.searchOptions === 'undefined' ? null : !$scope.searchOptions.searchMode ? null : $scope.searchOptions.chosenFilter,
 			function(response){
 				console.log(response);
 				if(response.data.authenticated)
@@ -61,6 +61,8 @@ app.controller('catalogueContr', function($scope, $location, catalogueService, a
 			}
 		);
 	}
+
+	$scope.getCatalogue();
 
 	function displayMessage(message, className){
 		if(typeof className === 'undefined')

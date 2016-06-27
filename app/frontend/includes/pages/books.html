@@ -1,5 +1,6 @@
 <div ng-controller="bookContr" style="width: 60%; margin: 0 auto;">
 	<h2>Books</h2>
+	<search-options filters="title=Title;author=Author;description=Description;price=Price" searchfunct="displayBooks" />
 	<h4 ng-hide="books !== null">There are no books to display. </h4>
 	<table class="table table-bordered" ng-hide="books == null">
 		<tbody>

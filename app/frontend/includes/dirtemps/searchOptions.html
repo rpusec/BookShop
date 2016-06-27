@@ -1,6 +1,5 @@
 <form class="form-inline">
 	<div class="form-group">
-		<label>Search by</label>
 		<input type="text" class="form-control" ng-model="searchOptions.searchBy" placeholder="Search by... ">
 	</div>
 	<div class="form-group">
@@ -8,6 +7,6 @@
 		<select class="form-control" ng-options="filter.id as filter.name for filter in searchOptions.filters" ng-model="searchOptions.filter">
 		</select>
 	</div>
-	<button type="button" class="btn btn-default" ng-click="searchOptions.executeSearch()">Search</button>
+	<button type="button" class="btn btn-default" ng-click="searchOptions.executeSearch()" ng-disabled="searchOptions.searchBy === ''">Search</button>
 	<button type="button" class="btn btn-primary" ng-show="searchOptions.searchMode" ng-click="searchOptions.exitSearchMode()">Or go back</button>
 </form>

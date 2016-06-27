@@ -1,13 +1,21 @@
 app.service('cartService', function($http){
-	this.getBooksFromCart = function(currentPage, itemsPerPage, onSuccess, onError){
+	this.getBooksFromCart = function(currentPage, itemsPerPage, searchBy, filter, onSuccess, onError){
+		var params = {
+			funct: 'get-books-from-cart', 
+			currentPage: currentPage,
+			perPage: itemsPerPage
+		}
+
+		if(searchBy !== null)
+			params['searchBy'] = searchBy;
+
+		if(filter !== null)
+			params['filter'] = filter;
+
 		$http({
 			method: 'GET',
 			url: 'app/backend/view/bookview.php',
-			params: {
-				funct: 'get-books-from-cart', 
-				currentPage: currentPage,
-				perPage: itemsPerPage
-			}
+			params: params
 		}).then(onSuccess, onError);
 	}
 

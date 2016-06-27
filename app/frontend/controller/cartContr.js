@@ -11,12 +11,10 @@ app.controller('cartContr', function($scope, $location, cartService, authService
 		currentPage: 1,
 		itemsPerPage: 5,
 		onPageChange: function(){
-			getBooksFromCart();
+			$scope.getBooksFromCart();
 		}
 	};
 	$scope.balance = 0;
-
-	getBooksFromCart();
 
 	$scope.removeFromCart = function(bookID){
 		cartService.removeFromCart(
@@ -36,10 +34,12 @@ app.controller('cartContr', function($scope, $location, cartService, authService
 		);
 	}
 
-	function getBooksFromCart(){
+	$scope.getBooksFromCart = function(){
 		cartService.getBooksFromCart(
 			$scope.pagination.currentPage,
 			$scope.pagination.itemsPerPage,
+			typeof $scope.searchOptions === 'undefined' ? null : !$scope.searchOptions.searchMode ? null : $scope.searchOptions.chosenSeachBy,
+			typeof $scope.searchOptions === 'undefined' ? null : !$scope.searchOptions.searchMode ? null : $scope.searchOptions.chosenFilter,
 			function(response){
 				console.log(response);
 				if(response.data.authenticated)
@@ -56,6 +56,8 @@ app.controller('cartContr', function($scope, $location, cartService, authService
 			}
 		);
 	}
+
+	$scope.getBooksFromCart();
 
 	function displaySuccessMessage(message){
 		$.notify(message, {className:'success', position: 'top center'});

@@ -17,13 +17,11 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 		currentPage: 1,
 		itemsPerPage: 3,
 		onPageChange: function(){
-			displayBooks();
+			$scope.displayBooks();
 		}
 	};
 	$scope.bookCopiesToAddID = null;
 	$scope.bookAmountToAdd = 0;
-
-	displayBooks();
 
 	$scope.setManagingBookInfo = function(bookID, title, author){
 		this.editingBook.bookID = bookID;
@@ -34,10 +32,12 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 			this.editingBook.title = 'Add book';
 	}
 
-	function displayBooks(){
+	$scope.displayBooks = function(){
 		bookService.displayBooks(
 			$scope.pagination.currentPage, 
 			$scope.pagination.itemsPerPage,
+			typeof $scope.searchOptions === 'undefined' ? null : !$scope.searchOptions.searchMode ? null : $scope.searchOptions.chosenSeachBy,
+			typeof $scope.searchOptions === 'undefined' ? null : !$scope.searchOptions.searchMode ? null : $scope.searchOptions.chosenFilter,
 			function(response){
 				if(response.data.authenticated)
 				{
@@ -52,6 +52,8 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 			}
 		);
 	}
+
+	$scope.displayBooks();
 
 	$scope.openBookModal = function(){
 		var m = $uibModal.open({
@@ -75,7 +77,7 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 		});
 
 		m.closed.then(function(result){
-			displayBooks();
+			$scope.displayBooks();
 		});
 
 		return m;
@@ -87,7 +89,7 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 			function(response){
 				if(response.data.authenticated)
 				{
-					displayBooks();
+					$scope.displayBooks();
 					displaySuccessMessage(response.data.message);
 				}
 				else
@@ -116,7 +118,7 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 				{
 					if(!response.data.hasErrors)
 					{
-						displayBooks();
+						$scope.displayBooks();
 						displaySuccessMessage(response.data.message);
 					}
 					else
@@ -136,7 +138,7 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 	}
 
 	$scope.$on('updateBooks', function(e){
-		displayBooks();
+		$scope.displayBooks();
 	});
 
 	function displaySuccessMessage(message){

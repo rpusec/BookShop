@@ -16,17 +16,7 @@ app.directive('searchOptions', function(){
 			scope.searchOptions.filters = filters;
 			scope.searchOptions.filter = filters[0].id;
 			
-			scope.searchOptions.executeSearch = function(){
-				search();
-			}
-
-			scope.searchOptions.exitSearchMode = function(){
-				scope.searchOptions.searchMode = false;
-				scope.searchOptions.searchBy = "";
-				search(true);				
-			}
-
-			function search(defaultSearch){
+			scope.searchOptions.executeSearch = function(defaultSearch){
 				if(typeof defaultSearch !== 'boolean')
 					defaultSearch = false;
 
@@ -38,6 +28,12 @@ app.directive('searchOptions', function(){
 				}
 				
 				scope[attr.searchfunct]();
+			}
+
+			scope.searchOptions.exitSearchMode = function(){
+				scope.searchOptions.searchMode = false;
+				scope.searchOptions.searchBy = "";
+				scope.searchOptions.executeSearch(true);				
 			}
 		},
 		templateUrl: 'app/frontend/includes/dirtemps/searchOptions.html'

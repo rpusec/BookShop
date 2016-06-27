@@ -8,7 +8,9 @@ if(isset($_GET['funct']))
 {
 	switch($_GET['funct']){
 		case 'get-books' : 
-			print json_encode(BookContr::getBooks($_GET['currentPage'], $_GET['perPage']));
+			if(!isset($_GET['searchBy'])){$_GET['searchBy'] = null;}
+			if(!isset($_GET['filter'])){$_GET['filter'] = null;}
+			print json_encode(BookContr::getBooks($_GET['currentPage'], $_GET['perPage'], $_GET['searchBy'], $_GET['filter']));
 			break;
 		case 'add-book' : 
 			if(!isset($_GET['title'])){$_GET['title'] = '';}
@@ -55,10 +57,14 @@ if(isset($_GET['funct']))
 			print json_encode(BookContr::removeBookCopies($_GET['strBookCopyIDs']));
 			break;
 		case 'get-catalogue' : 
-			print json_encode(BookContr::getCatalogue($_GET['currentPage'], $_GET['perPage']));
+			if(!isset($_GET['searchBy'])){$_GET['searchBy'] = null;}
+			if(!isset($_GET['filter'])){$_GET['filter'] = null;}
+			print json_encode(BookContr::getCatalogue($_GET['currentPage'], $_GET['perPage'], $_GET['searchBy'], $_GET['filter']));
 			break;
 		case 'get-books-from-cart' : 
-			print json_encode(BookContr::getBooksFromCart($_GET['currentPage'], $_GET['perPage']));
+			if(!isset($_GET['searchBy'])){$_GET['searchBy'] = null;}
+			if(!isset($_GET['filter'])){$_GET['filter'] = null;}
+			print json_encode(BookContr::getBooksFromCart($_GET['currentPage'], $_GET['perPage'], $_GET['searchBy'], $_GET['filter']));
 			break;
 		case 'add-book-to-cart' : 
 			print json_encode(BookContr::addBookToCart($_GET['bookID']));
