@@ -5,8 +5,8 @@ app.directive('searchOptions', function(){
 			scope.searchOptions = {};
 			scope.searchOptions.searchBy = "";
 			scope.searchOptions.searchMode = false;
-			var filtersInitial = attr.filters.split(';');
-			var filters = [];
+			var	filtersInitial = attr.filters.split(';')
+			,	filters = [];
 
 			angular.forEach(filtersInitial, function(filter){
 				var filterData = filter.split('=');

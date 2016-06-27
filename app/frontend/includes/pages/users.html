@@ -10,9 +10,9 @@
 		</thead>
 		<tbody>
 			<tr ng-repeat="user in users">
-				<td>{{ user.fname }}</td>
-				<td>{{ user.lname }}</td>
-				<td>{{ user.username }}</td>
+				<td><highlight-keywords watch="user.fname" filter="fname">{{ user.fname }}</highlight-keywords></td>
+				<td><highlight-keywords watch="user.lname" filter="lname">{{ user.lname }}</highlight-keywords></td>
+				<td><highlight-keywords watch="user.username" filter="username">{{ user.username }}</highlight-keywords></td>
 				<td>{{ user.amount }}</td>
 				<td>{{ user.is_admin == 0 ? 'No' : 'Yes' }}</td>
 				<td><button type="button" class="btn btn-primary" ng-click="setManagingUserInfo(user.user_id, user.fname, user.lname); openUserModal()" ng-disabled="searchOptions.searchMode"><span class="glyphicon glyphicon-edit"></span></button></td>

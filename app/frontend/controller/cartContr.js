@@ -22,7 +22,7 @@ app.controller('cartContr', function($scope, $location, cartService, authService
 			function(response){
 				if(response.data.authenticated)
 				{
-					getBooksFromCart();
+					$scope.getBooksFromCart();
 					displaySuccessMessage(response.data.message);
 				}
 				else

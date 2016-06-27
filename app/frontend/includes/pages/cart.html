@@ -6,15 +6,15 @@
 		<tbody>
 			<tr ng-repeat-start="book in books">
 				<th>Title</th>
-				<td>{{ book.title }}</td>
+				<td><highlight-keywords watch="book.title" filter="title">{{ book.title }}</highlight-keywords></td>
 			</tr>
 			<tr>
 				<th>Author</th>
-				<td>{{ book.author }}</td>
+				<td><highlight-keywords watch="book.author" filter="author">{{ book.author }}</highlight-keywords></td>
 			</tr>
 			<tr>
 				<th>Description</th>
-				<td>{{ book.description }}</td>
+				<td><highlight-keywords watch="book.description" filter="description">{{ book.description }}</highlight-keywords></td>
 			</tr>
 			<tr>
 				<th>Price</th>
