@@ -7,7 +7,7 @@
  * 
  *  * editingEntity - A function which returns brief information concerned with editing a book object. 
  *  * entityService - A reference of the appropriate service instance. 
- *  * functNames -    Additional function names that make the entityModalContr generic. 
+ *  * functNames    - Additional function names that make the entityModalContr generic. 
  *                     * editingEntityData - Name of the object that contains all of the values for an entity that's being edited. 
  *                     * editingEntity     - General information regarding an entity that's being edited. 
  *                     * addEntity         - Function name for adding an entity. 
@@ -18,7 +18,7 @@
  * which offer similar functionality, can use this controller. 
  * 
  * @author Roman Pusec
- * @see documentation for AngularJS and Bootstrap. 
+ * @see documentation for AngularJS and Bootstrap modal window. 
  */
 app.controller('entityModalContr', function($scope, editingEntity, entityService, functNames, authService){
 	$scope[functNames.editingEntityData] = {};

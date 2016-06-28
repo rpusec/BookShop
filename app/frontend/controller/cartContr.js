@@ -1,3 +1,8 @@
+/**
+ * Handles all of the processes regarding a user's shopping cart. 
+ * @see cartService
+ * @author Roman Pusec
+ */
 app.controller('cartContr', function($scope, $location, cartService, authService){
 	if(!authService.isAuthenticated())
 	{
@@ -6,6 +11,7 @@ app.controller('cartContr', function($scope, $location, cartService, authService
 	}
 
 	$scope.books = null;
+	$scope.balance = 0;
 	$scope.pagination = {
 		totalItems: null,
 		currentPage: 1,
@@ -14,26 +20,12 @@ app.controller('cartContr', function($scope, $location, cartService, authService
 			$scope.getBooksFromCart();
 		}
 	};
-	$scope.balance = 0;
-
-	$scope.removeFromCart = function(bookID){
-		cartService.removeFromCart(
-			bookID,
-			function(response){
-				if(response.data.authenticated)
-				{
-					$scope.getBooksFromCart();
-					displaySuccessMessage(response.data.message);
-				}
-				else
-					authService.logout({
-						message: response.data.message,
-						messageType: 'error'
-					});
-			}
-		);
-	}
-
+	
+	/**
+	 * Fetches all of the books from the 
+	 * authenticated user's shopping cart. 
+	 * @see cartService.getBooksFromCart
+	 */
 	$scope.getBooksFromCart = function(){
 		cartService.getBooksFromCart(
 			$scope.pagination.currentPage,
@@ -57,8 +49,35 @@ app.controller('cartContr', function($scope, $location, cartService, authService
 		);
 	}
 
+	/**
+	 * Removes a book copy from the shopping cart. 
+	 * @see cartService.removeFromCart
+	 * @param  {Integer} bookID The database ID value of the book (not the book copy). 
+	 */
+	$scope.removeFromCart = function(bookID){
+		cartService.removeFromCart(
+			bookID,
+			function(response){
+				if(response.data.authenticated)
+				{
+					$scope.getBooksFromCart();
+					displaySuccessMessage(response.data.message);
+				}
+				else
+					authService.logout({
+						message: response.data.message,
+						messageType: 'error'
+					});
+			}
+		);
+	}
+
 	$scope.getBooksFromCart();
 
+	/**
+	 * Displays the success message. 
+	 * @param  {String} message The message. 
+	 */
 	function displaySuccessMessage(message){
 		$.notify(message, {className:'success', position: 'top center'});
 	}

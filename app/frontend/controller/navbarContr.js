@@ -1,3 +1,7 @@
+/**
+ * Handles logic for navigation bar-related processes. 
+ * @author Roman Pusec
+ */
 app.controller('navbarContr', function($scope, $state, $location, authService, observerService){
 	$scope.appTitle = 'BookShop';
 
@@ -21,6 +25,10 @@ app.controller('navbarContr', function($scope, $state, $location, authService, o
 		});
 	});
 
+	/**
+	 * Highlights a specific navigation link.  
+	 * @param  {[type]} title The text or title of the navigation link. 
+	 */
 	$scope.highlightTitle = function(title){
 		angular.forEach(this.arrNavLinks, function(link){
 			if(link.title === title)
@@ -30,6 +38,10 @@ app.controller('navbarContr', function($scope, $state, $location, authService, o
 		});
 	}
 
+	/**
+	 * Logs the user out. 
+	 * @see authService.logout
+	 */
 	$scope.logout = function(){
 		if(!authService.isAuthenticated())
 			return;
@@ -38,6 +50,9 @@ app.controller('navbarContr', function($scope, $state, $location, authService, o
 		this.highlightTitle('');
 	}
 
+	/**
+	 * Opens the account settings page. 
+	 */
 	$scope.openAccountSettings = function(){
 		if(!authService.isAuthenticated())
 			return;
@@ -46,12 +61,25 @@ app.controller('navbarContr', function($scope, $state, $location, authService, o
 		this.highlightTitle('');
 	}
 
+	/**
+	 * Executed when the user updates their account 
+	 * settings (e.g. their first and last name). 
+	 * @see accSettingsContr controller for explanation. 
+	 */
 	$scope.$on('updateNavbarData', function(e, data){
 		$scope.fname = data.fname;
 		$scope.lname = data.lname;
 		$location.path('/catalogue');
 	});
 
+	/**
+	 * This function is executed whenever the user logs in or 
+	 * out of the application. If the user is logged out, then
+	 * the navigation links are hidden, otherwise all of them 
+	 * are displayed. In addition, it checks whether the user 
+	 * is an administrator, and by that it also sets the admin
+	 * navigation link as visible. 
+	 */
 	observerService.subscribe('auth', function(){
 		if(authService.isAuthenticated())
 		{

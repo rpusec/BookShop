@@ -1,3 +1,7 @@
+/**
+ * Displays the current balance in a h3 element. 
+ * @author Roman Pusec
+ */
 app.directive('currentBalance', function(){
 	return {
 		restrict: 'E',

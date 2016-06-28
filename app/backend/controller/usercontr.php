@@ -59,7 +59,8 @@ class UserContr
 		return array(
 			'authenticated' => true,
 			'message' => 'User recieved. ',
-			'user' => UserDB::getUser($userID));		
+			'user' => UserDB::getUser($userID),
+			'isAuthUser' => ($userID == AuthBusiness::getUser()));		
 	}
 
 	public function addUser($fname, $lname, $username, $password, $amount, $is_admin){

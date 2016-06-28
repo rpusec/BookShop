@@ -15,6 +15,7 @@ app.controller('accSettingsContr', function($scope, $rootScope, $location, authS
 	 * Saves the updated user settings. 
 	 * The session is first updated to avoid any possible cross site scripting attacks, since the data
 	 * is stored in localStorage and can be accessed and edited in the browser. 
+	 * Finally, the navigation bar is updated with user's updated settings. 
 	 * @see authService.updateSession
 	 */
 	$scope.saveSettings = function(){
