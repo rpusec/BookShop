@@ -130,8 +130,8 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 	 * This controller contacts its child controller (bookCopiesContr)
 	 * via $broadcast event, afterwards the child controller updates
 	 * its view accordingly. 
-	 * @param  {[type]} bookID    The ID of the book. 
-	 * @param  {[type]} bookTitle The book title. 
+	 * @param  {Integer} bookID    The ID of the book. 
+	 * @param  {String}  bookTitle The book title. 
 	 */
 	$scope.displayBookCopies = function(bookID, bookTitle){
 		$scope.$broadcast('displayBookCopiesEvent', {

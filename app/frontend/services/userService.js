@@ -73,7 +73,7 @@ app.service("userService", function($http){
 		$http({
 			method: 'GET',
 			url: 'app/backend/view/userview.php',
-			params: userData
+			params: params
 		}).then(onSuccess, onError);
 	}	
 });

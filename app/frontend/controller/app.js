@@ -9,10 +9,9 @@ var app = angular.module("myApp", ['ui.bootstrap', 'ui.router', 'services']);
  * @author Roman Pusec
  * @see ovserverService
  */
-app.run(function($rootScope, observerService){
+app.run(function($rootScope){
 	$rootScope.navbarUrl = 'app/frontend/includes/navbar.html';
 	$rootScope.footerUrl = 'app/frontend/includes/footer.html';
-	observerService.createObserver('auth');
 });
 
 /**

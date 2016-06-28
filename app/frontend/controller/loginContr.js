@@ -2,7 +2,7 @@
  * Handles simple user authenticaiton. 
  * @author Roman Pusec
  */
-app.controller('loginContr', function($scope, $location, authService, observerService){
+app.controller('loginContr', function($rootScope, $scope, $location, authService){
 	if(authService.isAuthenticated())
 	{
 		$location.path('/catalogue');
@@ -19,7 +19,7 @@ app.controller('loginContr', function($scope, $location, authService, observerSe
 			function(response){
 				$scope.username = '';
 				$scope.password = '';
-				observerService.notifyAll('auth');
+				$rootScope.$broadcast('updateNavbarState');
 			}
 		);
 	}

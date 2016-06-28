@@ -11,7 +11,7 @@
  * 
  * @author Roman Pusec
  */
-app.service('authService', function($http, $location, $window, observerService){
+app.service('authService', function($rootScope, $http, $location, $window){
 	var authService = {};
 
 	/**
@@ -89,12 +89,14 @@ app.service('authService', function($http, $location, $window, observerService){
 				position: 'top center',
 				className: !params.messageType ? (response.data.logoutSuccess ? 'success' : 'error') : params.messageType
 			});
+
 			if(response.data.logoutSuccess)
 			{
 				authService.destroySession();
-				observerService.notifyAll('auth');
+				$rootScope.$broadcast('updateNavbarState');
 				$location.path('/login');
 			}
+
 			if(typeof params.afterSuccess === 'function')
 				params.afterSuccess();
 		}, params.onError);

@@ -2,7 +2,7 @@
  * Handles logic for navigation bar-related processes. 
  * @author Roman Pusec
  */
-app.controller('navbarContr', function($scope, $state, $location, authService, observerService){
+app.controller('navbarContr', function($scope, $state, $location, authService){
 	$scope.appTitle = 'BookShop';
 
 	var arrNavLinks = {
@@ -80,7 +80,14 @@ app.controller('navbarContr', function($scope, $state, $location, authService, o
 	 * is an administrator, and by that it also sets the admin
 	 * navigation link as visible. 
 	 */
-	observerService.subscribe('auth', function(){
+	$scope.$on('updateNavbarState', function(e, data){
+		updateNavbarState();
+	});
+
+	/**
+	 * See description above. 
+	 */
+	function updateNavbarState(){
 		if(authService.isAuthenticated())
 		{
 			$scope.arrNavLinks = arrNavLinks;
@@ -102,7 +109,7 @@ app.controller('navbarContr', function($scope, $state, $location, authService, o
 				link.hide = false;
 			});
 		}
-	});
+	}
 
-	observerService.notifyAll('auth');
+	updateNavbarState();
 });
