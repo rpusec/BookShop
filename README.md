@@ -4,7 +4,7 @@ This is a simple online book shop application I built to teach myself AngularJS.
 
 ### Requirements ###
  * PHP 5 >= 5.5.0 or PHP 7 (mostly because of password_confirm/verify functions)
- * The repository comes with a phpMyAdmin dump of the database. 
+ * The repository comes with a phpMyAdmin dump of the database, which is an SQL script that has to be run prior to running the application. 
 
 ### Dependencies used in the project ###
  * [UI-Router](https://github.com/angular-ui/ui-router) - to handle page-load without refreshes. 
