@@ -1,8 +1,8 @@
 /**
  * This directive is used for highlighting a particular keyword in a 
- * text (after a search session has been conducted). 
- * This directive is used in combination with the searchOptions 
- * directive (see explanation below). 
+ * text (after a search session has been conducted). This directive 
+ * is used in combination with the searchOptions directive (see 
+ * explanation below). 
  * @author Roman Pusec
  * @see searchOptions directive
  */

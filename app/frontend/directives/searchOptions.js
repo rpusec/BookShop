@@ -11,7 +11,7 @@
  *
  *  * filters - Specifies the filters that are available for the entity in question.
  *              Each filter is referenced as a key and value pair, and the keys and 
- *              values are separated by an equals delimiter (e.g. 'fname=First name', 
+ *              values are separated by the equals delimiter (e.g. 'fname=First name', 
  *              'lname=Last name', etc.). 
  *              
  *              In our example, the keys reference a column 
