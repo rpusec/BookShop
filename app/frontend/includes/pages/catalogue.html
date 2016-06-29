@@ -5,6 +5,17 @@
 	<table class="table table-bordered">
 		<tbody>
 			<tr ng-repeat-start="book in books">
+				<td rowspan="7">
+					<book-cover 
+						author="{{book.author}}"
+						title="{{book.title}}"
+						description="{{book.description}}"
+						price="{{book.price}}"
+						width="300"
+						height="300" />
+				</td>
+			</tr>
+			<tr>
 				<th>Title</th>
 				<td><highlight-keywords watch="book.title" filter="title">{{ book.title }}</highlight-keywords></td>
 			</tr>
