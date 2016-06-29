@@ -13,7 +13,7 @@ define('DESCR_ERROR', 'The description should be composed of alphabetic and nume
 define('PRICE_ERROR', 'Price should be numeric. ');
 
 define('TITLE_LENGTH_FROM', 3);
-define('TITLE_LENGTH_TO', 50);
+define('TITLE_LENGTH_TO', 30);
 define('AUTHOR_LENGTH_FROM', 5);
 define('AUTHOR_LENGTH_TO', 30);
 define('DESCR_LENGTH_FROM', 5);

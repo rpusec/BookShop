@@ -1,10 +1,21 @@
-<div ng-controller="bookContr" style="width: 60%; margin: 0 auto;">
+<div ng-controller="bookContr">
 	<h2>Books</h2>
 	<search-options filters="title=Title;author=Author;description=Description;price=Price" searchfunct="displayBooks" />
 	<h4 ng-hide="books.length !== 0">There are no books to display. </h4>
 	<table class="table table-bordered">
 		<tbody>
 			<tr ng-repeat-start="book in books">
+				<td rowspan="7">
+					<book-cover 
+						author="{{book.author}}"
+						title="{{book.title}}"
+						description="{{book.description}}"
+						price="{{book.price}}"
+						width="300"
+						height="300" />
+				</td>
+			</tr>
+			<tr >
 				<th>Title</th>
 				<td><highlight-keywords watch="book.title" filter="title">{{ book.title }}</highlight-keywords></td>
 			</tr>
