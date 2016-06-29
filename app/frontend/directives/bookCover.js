@@ -1,8 +1,22 @@
 /**
- * Generates a book cover. 
+ * Generates a book cover which is drawn with HTML5's native canvas support. 
+ * The book covers are randomly generated based on the information from the 
+ * book object. 
  *
- * This directive generates a canvas element and produces the graphics
- * as specified inside of the 'link' function. 
+ * This directive is strictly an element (E) and the 
+ * following attributes are cruical to include: 
+ *  - author
+ *  - title
+ *  - description
+ *  - price
+ *
+ * The following attributes are optional: 
+ *  - width             Width of the canvas. 
+ *  - height            Height of the canvas. 
+ *  - margin            Space between the borders of the canvas and the book. 
+ *  - pagesThickness    The amount of papers of the book. 
+ *  - shadowColorX      The shadow of the book in the X axis.
+ *  - shadowColorY      The shadow of the book in the Y axis.
  * 
  * @author Roman Pusec
  */
