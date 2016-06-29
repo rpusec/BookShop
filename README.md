@@ -4,3 +4,4 @@ This is a simple online book shop application I built to teach myself AngularJS.
 
 ### Requirements ###
  * PHP 5 >= 5.5.0 or PHP 7 (mostly because of password_confirm/verify functions)
+ * The repository comes with a dump of the database, be sure to include it as well. 
