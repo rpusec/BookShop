@@ -106,4 +106,4 @@ todo
 
 ### Documentation ###
 
-Each controller and directive is documented with JSDoc-style documentaiton. 
+Each controller, directive, and service is documented with JSDoc-style documentaiton.
