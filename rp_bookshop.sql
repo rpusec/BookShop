@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 26, 2016 at 08:00 PM
+-- Generation Time: Jun 30, 2016 at 12:47 AM
 -- Server version: 5.6.16
 -- PHP Version: 5.5.11
 
@@ -35,17 +35,17 @@ CREATE TABLE IF NOT EXISTS `book` (
   `description` varchar(200) NOT NULL,
   `price` int(11) NOT NULL,
   PRIMARY KEY (`book_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
 --
 -- Dumping data for table `book`
 --
 
 INSERT INTO `book` (`book_id`, `title`, `author`, `description`, `price`) VALUES
-(5, 'Baker Of The Ancestors', 'Felica Rothchild', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis libero dui, luctus vitae urna vitae, hendrerit vehicula mauris. Phasellus a lectus ut erat condimentum aliquam non ac dolor.', 40),
-(6, 'Pirate Of The Ancients', 'Ruthie Luevano', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tristique orci ac eros elementum, sed placerat turpis rutrum.', 80),
-(7, 'Armies Of The Great', 'Elia Pablo', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean nec lorem odio. Ut eros velit, porta eu justo a, placerat tempus neque. Cras non orci sit amet lectus ornare malesuada non a est.', 35),
-(8, 'Warriors Of History', 'Sun Occhipinti', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vehicula libero felis, eget porta lorem molestie ac. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', 50);
+(5, 'Baker Of The Ancestors', 'Felica Rothchild', 'sdfsdfLorem ipsum dolor sit amet, velit consectetur adipiscing elit. Etiam tristique orci ac aros elementum, sed placerat turpis rutdfdgfgdf', 40),
+(6, 'Pirate Of The Ancients', 'Ruthie Luevano', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam tristique orci ac aros elementum, sed placerat turpis rut', 100),
+(7, 'Armies Of The Great', 'Elia Pablo', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. AenesdfdfsdfsfsdfUt eros velit, porta eu justo a, placerat tempus neque. Cras non orci sit amet lectsdfsdfsghfhfgda non a', 35),
+(8, 'Warriors Of Historys', 'Sun Occhipinti', 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc vehicula libero felis, eget porta lorem molestie ac. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus.', 50);
 
 -- --------------------------------------------------------
 
@@ -60,41 +60,43 @@ CREATE TABLE IF NOT EXISTS `book_copy` (
   PRIMARY KEY (`book_copy_id`),
   KEY `book_id` (`book_id`),
   KEY `user_id` (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=138 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=158 ;
 
 --
 -- Dumping data for table `book_copy`
 --
 
 INSERT INTO `book_copy` (`book_copy_id`, `book_id`, `user_id`) VALUES
-(84, 5, 13),
-(100, 6, NULL),
+(100, 6, 24),
 (103, 6, NULL),
 (104, 6, NULL),
 (105, 6, NULL),
 (106, 6, NULL),
 (107, 6, NULL),
-(110, 5, 13),
-(113, 5, NULL),
-(114, 5, NULL),
 (115, 5, NULL),
-(117, 5, NULL),
-(118, 5, NULL),
-(119, 5, NULL),
-(120, 5, NULL),
-(124, 5, NULL),
+(124, 5, 24),
 (125, 5, NULL),
 (126, 5, NULL),
 (127, 5, NULL),
 (128, 7, 20),
 (130, 7, 20),
-(131, 7, NULL),
+(131, 7, 24),
 (132, 6, NULL),
 (133, 6, NULL),
 (134, 8, NULL),
 (135, 8, NULL),
 (136, 8, NULL),
-(137, 8, NULL);
+(137, 8, NULL),
+(138, 7, NULL),
+(139, 7, NULL),
+(140, 7, NULL),
+(141, 7, NULL),
+(142, 5, NULL),
+(143, 5, NULL),
+(150, 6, NULL),
+(151, 6, NULL),
+(156, 5, NULL),
+(157, 5, NULL);
 
 -- --------------------------------------------------------
 
@@ -111,7 +113,7 @@ CREATE TABLE IF NOT EXISTS `user` (
   `amount` int(11) NOT NULL,
   `is_admin` tinyint(1) NOT NULL,
   PRIMARY KEY (`user_id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=27 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=28 ;
 
 --
 -- Dumping data for table `user`
@@ -119,12 +121,9 @@ CREATE TABLE IF NOT EXISTS `user` (
 
 INSERT INTO `user` (`user_id`, `fname`, `lname`, `username`, `password`, `amount`, `is_admin`) VALUES
 (13, 'Roman', 'Pusec', 'rpusec', '$2y$10$98a/C3lxm23Eqbq3lpMh2utEmExEOweU8FUEan9hhvoGVg4U3lyby', 500, 1),
-(20, 'Jonny', 'Doe', 'jdoe1234', '$2y$10$PqJwkoEZvfWXmr6zjFyJ2.5BuXMhb/VoMWSlTXF7x05nCerqOMtPu', 150, 1),
-(22, 'Mariela', 'Mcveigh', 'mmcveigh', '$2y$10$hIuCNelD3S6yiFqLlBMuEOE0Uf.LhFJdsaz6L9SSUo6u4rIaD7BRW', 130, 0),
-(23, 'Alexia', 'Adan', 'aadan', '$2y$10$gYzaqvJ2xywHm4W93.U5XO6QdpC0KDrwpSCDA8/YB6yFIEJNftOBG', 400, 0),
-(24, 'Darla', 'Oates', 'doates', 'testing123', 344, 0),
-(25, 'Kemberly', 'Kriegel', 'kkriegel', 'testing123', 345, 0),
-(26, 'Jenna', 'Boyers', 'jboyers', 'testing123', 320, 0);
+(20, 'John', 'Jonily', 'Johnny', '$2y$10$PqJwkoEZvfWXmr6zjFyJ2.5BuXMhb/VoMWSlTXF7x05nCerqOMtPu', 500, 1),
+(24, 'Darla', 'Oates', 'doates', '$2y$10$J9lQYojfDTZdipfumX8uG.Gdek0SkbUmqNaryykVIA0TgP0Bbm1Um', 500, 0),
+(26, 'Jenna', 'Boyers', 'jboyers', '$2y$10$Rao6Nz.TPXxFSw3AhdA.w.Aqk0UD8fhRogUzny0bn03Uv5TPpymZO', 500, 0);
 
 --
 -- Constraints for dumped tables
