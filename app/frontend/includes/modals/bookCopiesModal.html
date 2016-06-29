@@ -10,7 +10,7 @@
       </div>
       <div class="modal-body">
 
-        <table class="table">
+        <table class="table" ng-hide="bookCopies.length === 0">
           <thead>
             <tr>
               <th style="text-align:center" ng-repeat="data in metadata">{{ data }}</th>
@@ -29,9 +29,11 @@
           </tbody>
         </table>
         
-        <button type="button" class="btn btn-danger" ng-click="deleteBookCopies()" ng-disabled="!isOneCopySelected()">Delete books</button><br />
+        <h3 style="text-align:center" ng-show="bookCopies.length === 0">No book copies found. </h3>
 
-        <uib-pagination total-items="pagination.totalItems" ng-model="pagination.currentPage" items-per-page="pagination.itemsPerPage" ng-change="pagination.onPageChange()"></uib-pagination>
+        <button type="button" class="btn btn-danger" ng-click="deleteBookCopies()" ng-disabled="!isOneCopySelected()" ng-hide="bookCopies.length === 0">Delete books</button><br />
+
+        <uib-pagination total-items="pagination.totalItems" ng-model="pagination.currentPage" items-per-page="pagination.itemsPerPage" ng-change="pagination.onPageChange()" ng-hide="bookCopies.length === 0"></uib-pagination>
 
       </div>
       <div class="modal-footer">
