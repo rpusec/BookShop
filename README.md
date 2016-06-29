@@ -104,17 +104,17 @@ Based on the provided phpMyAdmin dump, all of the users' passwords are `testing1
 
 ### Screenshots ###
 
-![shot1](https://bytebucket.org/rpusec/bookshop/raw/f7493a80d56dc4e24278652c58ad8bbead474967/screenshots/shot1.png?token=841573bcf8c11d89284dd58f543bd3f8026b48e1)  
+![shot1](https://raw.githubusercontent.com/rpusec/BookShop/master/screenshots/shot1.png)  
 
-![shot2](https://bytebucket.org/rpusec/bookshop/raw/f7493a80d56dc4e24278652c58ad8bbead474967/screenshots/shot2.png?token=e9099bdce049856642ea59e603ddf53afdb49dbf)  
+![shot2](https://raw.githubusercontent.com/rpusec/BookShop/master/screenshots/shot2.png)  
 
-![shot3](https://bytebucket.org/rpusec/bookshop/raw/f7493a80d56dc4e24278652c58ad8bbead474967/screenshots/shot3.png?token=c8f5f45010a37f4ed9882ae4a4f77facfd8b5208)  
+![shot3](https://raw.githubusercontent.com/rpusec/BookShop/master/screenshots/shot3.png)  
 
-![shot4](https://bytebucket.org/rpusec/bookshop/raw/f7493a80d56dc4e24278652c58ad8bbead474967/screenshots/shot4.png?token=421fa90c3f357553114e4a0ab904b69ba66a8ac9)  
+![shot4](https://raw.githubusercontent.com/rpusec/BookShop/master/screenshots/shot4.png)  
 
-![shot5](https://bytebucket.org/rpusec/bookshop/raw/f7493a80d56dc4e24278652c58ad8bbead474967/screenshots/shot5.png?token=7dd8a3043b28d5f6abfda2a1554ade8df8b9622f) 
+![shot5](https://raw.githubusercontent.com/rpusec/BookShop/master/screenshots/shot5.png) 
 
-![shot6](https://bytebucket.org/rpusec/bookshop/raw/f7493a80d56dc4e24278652c58ad8bbead474967/screenshots/shot6.png?token=c33b47f77055065783fbd7cc34652262ebd88a0b)  
+![shot6](https://raw.githubusercontent.com/rpusec/BookShop/master/screenshots/shot6.png)  
 
 ### Documentation ###
 
