@@ -101,3 +101,9 @@ This is a simple online book shop application I built to teach myself AngularJS.
 ```
 
 ### Screenshots ###
+
+todo
+
+### Documentation ###
+
+Each controller and directive is documented with JSDoc-style documentaiton. 
