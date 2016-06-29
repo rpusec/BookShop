@@ -8,4 +8,5 @@ This is a simple online book shop application I built to teach myself AngularJS.
 
 ### Features ###
  * [UI-Router](https://github.com/angular-ui/ui-router) - to handle page-load without refreshes. 
- * [UI-Bootstrap](https://angular-ui.github.io/bootstrap/) - set of native AngularJS directives with Bootstrap's markup and CSS.  
+ * [UI-Bootstrap](https://angular-ui.github.io/bootstrap/) - set of native AngularJS directives with Bootstrap's markup and CSS.
+ * [Notify.js](https://notifyjs.com/) - to provide stylized notifications. 
