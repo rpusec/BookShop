@@ -1,5 +1,5 @@
 /**
- * Handles all of the processes regarding the catalogue. 
+ * Handles all of the service-based processes regarding the catalogue. 
  * @author Roman Pusec
  */
 app.service('catalogueService', function($http){

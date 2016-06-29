@@ -1,5 +1,5 @@
 /**
- * Handles all of the processes regarding a user's shopping cart. 
+ * Handles all of the service-based processes regarding the user's shopping cart. 
  * @author Roman Pusec
  */
 app.service('cartService', function($http){

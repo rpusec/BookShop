@@ -1,5 +1,5 @@
 /**
- * Handles book logic, and sends appropriate requests to the server. 
+ * Handles all of the service-based processes regarding books. 
  * @author Roman Pusec
  */
 app.service('bookService', function($http){

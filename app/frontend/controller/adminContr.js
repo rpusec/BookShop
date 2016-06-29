@@ -1,6 +1,6 @@
 /**
  * The base page for the administration panel. Serves no purpose other than providing links
- * to the 'Users' and 'Books' secrion and to redirect the user if the user is not an admin 
+ * to the 'Users' and 'Books' section and to redirect the user if the user is not an admin 
  * or is not authenticated.  
  * @author Roman Pusec
  */

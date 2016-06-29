@@ -58,13 +58,12 @@ app.service('authService', function($rootScope, $http, $location, $window){
 
 	/**
 	 * Logs the user our of the system. The parameters are as follows: 
-	 * 
 	 *  * afterSuccess - Specifies what will happen after successful execution of the $http object. 
 	 *  * onError - Specifies what will happen if the $http request was unsuccessful. 
 	 *  * message - The message to display. If not specified, the message from the server will be displayed. 
 	 *  * messageType - The message type. If not specified, the message type will be determined by whether 
 	 *                  the logout was successful or not. 
-	 * 
+	 * All of the mentioned parameters are optional. 
 	 * @param  {Object} params The parameters. 
 	 */
 	authService.logout = function(params){

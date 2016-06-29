@@ -1,5 +1,6 @@
 /**
- * Handles all of the processes regarding a users. 
+ * Handles all of the service-based processes regarding the users. 
+ * @author  Roman Pusec
  */
 app.service("userService", function($http){
 

@@ -27,7 +27,7 @@ app.controller('navbarContr', function($scope, $state, $location, authService){
 
 	/**
 	 * Highlights a specific navigation link.  
-	 * @param  {[type]} title The text or title of the navigation link. 
+	 * @param  {String} title The text or title of the navigation link. 
 	 */
 	$scope.highlightTitle = function(title){
 		angular.forEach(this.arrNavLinks, function(link){

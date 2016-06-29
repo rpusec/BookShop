@@ -1,15 +1,17 @@
 /**
  * This controller is used in combination with a bootstrap modal window configured with AngularJS. 
  * 
- * The resolve parameter, in combination with 
- * the entityModalContr controller, has to include 
- * the following parameters: 
+ * The resolve parameter (from the modal window), in combination with 
+ * the entityModalContr controller, has to include the following parameters: 
  * 
- *  * editingEntity - A function which returns brief information concerned with editing a book object. 
+ *  * entityInfo    - A function which returns brief information concerned with editing an entity object. 
  *  * entityService - A reference of the appropriate service instance. 
  *  * functNames    - Additional function names that make the entityModalContr generic. 
- *                     * editingEntityData - Name of the object that contains all of the values for an entity that's being edited. 
- *                     * editingEntity     - General information regarding an entity that's being edited. 
+ *                     * editingEntityData - Name of the object that contains all of the values of an entity that's being edited. 
+ *                     * entityInfo        - General information regarding an entity that's being edited. 
+ *                                           It is composed of the following parameters: 
+ *                                            - heading  - Represents the text that's displayed as the title on the modal window
+ *                                            - entityID - The ID value of the entity. NOTE: the parameter name has to match 'entityIDLabel'. 
  *                     * addEntity         - Function name for adding an entity. 
  *                     * editEntity        - Function name for editing an entity. 
  *                     * entityIDLabel     - The name of the ID column in the database of the entity. 
