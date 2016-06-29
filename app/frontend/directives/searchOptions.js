@@ -24,6 +24,7 @@
  *  
  *  * searchfunct - References the function from the parent controller that is used for searching
  *                  the entities that contain the specified keyword. 
+ * @author Roman Pusec
  */
 app.directive('searchOptions', function(){
 	return {
