@@ -1,14 +1,8 @@
 /**
  * It is used for general authentication logic. 
- *
- * The 'session' in this service represents some of the 
- * data of the user who's authenticated on the website,
- * and is used at specific parts of the website (e.g. the
- * fname and lname parameters are used on the navigation
- * bar, userID is used to send the ID of the user when
- * altering user settings, and is_admin is used to 
- * evaluate whether the user is an administrator).  
- * 
+ * The 'session' in this service represents a localStorage abstraction that represents the
+ * data of the user who's authenticated. It is mainly used for client side authentication
+ * and to display the user's identity on the navigation bar. 
  * @author Roman Pusec
  */
 app.service('authService', function($rootScope, $http, $location, $window){
