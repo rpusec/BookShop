@@ -108,6 +108,7 @@ app.controller('navbarContr', function($scope, $state, $location, authService){
 			angular.forEach(arrNavLinks, function(link){
 				link.hide = false;
 			});
+			$location.path('/login');
 		}
 	}
 

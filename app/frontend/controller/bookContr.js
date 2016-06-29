@@ -10,13 +10,7 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 		addBookCopiesTemplateUrl: 'addBookCopiesTemplateUrl.html',
 		popoverPlacement: 'top'
 	};
-	$scope.modals = {
-		bookModal: "app/frontend/includes/modals/bookModal.html",
-		bookCopiesModal: "app/frontend/includes/modals/bookCopiesModal.html"
-	};
-	$scope.editingBook = {};
 	$scope.bookToDeleteID = -1;
-	$scope.targetDelBookCopyNum = 0;
 	$scope.pagination = {
 		totalItems: null,
 		currentPage: 1,
@@ -29,21 +23,6 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 	$scope.bookAmountToAdd = 0;
 
 	/**
-	 * Sets the book information which is related to editing or adding a book. 
-	 * @param {Integer} bookID The database ID value of the book. 
-	 * @param {String} title  The title of the book. 
-	 * @param {String} author The author of the book. 
-	 */
-	$scope.setManagingBookInfo = function(bookID, title, author){
-		this.editingBook.bookID = bookID;
-		
-		if(bookID !== -1)
-			this.editingBook.title = 'Editing book: ' + title + ' written by ' + author;
-		else
-			this.editingBook.title = 'Add book';
-	}
-
-	/**
 	 * Displays the books fetched from the bookService. 
 	 * @see bookService.displayBooks
 	 */
@@ -51,8 +30,8 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 		bookService.displayBooks(
 			$scope.pagination.currentPage, 
 			$scope.pagination.itemsPerPage,
-			typeof $scope.searchOptions === 'undefined' ? null : !$scope.searchOptions.searchMode ? null : $scope.searchOptions.chosenSeachBy,
-			typeof $scope.searchOptions === 'undefined' ? null : !$scope.searchOptions.searchMode ? null : $scope.searchOptions.chosenFilter,
+			angular.isUndefined($scope.searchOptions) ? null : !$scope.searchOptions.searchMode ? null : $scope.searchOptions.chosenSeachBy,
+			angular.isUndefined($scope.searchOptions) ? null : !$scope.searchOptions.searchMode ? null : $scope.searchOptions.chosenFilter,
 			function(response){
 				if(response.data.authenticated)
 				{
@@ -73,20 +52,26 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 	/**
 	 * Opens the modal window for editing or adding a book. 
 	 * @see entityModalContr for more info. 
+	 * @param {Integer} bookID The database ID of the book. 
+	 * @param {String}  author Author. 
+	 * @param {String}  title  Title. 
 	 */
-	$scope.openBookModal = function(){
+	$scope.openBookModal = function(bookID, author, title){
 		var m = $uibModal.open({
 			controller: 'entityModalContr',
 			templateUrl: 'bookModal.html',
 			resolve: {
-				editingEntity: function(){
-					return $scope.editingBook;
+				entityInfo: function(){
+					return {
+						heading: bookID === null ? 'Add new book' : 'Editing ' + title + ' from ' + author,
+						bookID: bookID
+					};
 				},
 				entityService: bookService,
 				functNames: function(){
 					return {
 						editingEntityData: 'editingBookData',
-						editingEntity: 'editingBook',
+						entityInfo: 'bookInfo',
 						addEntity: 'addBook',
 						editEntity: 'editBook',
 						entityIDLabel: 'bookID'
@@ -98,8 +83,6 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 		m.closed.then(function(result){
 			$scope.displayBooks();
 		});
-
-		return m;
 	}
 
 	/**
@@ -111,6 +94,7 @@ app.controller('bookContr', function($scope, $uibModal, bookService, authService
 		bookService.deleteBook(
 			this.bookToDeleteID,
 			function(response){
+				console.log(response);
 				if(response.data.authenticated)
 				{
 					$scope.displayBooks();

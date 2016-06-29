@@ -80,6 +80,7 @@ app.service('authService', function($rootScope, $http, $location, $window){
 			message: null,
 			messageType: null
 		}, params);
+
 		$http({
 			method: 'GET',
 			url: 'app/backend/view/userview.php',
@@ -94,7 +95,6 @@ app.service('authService', function($rootScope, $http, $location, $window){
 			{
 				authService.destroySession();
 				$rootScope.$broadcast('updateNavbarState');
-				$location.path('/login');
 			}
 
 			if(typeof params.afterSuccess === 'function')
@@ -157,8 +157,9 @@ app.service('authService', function($rootScope, $http, $location, $window){
 	 * @return {Object|null} The session, null is returned if the session does not exist. 
 	 */
 	authService.getSession = function(){
-		if(typeof $window.localStorage.getItem('UserSession') === 'string')
-			return angular.fromJson($window.localStorage.getItem('UserSession'));
+		var userSession = $window.localStorage.getItem('UserSession');
+		if(typeof userSession === 'string')
+			return angular.fromJson(userSession);
 		return null;
 	}
 
@@ -186,7 +187,7 @@ app.service('authService', function($rootScope, $http, $location, $window){
 			return false;
 
 		var session = authService.getSession();
-		return session.isAdmin;
+		return session.isAdmin === 1;
 	}
 
 	return authService;

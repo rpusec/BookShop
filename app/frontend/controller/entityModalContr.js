@@ -20,9 +20,9 @@
  * @author Roman Pusec
  * @see documentation for AngularJS and Bootstrap modal window. 
  */
-app.controller('entityModalContr', function($scope, editingEntity, entityService, functNames, authService){
+app.controller('entityModalContr', function($scope, entityInfo, entityService, functNames, authService){
 	$scope[functNames.editingEntityData] = {};
-	$scope[functNames.editingEntity] = editingEntity;
+	$scope[functNames.entityInfo] = entityInfo;
 
 	/**
 	 * Adds a new entity. 
@@ -37,7 +37,7 @@ app.controller('entityModalContr', function($scope, editingEntity, entityService
 	 * Edits an entity. 
 	 */
 	$scope[functNames.editEntity] = function(){			
-		$scope[functNames.editingEntityData][functNames.entityIDLabel] = editingEntity[functNames.entityIDLabel];
+		$scope[functNames.editingEntityData][functNames.entityIDLabel] = entityInfo[functNames.entityIDLabel];
 		entityService[functNames.editEntity](
 			$scope[functNames.editingEntityData],
 			addEditResp);

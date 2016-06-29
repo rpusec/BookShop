@@ -64,11 +64,7 @@ app.service('bookService', function($http){
 	 * @param  {Function} onError      The function which is executed on error. 
 	 */
 	this.deleteBook = function(bookID, onSuccess, onError){
-		useHttp({
-			method: 'GET',
-			url: 'app/backend/view/bookview.php',
-			params: {funct: 'delete-book', bookID: bookID}
-		}, onSuccess, onError);
+		useHttp({funct: 'delete-book', bookID: bookID}, onSuccess, onError);
 	}
 
 	/**

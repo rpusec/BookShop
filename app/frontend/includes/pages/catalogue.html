@@ -1,8 +1,8 @@
 <div ng-controller="catalogueContr" style="width: 60%; margin: 0 auto;">
 	<h2>Catalogue</h2>
 	<search-options filters="title=Title;author=Author;description=Description;price=Price" searchfunct="getCatalogue" />
-	<p ng-hide="books !== null">There are no books in this catalogue. </p>
-	<table class="table table-bordered" ng-hide="books == null">
+	<p ng-hide="books.length !== 0">There are no books in this catalogue. </p>
+	<table class="table table-bordered">
 		<tbody>
 			<tr ng-repeat-start="book in books">
 				<th>Title</th>

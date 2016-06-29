@@ -10,12 +10,7 @@ app.controller("userContr", function($scope, $uibModal, userService, authService
 		deleteUserTemplateUrl: 'deleteUserTemplateUrl.html',
 		deleteUserPlacement: 'right'
 	};
-	$scope.modals = {
-		userModal: "app/frontend/includes/modals/userModal.html"
-	};
-	$scope.editingUser = {};
 	$scope.userToDeleteID = -1;
-	$scope.editUserData = {};
 	$scope.pagination = {
 		totalItems: null,
 		currentPage: 1,
@@ -26,21 +21,6 @@ app.controller("userContr", function($scope, $uibModal, userService, authService
 	};
 
 	/**
-	 * Sets the user information which is related to editing or adding a user. 
-	 * @param {Integer} userID The database ID value of the user. 
-	 * @param {String} fname  The first name of the user. 
-	 * @param {String} lname The last name of the user. 
-	 */
-	$scope.setManagingUserInfo = function(userID, fname, lname){
-		this.editingUser.userID = userID;
-		
-		if(userID !== -1)
-			this.editingUser.title = 'Editing user: ' + fname + ' ' + lname;
-		else
-			this.editingUser.title = 'Add user';
-	}
-
-	/**
 	 * Displays the users from the userService. 
 	 * @see userService.displayUsers
 	 */
@@ -48,10 +28,9 @@ app.controller("userContr", function($scope, $uibModal, userService, authService
 		userService.displayUsers(
 			$scope.pagination.currentPage, 
 			$scope.pagination.itemsPerPage,
-			typeof $scope.searchOptions === 'undefined' ? null : !$scope.searchOptions.searchMode ? null : $scope.searchOptions.chosenSeachBy,
-			typeof $scope.searchOptions === 'undefined' ? null : !$scope.searchOptions.searchMode ? null : $scope.searchOptions.chosenFilter,
+			angular.isUndefined($scope.searchOptions) ? null : !$scope.searchOptions.searchMode ? null : $scope.searchOptions.chosenSeachBy,
+			angular.isUndefined($scope.searchOptions) ? null : !$scope.searchOptions.searchMode ? null : $scope.searchOptions.chosenFilter,
 			function(response){
-				console.log(response);
 				if(response.data.authenticated)
 				{
 					$scope.users = response.data.users;
@@ -71,20 +50,26 @@ app.controller("userContr", function($scope, $uibModal, userService, authService
 	/**
 	 * Opens the modal window for editing or adding a user. 
 	 * @see entityModalContr for more info. 
+	 * @param {Integer} userID The database ID of the user. 
+	 * @param {String}  fname  The first name. 
+	 * @param {String}  lname  The last name. 
 	 */
-	$scope.openUserModal = function(){
+	$scope.openUserModal = function(userID, fname, lname){
 		var m = $uibModal.open({
 			controller: 'entityModalContr',
 			templateUrl: 'userModal.html',
 			resolve: {
-				editingEntity: function(){
-					return $scope.editingUser;
+				entityInfo: function(){
+					return {
+						heading: userID === null ? 'Add user' : 'Editing user ' + fname + ' ' + lname,
+						userID: userID
+					};
 				},
 				entityService: userService,
 				functNames: function(){
 					return {
 						editingEntityData: 'editingUserData',
-						editingEntity: 'editingUser',
+						entityInfo: 'userInfo',
 						addEntity: 'addUser',
 						editEntity: 'editUser',
 						entityIDLabel: 'userID'
@@ -96,8 +81,6 @@ app.controller("userContr", function($scope, $uibModal, userService, authService
 		m.closed.then(function(result){
 			$scope.displayUsers();
 		});
-
-		return m;
 	}
 
 	/**

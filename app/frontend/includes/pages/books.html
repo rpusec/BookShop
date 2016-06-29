@@ -1,8 +1,8 @@
 <div ng-controller="bookContr" style="width: 60%; margin: 0 auto;">
 	<h2>Books</h2>
 	<search-options filters="title=Title;author=Author;description=Description;price=Price" searchfunct="displayBooks" />
-	<h4 ng-hide="books !== null">There are no books to display. </h4>
-	<table class="table table-bordered" ng-hide="books == null">
+	<h4 ng-hide="books.length !== 0">There are no books to display. </h4>
+	<table class="table table-bordered">
 		<tbody>
 			<tr ng-repeat-start="book in books">
 				<th>Title</th>
@@ -26,7 +26,7 @@
 			</tr>
 			<tr ng-repeat-end="">
 				<td colspan="2">
-					<button type="button" class="btn btn-primary" ng-click="setManagingBookInfo(book.book_id, book.title, book.author); openBookModal()"><span class="glyphicon glyphicon-edit"></span></button>
+					<button type="button" class="btn btn-primary" ng-click="openBookModal(book.book_id, book.author, book.title)"><span class="glyphicon glyphicon-edit"></span></button>
 					
 					<button type="button" class="btn btn-primary" uib-popover-template="popover.deleteBookTemplateUrl" ng-click="bookToDeleteID = book.book_id; targetDelBookCopyNum = book.copies" popover-placement="{{popover.popoverPlacement}}" popover-trigger="outsideClick"><span class="glyphicon glyphicon-remove-circle"></span></button>
 					
@@ -40,7 +40,7 @@
 
 	<results-found value="{{ pagination.totalItems }}"></results-found>
 
-	<button data-toggle="modal" data-target="#bookModal" ng-click="setManagingBookInfo(-1); openBookModal()" type="button" class="btn btn-primary" ng-disabled="searchOptions.searchMode">Add book</button><br />
+	<button data-toggle="modal" data-target="#bookModal" ng-click="openBookModal(null)" type="button" class="btn btn-primary" ng-disabled="searchOptions.searchMode">Add book</button><br />
 
 	<uib-pagination total-items="pagination.totalItems" ng-model="pagination.currentPage" items-per-page="pagination.itemsPerPage" ng-change="pagination.onPageChange()"></uib-pagination>
 

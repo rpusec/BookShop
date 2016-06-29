@@ -1,8 +1,8 @@
 <div ng-controller="userContr">
 	<h2>Users</h2>
 	<search-options filters="fname=First name;lname=Last name;username=Username;amount=Amount" searchfunct="displayUsers" />
-	<h4 ng-hide="users !== null">There are no users to display. </h4>
-	<table class="table" ng-hide="users == null">
+	<h4 ng-hide="users.length !== 0">There are no users to display. </h4>
+	<table class="table" ng-show="users.length !== 0">
 		<thead>
 			<tr>
 				<th ng-repeat="data in metadata">{{ data }}</th>
@@ -15,7 +15,7 @@
 				<td><highlight-keywords watch="user.username" filter="username">{{ user.username }}</highlight-keywords></td>
 				<td>{{ user.amount }}</td>
 				<td>{{ user.is_admin == 0 ? 'No' : 'Yes' }}</td>
-				<td><button type="button" class="btn btn-primary" ng-click="setManagingUserInfo(user.user_id, user.fname, user.lname); openUserModal()" ng-disabled="searchOptions.searchMode"><span class="glyphicon glyphicon-edit"></span></button></td>
+				<td><button type="button" class="btn btn-primary" ng-click="openUserModal(user.user_id, user.fname, user.lname)" ng-disabled="searchOptions.searchMode"><span class="glyphicon glyphicon-edit"></span></button></td>
 				<td><button type="button" class="btn btn-primary" uib-popover-template="popover.deleteUserTemplateUrl" ng-click="userToDeleteID = user.user_id" popover-placement="{{popover.deleteUserPlacement}}" popover-trigger="outsideClick" ng-disabled="searchOptions.searchMode"><span class="glyphicon glyphicon-remove-circle"></span></button></td>
 			</tr>
 		</tbody>
@@ -23,7 +23,7 @@
 
 	<results-found value="{{ pagination.totalItems }}"></results-found>
 	
-	<button ng-click="setManagingUserInfo(-1); openUserModal()" type="button" class="btn btn-primary" ng-disabled="searchOptions.searchMode">Add user</button><br />
+	<button ng-click="openUserModal(null)" type="button" class="btn btn-primary" ng-disabled="searchOptions.searchMode">Add user</button><br />
 
 	<uib-pagination total-items="pagination.totalItems" ng-model="pagination.currentPage" items-per-page="pagination.itemsPerPage" ng-change="pagination.onPageChange()"></uib-pagination>
 

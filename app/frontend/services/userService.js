@@ -57,10 +57,7 @@ app.service("userService", function($http){
 	 * @param  {Function} onError      The function which is executed on error. 
 	 */
 	this.deleteUser = function(userID, onSuccess, onError){
-		useHttp({
-			funct: 'delete-user', 
-			userID: userID
-		}, onSuccess, onError);
+		useHttp({funct: 'delete-user', userID: userID}, onSuccess, onError);
 	}
 
 	/**

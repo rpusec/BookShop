@@ -4,7 +4,7 @@
  * or is not authenticated.  
  * @author Roman Pusec
  */
-app.controller('adminContr', function($scope, $location, authService){
+app.controller('adminContr', function($scope, $location, $window, authService){
 	if(!authService.isAuthenticated())
 	{
 		$location.path('/login');
@@ -14,7 +14,7 @@ app.controller('adminContr', function($scope, $location, authService){
 	if(!authService.isAdmin())
 	{
 		authService.logout({
-			message: 'You do not have sufficient privilege. ',
+	  		message: 'You do not have sufficient privilege. ',
 			messageType: 'error'
 		});
 		return;

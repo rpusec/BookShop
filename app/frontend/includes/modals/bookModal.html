@@ -2,7 +2,7 @@
 
       <div class="modal-header">
         <button type="button" class="close" ng-click="$close()">&times;</button>
-        <h4 class="modal-title">{{ editingBook.title }}</h4>
+        <h4 class="modal-title">{{ bookInfo.heading }}</h4>
       </div>
       <div class="modal-body">
 
@@ -12,7 +12,7 @@
   <div class="row">
    <div class="col-md-6 col-sm-6 col-xs-12">
     <form method="post">
-      <input type="hidden" id="bookID" name="bookID" ng-model="editingBook.bookID">
+      <input type="hidden" id="bookID" name="bookID" ng-model="bookInfo.bookID">
      <div class="form-group {{ editingBookData.title_error ? 'has-error' : '' }}">
       <label class="control-label " for="title">
        Title
@@ -39,8 +39,8 @@
      </div>
      <div class="form-group">
       <div>
-       <button ng-if="editingBook.bookID != -1" class="btn btn-primary " ng-click="editBook()" name="submit" type="submit">Edit book</button>
-       <button ng-if="editingBook.bookID == -1" class="btn btn-primary " ng-click="addBook()" name="submit" type="submit">Add book</button>
+       <button ng-if="bookInfo.bookID != null" class="btn btn-primary " ng-click="editBook()" name="submit" type="submit">Edit book</button>
+       <button ng-if="bookInfo.bookID == null" class="btn btn-primary " ng-click="addBook()" name="submit" type="submit">Add book</button>
       </div>
      </div>
     </form>
