@@ -14,3 +14,9 @@ This is a simple online book shop application I built to teach myself AngularJS.
  * [UI-Bootstrap](https://angular-ui.github.io/bootstrap/) - set of native AngularJS directives with Bootstrap's markup and CSS.
  * [Notify.js](https://notifyjs.com/) - to provide stylized notifications.
  * [ngAnimate](https://docs.angularjs.org/api/ngAnimate) - to provide animations.
+
+### Directory tree ###
+
+todo
+
+### Screenshots ###
