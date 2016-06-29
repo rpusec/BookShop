@@ -1,4 +1,4 @@
-<div ng-controller="catalogueContr">
+<div ng-controller="catalogueContr" class="centerContent">
 	<h2>Catalogue</h2>
 	<search-options filters="title=Title;author=Author;description=Description;price=Price" searchfunct="getCatalogue" />
 	<p ng-hide="books.length !== 0">There are no books in this catalogue. </p>
@@ -29,7 +29,7 @@
 			</tr>
 			<tr>
 				<th>Price</th>
-				<td>${{ book.price }}</td>
+				<td><highlight-keywords watch="book.price" filter="price">${{ book.price }}</highlight-keywords></td>
 			</tr>
 			<tr>
 				<th>Copies left</th>
