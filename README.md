@@ -1,6 +1,6 @@
 # BookStop #
 
-This is a simple online book shop application I built to teach myself AngularJS. The backend is written in pure PHP and the visuals are build with Bootstrap.  
+This is a simple online book shop application I've built to familiarize myself with AngularJS. The backend is written in pure PHP and the visuals are built with Bootstrap.  
 
 Based on the provided phpMyAdmin dump, all of the users' passwords are `testing123`. 
 
